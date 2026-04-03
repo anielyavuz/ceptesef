@@ -207,6 +207,17 @@ Tüm renkler `lib/core/theme/app_colors.dart` içinde tanımlıdır. Yeni renk e
 - Tüm kullanıcıya görünen metinler ARB dosyalarında tanımlanmalı (hardcode metin yok)
 - Servisler Provider ile sağlanır, `context.read<Service>()` ile erişilir
 
+## Geliştirme Akışı (Claude Code Mobile → PC Test)
+- **GitHub Repo:** `anielyavuz/ceptesef` (main branch korunur)
+- **Bug fix / yeni özellik** Claude Code mobil üzerinden yapılır
+- Claude Code değişiklikleri **yeni branch** üzerine commit eder (asla doğrudan main'e push etme)
+- Branch isimlendirme: `fix/kisa-aciklama` veya `feature/kisa-aciklama`
+- Değişiklik tamamlanınca **PR açılır** (main'e doğru)
+- Kullanıcı PC'de `git pull` + branch checkout yapıp test eder
+- Test başarılıysa kullanıcı PR'ı merge eder
+- **ÖNEMLİ:** `main` branch'e doğrudan push YASAKTIR — her değişiklik branch + PR üzerinden geçmeli
+- **ÖNEMLİ:** PR açarken `flutter analyze` çalıştır, hata varsa önce düzelt
+
 ## Lottie Animasyonları
 Lottie animasyonları `assets/animations/lottie/` altında bulunur.
 - `loading.json` — Bekleme/yükleme ekranlarında kullanılacak loading animasyonu
