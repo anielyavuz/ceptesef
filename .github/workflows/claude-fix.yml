@@ -1,0 +1,47 @@
+name: Claude Bug Fix
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  claude-fix:
+    if: github.event.label.name == 'claude-fix'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          direct_prompt: |
+            Bu bir bug fix talebi. Aşağıdaki GitHub Issue'yu oku ve çöz.
+
+            Issue başlığı: ${{ github.event.issue.title }}
+            Issue içeriği: ${{ github.event.issue.body }}
+
+            Kurallar:
+            1. CLAUDE.md dosyasını oku ve proje kurallarına uy
+            2. Bug'ı analiz et, kök sebebi bul
+            3. Düzeltmeyi yap
+            4. `flutter analyze` çalıştır, hata olmadığından emin ol
+            5. Değişiklikleri yeni bir branch'e commit et (fix/issue-${{ github.event.issue.number }})
+            6. PR oluştur, issue'yu referans ver
+          allowed_tools: "Bash,Read,Write,Edit,Glob,Grep"
