@@ -87,28 +87,21 @@ class _MealPlanPreviewScreenState extends State<MealPlanPreviewScreen>
     try {
       final firestore = context.read<FirestoreService>();
 
-      // Gelecek hafta planı oluşturuluyorsa mevcut günleri korur (ezmez)
-      final now = DateTime.now();
-      final daysFromMonday = (now.weekday - DateTime.monday) % 7;
-      final thisMonday = DateTime(now.year, now.month, now.day)
-          .subtract(Duration(days: daysFromMonday));
-      final nextMonday = thisMonday.add(const Duration(days: 7));
-      final nextMondayStr =
-          '${nextMonday.year}-${nextMonday.month.toString().padLeft(2, '0')}-${nextMonday.day.toString().padLeft(2, '0')}';
-      final isFutureWeek =
-          _mealPlan.haftaBaslangic.compareTo(nextMondayStr) >= 0;
-
+      // Mevcut planla birleştir — yeni günleri ekle, mevcut günleri koru
       MealPlan planToSave = _mealPlan;
-      if (isFutureWeek) {
-        final existing = await firestore.getMealPlanByWeekStart(
-            widget.uid, _mealPlan.haftaBaslangic);
-        if (existing != null && existing.gunler.isNotEmpty) {
-          final existingMap = {for (final d in existing.gunler) d.gun: d};
-          final mergedDays = _mealPlan.gunler.map((newDay) {
-            return existingMap[newDay.gun] ?? newDay;
-          }).toList();
-          planToSave = _mealPlan.copyWith(gunler: mergedDays);
+      final existing = await firestore.getMealPlanByWeekStart(
+          widget.uid, _mealPlan.haftaBaslangic);
+      if (existing != null && existing.gunler.isNotEmpty) {
+        // Mevcut günleri map'e al
+        final existingMap = {for (final d in existing.gunler) d.gun: d};
+        // Yeni günleri üzerine yaz
+        for (final newDay in _mealPlan.gunler) {
+          existingMap[newDay.gun] = newDay;
         }
+        // Tarihe göre sırala
+        final mergedDays = existingMap.values.toList()
+          ..sort((a, b) => a.gun.compareTo(b.gun));
+        planToSave = _mealPlan.copyWith(gunler: mergedDays);
       }
 
       await firestore.saveMealPlan(widget.uid, planToSave);
