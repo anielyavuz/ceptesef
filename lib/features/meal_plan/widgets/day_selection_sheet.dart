@@ -139,11 +139,7 @@ class _DaySelectionSheetState extends State<DaySelectionSheet> {
       );
       _days.add(info);
 
-      if (!isPast && !dateDay.isBefore(DateTime(start.year, start.month, start.day))) {
-        if (existingMealCount == 0) {
-          _selected.add(i);
-        }
-      }
+      // Otomatik seçim yok — kullanıcı hangi günleri istediğini kendisi seçsin
     }
   }
 
