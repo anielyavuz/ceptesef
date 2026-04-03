@@ -219,6 +219,7 @@ Tüm renkler `lib/core/theme/app_colors.dart` içinde tanımlıdır. Yeni renk e
 - Claude Code değişiklikleri **yeni branch** üzerine commit eder
 - Branch isimlendirme: `fix/kisa-aciklama` veya `feature/kisa-aciklama`
 - Değişiklik tamamlanınca **PR açılır** (main'e doğru)
+- PR açılınca **Slack'e otomatik bildirim** gider (GitHub Actions → `SLACK_WEBHOOK_URL` secret)
 - Kullanıcı PC'de `git pull` + branch checkout yapıp test eder
 - Test başarılıysa kullanıcı PR'ı merge eder
 - PR açarken `flutter analyze` çalıştır, hata varsa önce düzelt
