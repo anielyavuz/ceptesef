@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-tint": "#076e21",
+                        "on-primary-container": "#f7fff1",
+                        "on-secondary-container": "#672c00",
+                        "surface": "#f4fbf6",
+                        "surface-bright": "#f4fbf6",
+                        "on-tertiary-container": "#f3fffd",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#80db7f",
+                        "on-error-container": "#93000a",
+                        "background": "#f4fbf6",
+                        "primary-container": "#2b8535",
+                        "on-surface-variant": "#3f493d",
+                        "error": "#ba1a1a",
+                        "tertiary": "#43625f",
+                        "inverse-on-surface": "#ecf2ed",
+                        "tertiary-fixed": "#c7e9e6",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#e3eae5",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#5b7a78",
+                        "primary-fixed": "#9bf899",
+                        "on-surface": "#161d1a",
+                        "surface-container-low": "#eff5f0",
+                        "surface-container": "#e9f0ea",
+                        "tertiary-fixed-dim": "#accdca",
+                        "surface-variant": "#dde4df",
+                        "secondary-fixed": "#ffdbc9",
+                        "surface-container-highest": "#dde4df",
+                        "on-tertiary-fixed-variant": "#2d4c4a",
+                        "error-container": "#ffdad6",
+                        "primary": "#026b1e",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#9b4500",
+                        "outline": "#6f7a6c",
+                        "on-tertiary-fixed": "#00201e",
+                        "on-background": "#161d1a",
+                        "secondary-container": "#fc8a40",
+                        "outline-variant": "#bfcab9",
+                        "on-secondary-fixed-variant": "#763300",
+                        "on-primary-fixed-variant": "#005315",
+                        "on-primary-fixed": "#002204",
+                        "inverse-surface": "#2b322f",
+                        "inverse-primary": "#80db7f",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#d5dcd7",
+                        "secondary-fixed-dim": "#ffb68d",
+                        "on-secondary-fixed": "#331200"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-nav {
+            background: rgba(244, 251, 246, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-gradient {
+            background: linear-gradient(135deg, #026b1e 0%, #2b8535 100%);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen pb-40">
+<!-- Top App Bar (Shared Component Strategy) -->
+<header class="sticky top-0 z-50 glass-nav px-6 py-4 flex items-center justify-between">
+<button class="w-10 h-10 flex items-center justify-start text-on-surface">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline text-title-md font-semibold text-on-surface">Malzeme Tercihleri</h1>
+<div class="w-10"></div>
+</header>
+<!-- Progress Bar Section -->
+<div class="px-8 mt-4">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label text-sm font-medium text-primary">Onboarding</span>
+<span class="font-label text-xs text-on-surface-variant">Step 4 of 6</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full editorial-gradient rounded-full" style="width: 66%; background-color: #48A14D;"></div>
+</div>
+</div>
+<main class="mt-10 px-8"><div class="max-w-md">
+<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface leading-tight">
+        Neleri Sevmezsiniz?
+    </h2>
+<p class="mt-3 text-body-md text-on-surface-variant leading-relaxed">
+        Yemek planınızda görmek istemediğiniz malzemeleri seçerek size en uygun tarifleri hazırlamamıza yardımcı olun.
+    </p>
+</div>
+<div class="mt-10 space-y-12">
+<!-- Vegetables -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary fill-1" style="font-variation-settings: 'FILL' 1;">eco</span>
+<h3 class="font-headline text-lg font-bold text-on-surface">Sebzeler</h3>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Selected State -->
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-primary bg-primary/5 text-left transition-all">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">nutrition</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Patlıcan</span>
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+</button>
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-outline-variant bg-surface text-left hover:border-primary/30 transition-all">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">grass</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Kereviz</span>
+</button>
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-outline-variant bg-surface text-left hover:border-primary/30 transition-all">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">forest</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Bamya</span>
+</button>
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-outline-variant bg-surface text-left hover:border-primary/30 transition-all">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">potted_plant</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Lahana</span>
+</button>
+</div>
+</section>
+<!-- Fruits -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">local_florist</span>
+<h3 class="font-headline text-lg font-bold text-on-surface">Meyveler</h3>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-outline-variant bg-surface text-left hover:border-primary/30 transition-all">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">spa</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Avokado</span>
+</button>
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-outline-variant bg-surface text-left hover:border-primary/30 transition-all">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">wb_sunny</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Ananas</span>
+</button>
+</div>
+</section>
+<!-- Proteins -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<h3 class="font-headline text-lg font-bold text-on-surface">Proteinler</h3>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-primary bg-primary/5 text-left transition-all">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl">set_meal</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Deniz Ürünü</span>
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+</button>
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-outline-variant bg-surface text-left hover:border-primary/30 transition-all">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">skillet</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Kırmızı Et</span>
+</button>
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-outline-variant bg-surface text-left hover:border-primary/30 transition-all">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">egg_alt</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Tavuk</span>
+</button>
+<button class="flex items-center gap-3 p-3 rounded-xl border-2 border-outline-variant bg-surface text-left hover:border-primary/30 transition-all">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">bakery_dining</span>
+</div>
+<span class="font-medium text-on-surface flex-1">Baklagil</span>
+</button>
+</div>
+</section>
+</div></main>
+<!-- Sticky Bottom Actions -->
+<footer class="fixed bottom-0 left-0 right-0 glass-nav p-8 flex flex-col gap-4 border-t border-outline-variant/10"><button class="w-full bg-[#48A14D] text-white h-[56px] rounded-full font-headline font-bold text-lg shadow-lg shadow-[#48A14D]/20 transition-transform active:scale-95">
+    Devam Et
+</button>
+<button class="w-full h-[48px] rounded-full font-headline font-semibold text-on-surface-variant/70 text-sm hover:text-primary transition-colors">
+    Şimdilik Atla (Opsiyonel)
+</button></footer>
+<!-- Abstract Shape Decoration -->
+<div class="fixed top-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+<div class="fixed bottom-40 -left-20 w-48 h-48 bg-secondary/5 rounded-full blur-3xl -z-10"></div>
+</body></html>

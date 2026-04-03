@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Avokado Poşe Yumurta - The Editorial Kitchen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#076e21",
+              "on-tertiary-container": "#f3fffd",
+              "on-tertiary": "#ffffff",
+              "surface-bright": "#f4fbf6",
+              "on-background": "#161d1a",
+              "error-container": "#ffdad6",
+              "surface-variant": "#dde4df",
+              "secondary-container": "#fc8a40",
+              "on-primary": "#ffffff",
+              "surface-dim": "#d5dcd7",
+              "on-surface-variant": "#3f493d",
+              "inverse-primary": "#80db7f",
+              "on-primary-fixed": "#002204",
+              "on-tertiary-fixed-variant": "#2d4c4a",
+              "tertiary-container": "#5b7a78",
+              "tertiary": "#43625f",
+              "outline": "#6f7a6c",
+              "on-surface": "#161d1a",
+              "surface": "#f4fbf6",
+              "on-secondary-fixed": "#331200",
+              "surface-container-high": "#e3eae5",
+              "tertiary-fixed-dim": "#accdca",
+              "inverse-surface": "#2b322f",
+              "secondary-fixed-dim": "#ffb68d",
+              "on-tertiary-fixed": "#00201e",
+              "on-error": "#ffffff",
+              "primary": "#026b1e",
+              "tertiary-fixed": "#c7e9e6",
+              "surface-container": "#e9f0ea",
+              "on-primary-fixed-variant": "#005315",
+              "secondary-fixed": "#ffdbc9",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#eff5f0",
+              "primary-container": "#2b8535",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-highest": "#dde4df",
+              "primary-fixed-dim": "#80db7f",
+              "on-primary-container": "#f7fff1",
+              "on-error-container": "#93000a",
+              "secondary": "#9b4500",
+              "primary-fixed": "#9bf899",
+              "outline-variant": "#bfcab9",
+              "background": "#f4fbf6",
+              "on-secondary-fixed-variant": "#763300",
+              "inverse-on-surface": "#ecf2ed",
+              "error": "#ba1a1a",
+              "on-secondary-container": "#672c00"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4fbf6; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            background: rgba(244, 251, 246, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .editorial-shadow {
+            box-shadow: 0px 12px 32px rgba(22, 29, 26, 0.06);
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, #026b1e 0%, #2b8535 100%);
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface antialiased">
+<!-- Top App Bar (Shared Component Strategy) -->
+<header class="fixed top-0 left-0 right-0 z-50 glass-header px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-title-lg font-bold tracking-tight">Recipe</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</header>
+<main class="pt-16 pb-32">
+<!-- Hero Section -->
+<section class="px-4 mt-4">
+<div class="relative w-full aspect-[4/5] overflow-hidden rounded-xl">
+<img alt="Avokado Poşe Yumurta" class="w-full h-full object-cover" data-alt="Appetizing poached egg on avocado sourdough toast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAVm4ve2NqR4CGeTqAli9N5Zv_x20HYw57VXQpwL131x3l7g9uR7i8Cy7c0HNOd6OMpBTvTZjGPeQ9JMduvozgnYPmhj7LCnULbFnAPJ3aqt1qhYUSBPDwTBB66cF83nJ-tRJfKxH2k8V27t5xReUCt_CdlJ_urkKEloORlyXXZ1eS6npJeMclulG_mRmTgylv2yMQlGE67Qt444n6mUu-E1zmm9RSHTEM9RL2McSm6QxWRnzym-Xr7_sSoaL38V0q_T2DxKngjTg"/>
+<div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end">
+<h2 class="text-display-md font-bold text-white mb-2 leading-tight">Avokado Poşe Yumurta</h2>
+<p class="text-white/80 body-md">A fresh, nutrient-dense breakfast favorite.</p>
+</div>
+</div>
+</section>
+<!-- Quick Info Bento Grid -->
+<section class="px-4 mt-8 grid grid-cols-3 gap-4">
+<div class="bg-surface-container-low p-4 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary mb-2">schedule</span>
+<span class="text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Time</span>
+<span class="text-title-md font-bold">15 min</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-secondary mb-2">local_fire_department</span>
+<span class="text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Energy</span>
+<span class="text-title-md font-bold">340 kcal</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-tertiary mb-2">signal_cellular_alt</span>
+<span class="text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Level</span>
+<span class="text-title-md font-bold">Easy</span>
+</div>
+</section>
+<!-- Ingredients Section -->
+<section class="mt-12 px-8">
+<div class="flex items-end justify-between mb-6">
+<h3 class="text-display-sm font-bold text-on-surface-variant">Ingredients</h3>
+<span class="text-label-md text-primary font-semibold">Customize items</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg editorial-shadow">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 border-2 border-outline-variant rounded-md flex items-center justify-center">
+<span class="material-symbols-outlined text-primary scale-75" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="text-body-lg">1 full avocado</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">swap_horiz</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg editorial-shadow">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 border-2 border-outline-variant rounded-md"></div>
+<span class="text-body-lg">2 large eggs</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">swap_horiz</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg editorial-shadow">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 border-2 border-outline-variant rounded-md"></div>
+<span class="text-body-lg">2 slices of sourdough bread</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">swap_horiz</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg editorial-shadow">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 border-2 border-outline-variant rounded-md"></div>
+<span class="text-body-lg">Red pepper flakes &amp; olive oil</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant">swap_horiz</span>
+</div>
+<!-- Custom Freshness Gauge Component -->
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-sm mt-4">
+<span class="material-symbols-outlined text-[18px]">eco</span>
+<span class="text-label-sm font-bold">Ingredients are fresh for 2 days</span>
+</div>
+</div>
+</section>
+<!-- Instructions Section -->
+<section class="mt-16 bg-surface-container-low pt-12 pb-16 rounded-t-xl px-8">
+<h3 class="text-display-sm font-bold text-on-surface-variant mb-8">Instructions</h3>
+<div class="space-y-10 relative">
+<!-- Visual timeline line -->
+<div class="absolute left-4 top-2 bottom-2 w-0.5 bg-primary/10"></div>
+<div class="relative pl-12">
+<div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-sm">1</div>
+<h4 class="text-title-lg font-bold mb-2">Toast the bread</h4>
+<p class="text-body-lg text-on-surface-variant leading-relaxed">Place the sourdough slices in a toaster or grill pan until they are golden brown and crispy.</p>
+</div>
+<div class="relative pl-12">
+<div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-bold text-sm">2</div>
+<h4 class="text-title-lg font-bold mb-2">Mash the avocado</h4>
+<p class="text-body-lg text-on-surface-variant leading-relaxed">In a small bowl, combine avocado, lemon juice, salt, and red pepper flakes. Mash until creamy but slightly chunky.</p>
+</div>
+<div class="relative pl-12">
+<div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-bold text-sm">3</div>
+<h4 class="text-title-lg font-bold mb-2">Poach the eggs</h4>
+<p class="text-body-lg text-on-surface-variant leading-relaxed">Gently drop eggs into simmering water with a splash of vinegar. Cook for 3-4 minutes until the whites are set but yolks remain soft.</p>
+</div>
+<div class="relative pl-12">
+<div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-bold text-sm">4</div>
+<h4 class="text-title-lg font-bold mb-2">Assemble &amp; Garnish</h4>
+<p class="text-body-lg text-on-surface-variant leading-relaxed">Spread avocado on toast, top with a poached egg, and finish with a drizzle of olive oil and extra flakes.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button Area -->
+<div class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-surface to-transparent pointer-events-none">
+<button class="pointer-events-auto w-full gradient-primary text-on-primary h-16 rounded-full font-bold text-lg editorial-shadow flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">restaurant_menu</span>
+            Start Cooking
+        </button>
+</div>
+<!-- Bottom Nav Bar (Shared Component Strategy) -->
+<nav class="fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant/15 flex items-center justify-around py-3 px-6 z-40">
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">home</span>
+<span class="text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<span class="text-label-sm">Discover</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="text-label-sm">Saved</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-label-sm">Profile</span>
+</div>
+</nav>
+</body></html>

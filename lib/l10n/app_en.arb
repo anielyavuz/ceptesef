@@ -1,0 +1,1199 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Cepte Sef",
+  "@appTitle": { "description": "Uygulama başlığı" },
+
+  "welcomeMessage": "Welcome to Cepte Sef!",
+  "@welcomeMessage": { "description": "Karşılama mesajı" },
+
+  "loading": "Loading...",
+  "@loading": { "description": "Yükleniyor metni" },
+
+  "errorGeneral": "Something went wrong. Please try again.",
+  "@errorGeneral": { "description": "Genel hata mesajı" },
+
+  "retry": "Retry",
+  "@retry": { "description": "Tekrar dene butonu" },
+
+  "settings": "Settings",
+  "@settings": { "description": "Ayarlar" },
+
+  "language": "Language",
+  "@language": { "description": "Dil seçimi" },
+
+  "turkish": "Turkish",
+  "@turkish": { "description": "Türkçe dil adı" },
+
+  "english": "English",
+  "@english": { "description": "İngilizce dil adı" },
+
+  "loginTitle": "Sign In",
+  "@loginTitle": { "description": "Giriş yap başlığı" },
+
+  "loginSubtitle": "Enter your credentials to continue",
+  "@loginSubtitle": { "description": "Giriş yap alt başlığı" },
+
+  "loginHeroTitle": "Welcome back to\nthe Kitchen.",
+  "@loginHeroTitle": { "description": "Giriş ekranı hero başlığı" },
+
+  "email": "Email",
+  "@email": { "description": "E-posta etiketi" },
+
+  "emailHint": "example@mail.com",
+  "@emailHint": { "description": "E-posta placeholder" },
+
+  "password": "Password",
+  "@password": { "description": "Şifre etiketi" },
+
+  "passwordHint": "Enter your password",
+  "@passwordHint": { "description": "Şifre placeholder" },
+
+  "signIn": "Sign In",
+  "@signIn": { "description": "Giriş yap butonu" },
+
+  "forgotPassword": "Forgot Password",
+  "@forgotPassword": { "description": "Şifremi unuttum bağlantısı" },
+
+  "or": "OR",
+  "@or": { "description": "Veya ayırıcı" },
+
+  "continueWithGoogle": "Google",
+  "@continueWithGoogle": { "description": "Google ile devam et" },
+
+  "continueWithApple": "Apple",
+  "@continueWithApple": { "description": "Apple ile devam et" },
+
+  "noAccount": "Don't have an account?",
+  "@noAccount": { "description": "Hesabınız yok mu?" },
+
+  "signUp": "Sign Up",
+  "@signUp": { "description": "Kayıt ol bağlantısı" },
+
+  "registerTitle": "Create Account",
+  "@registerTitle": { "description": "Hesap oluştur başlığı" },
+
+  "registerSubtitle": "Join Cepte Sef and start your journey.",
+  "@registerSubtitle": { "description": "Hesap oluştur alt başlığı" },
+
+  "registerHeroTitle": "Your Kitchen's\nNew Rhythm.",
+  "@registerHeroTitle": { "description": "Kayıt ekranı hero başlığı" },
+
+  "registerHeroSubtitle": "Fresh ingredients, flawless recipes and your personal nutrition assistant.",
+  "@registerHeroSubtitle": { "description": "Kayıt ekranı hero alt başlığı" },
+
+  "fullName": "Full Name",
+  "@fullName": { "description": "Ad soyad etiketi" },
+
+  "fullNameHint": "John Doe",
+  "@fullNameHint": { "description": "Ad soyad placeholder" },
+
+  "termsText": "I have read and accept the ",
+  "@termsText": { "description": "Koşullar metni başlangıcı" },
+
+  "termsOfService": "Terms of Service",
+  "@termsOfService": { "description": "Kullanım koşulları" },
+
+  "and": " and ",
+  "@and": { "description": "ve bağlacı" },
+
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": { "description": "Gizlilik politikası" },
+
+  "register": "Sign Up",
+  "@register": { "description": "Kayıt ol butonu" },
+
+  "orContinueWith": "Or continue with",
+  "@orContinueWith": { "description": "Veya şununla devam et" },
+
+  "alreadyHaveAccount": "Already have an account?",
+  "@alreadyHaveAccount": { "description": "Zaten hesabınız var mı?" },
+
+  "forgotPasswordTitle": "Forgot Your\nPassword?",
+  "@forgotPasswordTitle": { "description": "Şifremi unuttum başlığı" },
+
+  "forgotPasswordSubtitle": "Enter your email address and we'll send you a password reset link.",
+  "@forgotPasswordSubtitle": { "description": "Şifremi unuttum açıklama" },
+
+  "sendResetLink": "Send Reset Link",
+  "@sendResetLink": { "description": "Bağlantı gönder butonu" },
+
+  "backToLogin": "Back to Sign In",
+  "@backToLogin": { "description": "Giriş ekranına dön" },
+
+  "resetEmailSent": "Password reset link has been sent to your email.",
+  "@resetEmailSent": { "description": "Şifre sıfırlama e-postası gönderildi" },
+
+  "errorInvalidEmail": "Please enter a valid email address.",
+  "@errorInvalidEmail": { "description": "Geçersiz email hatası" },
+
+  "errorWeakPassword": "Password must be at least 6 characters.",
+  "@errorWeakPassword": { "description": "Zayıf şifre hatası" },
+
+  "errorEmailInUse": "This email is already registered.",
+  "@errorEmailInUse": { "description": "Email zaten kullanımda hatası" },
+
+  "errorWrongPassword": "Incorrect email or password.",
+  "@errorWrongPassword": { "description": "Yanlış şifre hatası" },
+
+  "errorUserNotFound": "No account found with this email.",
+  "@errorUserNotFound": { "description": "Kullanıcı bulunamadı hatası" },
+
+  "errorTooManyRequests": "Too many attempts. Please try again later.",
+  "@errorTooManyRequests": { "description": "Çok fazla deneme hatası" },
+
+  "errorEmptyField": "This field cannot be empty.",
+  "@errorEmptyField": { "description": "Boş alan hatası" },
+
+  "errorAcceptTerms": "Please accept the terms and conditions.",
+  "@errorAcceptTerms": { "description": "Koşulları kabul et hatası" },
+
+  "comingSoon": "Coming soon!",
+  "@comingSoon": { "description": "Yakında gelecek bildirimi" },
+
+  "signOut": "Sign Out",
+  "@signOut": { "description": "Çıkış yap" },
+
+  "legalClose": "Close",
+  "@legalClose": { "description": "Yasal popup kapat butonu" },
+
+  "termsOfServiceTitle": "Terms of Service",
+  "@termsOfServiceTitle": { "description": "Kullanım koşulları popup başlığı" },
+
+  "termsOfServiceContent": "CEPTE SEF — TERMS OF SERVICE\n\nLast Updated: March 2026\n\n1. ACCEPTANCE OF TERMS\n\nBy creating an account or using Cepte Sef (\"Application\"), you agree to be bound by these Terms of Service (\"Terms\"). If you do not agree with any part of these Terms, you must not use the Application.\n\n2. SERVICE DESCRIPTION\n\nCepte Sef is a smart kitchen assistant that provides personalized weekly meal plans, recipe suggestions, and nutritional guidance using artificial intelligence technology. The Application is provided \"as is\" and \"as available.\"\n\n3. AI-GENERATED CONTENT DISCLAIMER\n\nThe Application uses artificial intelligence (Google Gemini) to generate meal plans, recipes, and nutritional information. YOU EXPRESSLY ACKNOWLEDGE AND AGREE THAT:\n\n(a) AI-generated content may contain inaccuracies, errors, or omissions;\n(b) Recipes and meal plans are generated automatically and have NOT been reviewed, verified, or approved by licensed nutritionists, dietitians, or medical professionals;\n(c) Nutritional values, calorie counts, and ingredient information provided are approximate estimates and may be inaccurate;\n(d) You are solely responsible for verifying all ingredients, cooking instructions, temperatures, and preparation methods before use;\n(e) The Application does not replace professional medical, nutritional, or dietary advice.\n\n4. ALLERGY AND HEALTH WARNING\n\nCRITICAL WARNING: While the Application attempts to consider user-specified allergies and dietary restrictions, NO GUARANTEE IS MADE that AI-generated recipes will be free from allergens or ingredients that may pose health risks.\n\n(a) You must independently verify all ingredients in every recipe for potential allergens;\n(b) Cross-contamination risks are not accounted for in AI-generated content;\n(c) If you have severe allergies, food intolerances, or medical dietary requirements, consult a qualified healthcare professional before following any recipe or meal plan;\n(d) The Company shall not be liable for any allergic reaction, adverse health effect, or injury resulting from the use of AI-generated recipes.\n\n5. USER ACCOUNTS\n\n(a) You must provide accurate and complete registration information;\n(b) You are responsible for maintaining the confidentiality of your account credentials;\n(c) You are responsible for all activities that occur under your account;\n(d) You must be at least 13 years old to create an account;\n(e) We reserve the right to suspend or terminate accounts that violate these Terms.\n\n6. USER CONDUCT\n\nYou agree not to:\n(a) Use the Application for any unlawful purpose;\n(b) Attempt to gain unauthorized access to the Application's systems;\n(c) Reverse engineer, decompile, or disassemble the Application;\n(d) Use automated systems to access the Application;\n(e) Share your account with third parties.\n\n7. INTELLECTUAL PROPERTY\n\nAll content, trademarks, logos, and intellectual property within the Application are owned by or licensed to Cepte Sef. You may not copy, modify, distribute, or create derivative works without explicit written permission.\n\n8. LIMITATION OF LIABILITY\n\nTO THE MAXIMUM EXTENT PERMITTED BY LAW:\n\n(a) THE COMPANY SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES;\n(b) THE COMPANY SHALL NOT BE LIABLE FOR ANY LOSS OR DAMAGE ARISING FROM RELIANCE ON AI-GENERATED CONTENT;\n(c) THE COMPANY SHALL NOT BE LIABLE FOR ANY HEALTH ISSUES, ALLERGIC REACTIONS, OR INJURIES RESULTING FROM FOLLOWING RECIPES OR MEAL PLANS;\n(d) THE COMPANY'S TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNT PAID BY YOU FOR THE APPLICATION IN THE PRECEDING 12 MONTHS;\n(e) THE COMPANY SHALL NOT BE LIABLE FOR ANY SERVICE INTERRUPTIONS, DATA LOSS, OR SYSTEM FAILURES.\n\n9. INDEMNIFICATION\n\nYou agree to indemnify and hold harmless Cepte Sef, its officers, directors, employees, and agents from any claims, damages, losses, or expenses arising from your use of the Application or violation of these Terms.\n\n10. THIRD-PARTY SERVICES\n\nThe Application integrates with third-party services (Firebase, Google Gemini). These services are governed by their own terms and privacy policies. The Company is not responsible for the availability, accuracy, or practices of third-party services.\n\n11. MODIFICATIONS\n\nWe reserve the right to modify these Terms at any time. Continued use of the Application after modifications constitutes acceptance of the updated Terms. Material changes will be notified through the Application.\n\n12. TERMINATION\n\nWe may terminate or suspend your access to the Application at any time, with or without cause, with or without notice. Upon termination, your right to use the Application ceases immediately.\n\n13. GOVERNING LAW\n\nThese Terms shall be governed by and construed in accordance with the laws of the Republic of Turkey. Any disputes shall be resolved in the courts of Istanbul, Turkey.\n\n14. SEVERABILITY\n\nIf any provision of these Terms is held invalid or unenforceable, the remaining provisions shall continue in full force and effect.\n\n15. CONTACT\n\nFor questions about these Terms, contact us through the Application.",
+  "@termsOfServiceContent": { "description": "Kullanım koşulları içeriği" },
+
+  "privacyPolicyTitle": "Privacy Policy",
+  "@privacyPolicyTitle": { "description": "Gizlilik politikası popup başlığı" },
+
+  "homeWeeklyMode": "Weekly Plan",
+  "@homeWeeklyMode": { "description": "Haftalık plan modu" },
+
+  "homeDailyMode": "Daily Plan",
+  "@homeDailyMode": { "description": "Günlük plan modu" },
+
+  "homeDailyTitle": "Daily Plan",
+  "@homeDailyTitle": { "description": "Günlük plan başlığı" },
+
+  "homeDailySubtitle": "Add meals to your slots and plan the day.",
+  "@homeDailySubtitle": { "description": "Günlük plan alt başlığı" },
+
+  "homeDailyAddMeal": "Add Meal",
+  "@homeDailyAddMeal": { "description": "Yemek ekle butonu" },
+
+  "homeDailyEmpty": "No meal added yet.\nTap the + button below and find a recipe with AI!",
+  "@homeDailyEmpty": { "description": "Günlük plan boş durum" },
+
+  "homeDailyPickSlot": "Which meal slot?",
+  "@homeDailyPickSlot": { "description": "Öğün seçimi" },
+
+  "homeScanRecipe": "Scan Recipe",
+  "@homeScanRecipe": { "description": "Tarif tara butonu" },
+
+  "homeScanRecipeDesc": "Take a photo of a dish or pick from gallery, and AI will recognize the recipe and add it to your saved recipes.",
+  "@homeScanRecipeDesc": { "description": "Tarif tara açıklama" },
+
+  "homeScanCamera": "Camera",
+  "@homeScanCamera": { "description": "Kamera seçeneği" },
+
+  "homeScanGallery": "Gallery",
+  "@homeScanGallery": { "description": "Galeri seçeneği" },
+
+  "homeScanAnalyzing": "Analyzing recipe...",
+  "@homeScanAnalyzing": { "description": "Tarif analiz ediliyor" },
+
+  "homeScanSaved": "{recipeName} added to your saved recipes!",
+  "@homeScanSaved": { "description": "Tarif kaydedildi", "placeholders": { "recipeName": {} } },
+
+  "homeScanViewDetail": "Detail",
+  "@homeScanViewDetail": { "description": "Detay butonu" },
+
+  "homeScanError": "Could not analyze the recipe. Please try again.",
+  "@homeScanError": { "description": "Tarif analiz hatası" },
+
+  "homeScanSuccessTitle": "Recipe Saved!",
+  "@homeScanSuccessTitle": { "description": "Tarif kaydedildi popup başlık" },
+
+  "homeScanSuccessDesc": "{recipeName} has been added to your saved recipes.",
+  "@homeScanSuccessDesc": { "description": "Tarif kaydedildi popup açıklama", "placeholders": { "recipeName": {} } },
+
+  "homeScanAddToPlan": "Add to Plan",
+  "@homeScanAddToPlan": { "description": "Plana ekle butonu" },
+
+  "homeScanViewRecipe": "View Recipe",
+  "@homeScanViewRecipe": { "description": "Tarifi görüntüle butonu" },
+
+  "profileFoodNoteTitle": "My Food Habits",
+  "@profileFoodNoteTitle": { "description": "Yemek alışkanlıkları başlığı" },
+
+  "profileFoodNoteSubtitle": "Describe your eating habits and we'll consider them when suggesting recipes.",
+  "@profileFoodNoteSubtitle": { "description": "Yemek alışkanlıkları açıklama" },
+
+  "profileFoodNoteHint": "e.g. I eat light in the evening, I love spicy food, eggs are a must for breakfast...",
+  "@profileFoodNoteHint": { "description": "Yemek alışkanlıkları placeholder" },
+
+  "profileSavedRecipes": "Saved Recipes",
+  "@profileSavedRecipes": { "description": "Kaydedilen tarifler" },
+
+  "profileSavedEmpty": "No saved recipes yet.\nRecipes you add with AI will appear here.",
+  "@profileSavedEmpty": { "description": "Boş arşiv" },
+
+  "privacyPolicyContent": "CEPTE SEF — PRIVACY POLICY\n\nLast Updated: March 2026\n\n1. INTRODUCTION\n\nThis Privacy Policy explains how Cepte Sef (\"we\", \"us\", \"our\") collects, uses, stores, and protects your personal data when you use our Application. By using the Application, you consent to the data practices described in this policy.\n\n2. DATA WE COLLECT\n\n2.1 Information You Provide:\n(a) Account information: name, email address, password (encrypted);\n(b) Profile preferences: dietary restrictions, allergies, food preferences;\n(c) User-generated content: saved recipes, meal plan preferences.\n\n2.2 Automatically Collected Information:\n(a) Device information: device type, operating system, unique device identifiers;\n(b) Usage data: app interactions, features used, timestamps;\n(c) Performance data: crash reports, error logs.\n\n2.3 AI Interaction Data:\n(a) Queries and prompts sent to the AI system;\n(b) AI-generated responses and recommendations;\n(c) User feedback on AI-generated content.\n\n3. HOW WE USE YOUR DATA\n\nWe use your data for the following purposes:\n(a) To provide and personalize meal plans and recipe suggestions;\n(b) To create and manage your account;\n(c) To improve AI recommendation accuracy;\n(d) To analyze usage patterns and improve the Application;\n(e) To communicate service updates and important notices;\n(f) To ensure security and prevent fraud;\n(g) To comply with legal obligations.\n\n4. DATA STORAGE AND SECURITY\n\n(a) Your data is stored on Firebase (Google Cloud) servers;\n(b) Passwords are encrypted and never stored in plain text;\n(c) We implement industry-standard security measures including encryption in transit and at rest;\n(d) Despite our efforts, no method of transmission or storage is 100% secure. We cannot guarantee absolute security;\n(e) Data may be stored and processed in various countries where Google Cloud operates.\n\n5. THIRD-PARTY DATA SHARING\n\n5.1 We share data with the following third-party services:\n(a) Firebase (Google) — authentication, data storage, analytics;\n(b) Google Gemini AI — to process AI queries and generate personalized content.\n\n5.2 Data shared with AI services:\n(a) Your dietary preferences, allergies, and food preferences are sent to Google Gemini to generate personalized recommendations;\n(b) This data is processed according to Google's Privacy Policy;\n(c) We do not control how Google processes data sent to its AI services.\n\n5.3 We will NOT sell, rent, or trade your personal data to third parties for marketing purposes.\n\n5.4 We may disclose your data if required by law, regulation, legal process, or governmental request.\n\n6. YOUR RIGHTS\n\nSubject to applicable law, you have the right to:\n(a) Access your personal data;\n(b) Correct inaccurate data;\n(c) Delete your account and associated data;\n(d) Export your data in a portable format;\n(e) Withdraw consent for data processing;\n(f) Object to processing of your personal data;\n(g) Lodge a complaint with a supervisory authority.\n\nTo exercise these rights, contact us through the Application.\n\n7. DATA RETENTION\n\n(a) We retain your data for as long as your account is active;\n(b) Upon account deletion, your personal data will be deleted within 30 days;\n(c) Some data may be retained longer if required by law or for legitimate business purposes;\n(d) Anonymized and aggregated data may be retained indefinitely for analytics.\n\n8. CHILDREN'S PRIVACY\n\nThe Application is not intended for children under 13. We do not knowingly collect personal data from children under 13. If we become aware of such collection, we will promptly delete the data.\n\n9. COOKIES AND TRACKING\n\nThe Application may use local storage and similar technologies for functionality and analytics purposes. These are essential for the Application to function properly.\n\n10. INTERNATIONAL DATA TRANSFERS\n\nYour data may be transferred to and processed in countries outside your country of residence, including countries that may not provide the same level of data protection. By using the Application, you consent to such transfers.\n\n11. CHANGES TO THIS POLICY\n\nWe may update this Privacy Policy from time to time. We will notify you of material changes through the Application. Continued use after changes constitutes acceptance.\n\n12. DATA BREACH NOTIFICATION\n\nIn the event of a data breach that poses a high risk to your rights and freedoms, we will notify affected users and relevant authorities as required by applicable law.\n\n13. CONTACT\n\nFor privacy-related questions or to exercise your data rights, contact us through the Application.\n\n14. GOVERNING LAW\n\nThis Privacy Policy is governed by the laws of the Republic of Turkey, including the Personal Data Protection Law (KVKK, Law No. 6698).",
+  "@privacyPolicyContent": { "description": "Gizlilik politikası içeriği" },
+
+  "inbox": "Inbox",
+  "@inbox": { "description": "Bildirim gelen kutusu" },
+
+  "noNotifications": "No notifications yet",
+  "@noNotifications": { "description": "Bildirim yok" },
+
+  "today": "Today",
+  "@today": { "description": "Bugün" },
+
+  "yesterday": "Yesterday",
+  "@yesterday": { "description": "Dün" },
+
+  "notificationDeleted": "Notification deleted",
+  "@notificationDeleted": { "description": "Bildirim silindi" },
+
+  "onboardingProgress": "Onboarding Progress",
+  "@onboardingProgress": { "description": "Onboarding ilerleme başlığı" },
+
+  "onboardingStepOf": "Step {current} of {total}",
+  "@onboardingStepOf": { "description": "Adım X / Y", "placeholders": { "current": {}, "total": {} } },
+
+  "onboardingContinue": "Continue",
+  "@onboardingContinue": { "description": "Devam et butonu" },
+
+  "onboardingBack": "Back",
+  "@onboardingBack": { "description": "Geri butonu" },
+
+  "onboardingSkip": "Skip for now",
+  "@onboardingSkip": { "description": "Şimdilik atla" },
+
+  "onboardingCuisineTitle": "What do you love?",
+  "@onboardingCuisineTitle": { "description": "Mutfak tercihi başlığı" },
+
+  "onboardingCuisineSubtitle": "Choose your favorite cuisines so we can create a personalized plan for you.",
+  "@onboardingCuisineSubtitle": { "description": "Mutfak tercihi açıklama" },
+
+  "cuisineTurkish": "Turkish",
+  "@cuisineTurkish": { "description": "Türk Mutfağı" },
+
+  "cuisineMediterranean": "Mediterranean",
+  "@cuisineMediterranean": { "description": "Akdeniz" },
+
+  "cuisineHomeCooking": "Home Cooking",
+  "@cuisineHomeCooking": { "description": "Ev Yemekleri" },
+
+  "cuisineAsian": "Asian",
+  "@cuisineAsian": { "description": "Uzak Doğu" },
+
+  "cuisineHealthy": "Healthy",
+  "@cuisineHealthy": { "description": "Fit & Sağlıklı" },
+
+  "cuisineWorld": "World",
+  "@cuisineWorld": { "description": "Dünya Mutfağı" },
+
+  "cuisineSeafood": "Seafood",
+  "@cuisineSeafood": { "description": "Deniz Ürünleri" },
+
+  "cuisineStreetFood": "Street Food",
+  "@cuisineStreetFood": { "description": "Sokak Lezzetleri" },
+
+  "cuisineGrill": "Grill & BBQ",
+  "@cuisineGrill": { "description": "Izgara & Mangal" },
+
+  "cuisineItalian": "Italian",
+  "@cuisineItalian": { "description": "İtalyan" },
+
+  "cuisineMexican": "Mexican",
+  "@cuisineMexican": { "description": "Meksika" },
+
+  "cuisineFastFood": "Fast Food",
+  "@cuisineFastFood": { "description": "Fast Food" },
+
+  "cuisineVegan": "Vegan",
+  "@cuisineVegan": { "description": "Vegan Mutfak" },
+
+  "cuisineDesserts": "Desserts",
+  "@cuisineDesserts": { "description": "Tatlılar" },
+
+  "cuisineSoups": "Soups",
+  "@cuisineSoups": { "description": "Çorbalar" },
+
+  "cuisineSalads": "Salads",
+  "@cuisineSalads": { "description": "Salatalar" },
+
+  "cuisinePastry": "Pastry",
+  "@cuisinePastry": { "description": "Hamur İşleri" },
+
+  "cuisineFrench": "French",
+  "@cuisineFrench": { "description": "Fransız" },
+
+  "cuisineMiddleEast": "Middle Eastern",
+  "@cuisineMiddleEast": { "description": "Ortadoğu" },
+
+  "cuisineOnePot": "One Pot",
+  "@cuisineOnePot": { "description": "Tek Tencere" },
+
+  "cuisineSnacks": "Snacks",
+  "@cuisineSnacks": { "description": "Atıştırmalıklar" },
+
+  "cuisineKids": "Kids Menu",
+  "@cuisineKids": { "description": "Bebek & Çocuk" },
+
+  "cuisineGlutenFree": "Gluten Free",
+  "@cuisineGlutenFree": { "description": "Glutensiz" },
+
+  "cuisineQuickBreakfast": "Quick Breakfast",
+  "@cuisineQuickBreakfast": { "description": "Hızlı Kahvaltı" },
+
+  "cuisineSouthAmerican": "South American",
+  "@cuisineSouthAmerican": { "description": "Güney Amerika" },
+
+  "onboardingAllergyTitle": "Any diets or allergies?",
+  "@onboardingAllergyTitle": { "description": "Alerji/diyet başlığı" },
+
+  "onboardingAllergySubtitle": "Set your nutritional preferences so we can suggest the most suitable recipes.",
+  "@onboardingAllergySubtitle": { "description": "Alerji/diyet açıklama" },
+
+  "allergiesSection": "Allergies",
+  "@allergiesSection": { "description": "Alerjiler başlığı" },
+
+  "dietsSection": "Diets",
+  "@dietsSection": { "description": "Diyetler başlığı" },
+
+  "allergyGluten": "Gluten",
+  "@allergyGluten": { "description": "Gluten alerjeni" },
+
+  "allergyPeanut": "Peanut",
+  "@allergyPeanut": { "description": "Yer fıstığı alerjeni" },
+
+  "allergyDairy": "Dairy",
+  "@allergyDairy": { "description": "Süt alerjeni" },
+
+  "allergyEgg": "Egg",
+  "@allergyEgg": { "description": "Yumurta alerjeni" },
+
+  "allergySoy": "Soy",
+  "@allergySoy": { "description": "Soya alerjeni" },
+
+  "allergySeafood": "Seafood",
+  "@allergySeafood": { "description": "Deniz ürünleri alerjeni" },
+
+  "dietVegetarian": "Vegetarian",
+  "@dietVegetarian": { "description": "Vejetaryen" },
+
+  "dietVegan": "Vegan",
+  "@dietVegan": { "description": "Vegan" },
+
+  "dietKeto": "Keto",
+  "@dietKeto": { "description": "Keto" },
+
+  "dietWeightLoss": "Healthy Weight Loss",
+  "@dietWeightLoss": { "description": "Sağlıklı Kilo Verme" },
+
+  "dietWeightGain": "Healthy Weight Gain",
+  "@dietWeightGain": { "description": "Sağlıklı Kilo Alma" },
+
+  "dietHighProtein": "High Protein",
+  "@dietHighProtein": { "description": "Yüksek Protein" },
+
+  "dietLowCarb": "Low Carb",
+  "@dietLowCarb": { "description": "Düşük Karbonhidrat" },
+
+  "dietDiabetic": "Diabetic Friendly",
+  "@dietDiabetic": { "description": "Diyabet Dostu" },
+
+  "allergyAddCustom": "Add your own",
+  "@allergyAddCustom": { "description": "Kendi alerjenini ekle" },
+
+  "allergyAddCustomTitle": "Add Custom Allergy",
+  "@allergyAddCustomTitle": { "description": "Özel alerji ekle başlığı" },
+
+  "allergyAddCustomHint": "e.g. Sesame, Mustard...",
+  "@allergyAddCustomHint": { "description": "Özel alerji placeholder" },
+
+  "allergyAddCustomButton": "Add",
+  "@allergyAddCustomButton": { "description": "Ekle butonu" },
+
+  "allergyAddCustomCancel": "Cancel",
+  "@allergyAddCustomCancel": { "description": "İptal" },
+
+  "onboardingAllergyInfoTitle": "Personalized Kitchen",
+  "@onboardingAllergyInfoTitle": { "description": "Kişiselleştirilmiş mutfak" },
+
+  "onboardingAllergyInfoDesc": "Based on your choices, we'll filter 2,000+ recipes to suggest the safest and most delicious menus for you.",
+  "@onboardingAllergyInfoDesc": { "description": "Kişiselleştirilmiş mutfak açıklama" },
+
+  "onboardingMealTitle": "MEAL PREFERENCES",
+  "@onboardingMealTitle": { "description": "Öğün tercihleri başlığı" },
+
+  "onboardingMealQuestion": "How many meals a day?",
+  "@onboardingMealQuestion": { "description": "Öğün sorusu" },
+
+  "onboardingMealSubtitle": "Choose the meal plan that fits your lifestyle, and we'll prepare your list accordingly.",
+  "@onboardingMealSubtitle": { "description": "Öğün açıklama" },
+
+  "mealSlotKahvalti": "Breakfast",
+  "@mealSlotKahvalti": { "description": "Kahvaltı slot adı" },
+
+  "mealSlotOgle": "Lunch",
+  "@mealSlotOgle": { "description": "Öğle slot adı" },
+
+  "mealSlotAksam": "Dinner",
+  "@mealSlotAksam": { "description": "Akşam slot adı" },
+
+  "mealSlotAraOgun": "Snack",
+  "@mealSlotAraOgun": { "description": "Ara öğün slot adı" },
+
+  "onboardingMealSlotTitle": "Which meals should we plan?",
+  "@onboardingMealSlotTitle": { "description": "Öğün seçimi başlığı" },
+
+  "onboardingMealSlotDesc": "Select which meals you want in your daily plan. You can change this later.",
+  "@onboardingMealSlotDesc": { "description": "Öğün seçimi açıklaması" },
+
+  "mealSlotMinimumWarning": "At least one meal must be selected",
+  "@mealSlotMinimumWarning": { "description": "Min 1 öğün uyarısı" },
+
+  "onboardingMealQuote": "\"Balanced nutrition is the kitchen's greatest helper.\"",
+  "@onboardingMealQuote": { "description": "Öğün motivasyon sözü" },
+
+  "onboardingHouseholdTitle": "Cooking for how many?",
+  "@onboardingHouseholdTitle": { "description": "Hane halkı başlığı" },
+
+  "onboardingHouseholdSubtitle": "Select your household size so we can prepare the right portions and grocery list.",
+  "@onboardingHouseholdSubtitle": { "description": "Hane halkı açıklama" },
+
+  "householdSolo": "Just Me",
+  "@householdSolo": { "description": "Tek kişi" },
+
+  "householdCouple": "Couple",
+  "@householdCouple": { "description": "Çiftler" },
+
+  "householdSmallFamily": "Small Family",
+  "@householdSmallFamily": { "description": "Küçük aile" },
+
+  "householdLargeFamily": "Large Family",
+  "@householdLargeFamily": { "description": "Kalabalık" },
+
+  "householdCustom": "Custom",
+  "@householdCustom": { "description": "Özel sayı girişi" },
+
+  "householdCustomHint": "e.g. 6, 8, 10...",
+  "@householdCustomHint": { "description": "Özel kişi sayısı placeholder" },
+
+  "householdInfoText": "You can change this anytime from settings.",
+  "@householdInfoText": { "description": "Alt bilgi metni" },
+
+  "onboardingDislikesTitle": "What don't you like?",
+  "@onboardingDislikesTitle": { "description": "Sevmedikleri başlığı" },
+
+  "onboardingDislikesSubtitle": "Select ingredients you don't want to see in your meal plan so we can suggest the best recipes for you.",
+  "@onboardingDislikesSubtitle": { "description": "Sevmedikleri açıklama" },
+
+  "onboardingDislikesOptional": "(Optional)",
+  "@onboardingDislikesOptional": { "description": "Opsiyonel" },
+
+  "dislikesVegetables": "Vegetables",
+  "@dislikesVegetables": { "description": "Sebzeler" },
+
+  "dislikesFruits": "Fruits",
+  "@dislikesFruits": { "description": "Meyveler" },
+
+  "dislikesProteins": "Proteins",
+  "@dislikesProteins": { "description": "Proteinler" },
+
+  "dislikeEggplant": "Eggplant",
+  "@dislikeEggplant": { "description": "Patlıcan" },
+
+  "dislikeCelery": "Celery",
+  "@dislikeCelery": { "description": "Kereviz" },
+
+  "dislikeOkra": "Okra",
+  "@dislikeOkra": { "description": "Bamya" },
+
+  "dislikeCabbage": "Cabbage",
+  "@dislikeCabbage": { "description": "Lahana" },
+
+  "dislikeBroccoli": "Broccoli",
+  "@dislikeBroccoli": { "description": "Brokoli" },
+
+  "dislikeSpinach": "Spinach",
+  "@dislikeSpinach": { "description": "Ispanak" },
+
+  "dislikeAvocado": "Avocado",
+  "@dislikeAvocado": { "description": "Avokado" },
+
+  "dislikePineapple": "Pineapple",
+  "@dislikePineapple": { "description": "Ananas" },
+
+  "dislikeFig": "Fig",
+  "@dislikeFig": { "description": "İncir" },
+
+  "dislikeCoconut": "Coconut",
+  "@dislikeCoconut": { "description": "Hindistan cevizi" },
+
+  "dislikeSeafood": "Seafood",
+  "@dislikeSeafood": { "description": "Deniz ürünü" },
+
+  "dislikeRedMeat": "Red Meat",
+  "@dislikeRedMeat": { "description": "Kırmızı et" },
+
+  "dislikeChicken": "Chicken",
+  "@dislikeChicken": { "description": "Tavuk" },
+
+  "dislikeLegumes": "Legumes",
+  "@dislikeLegumes": { "description": "Baklagil" },
+
+  "dislikeOrgan": "Organ Meat",
+  "@dislikeOrgan": { "description": "Sakatat" },
+
+  "dislikeAddCustom": "Add your own",
+  "@dislikeAddCustom": { "description": "Kendi malzemeni ekle" },
+
+  "dislikeAddCustomTitle": "Add Disliked Ingredient",
+  "@dislikeAddCustomTitle": { "description": "Sevmediğin malzeme ekle başlığı" },
+
+  "dislikeAddCustomHint": "e.g. Mushroom, Olive...",
+  "@dislikeAddCustomHint": { "description": "Sevmediğin malzeme placeholder" },
+
+  "onboardingComplete": "Create My Plan",
+  "@onboardingComplete": { "description": "Planımı oluştur butonu" },
+
+  "mealPlanGeneratingTitle": "Preparing Your Plan...",
+  "@mealPlanGeneratingTitle": { "description": "Plan oluşturuluyor başlığı" },
+
+  "mealPlanGeneratingSubtitle": "Our AI chef is creating your personalized weekly meal plan",
+  "@mealPlanGeneratingSubtitle": { "description": "Plan oluşturuluyor açıklama" },
+
+  "mealPlanGeneratingError": "Could not generate meal plan. Please try again.",
+  "@mealPlanGeneratingError": { "description": "Plan oluşturma hatası" },
+
+  "mealPlanRetry": "Try Again",
+  "@mealPlanRetry": { "description": "Tekrar dene butonu" },
+
+  "mealPlanPreviewTitle": "Your Weekly Plan",
+  "@mealPlanPreviewTitle": { "description": "Haftalık plan başlığı" },
+
+  "mealPlanConfirm": "Confirm Plan",
+  "@mealPlanConfirm": { "description": "Planı onayla butonu" },
+
+  "mealPlanRegenerate": "Regenerate",
+  "@mealPlanRegenerate": { "description": "Yeniden oluştur" },
+
+  "mealPlanChangeRecipe": "Change",
+  "@mealPlanChangeRecipe": { "description": "Tek tarif değiştir butonu" },
+
+  "mealPlanChangeRecipeHint": "What would you like instead? (optional)",
+  "@mealPlanChangeRecipeHint": { "description": "Tarif değiştirme hint metni" },
+
+  "mealPlanMinutes": "{count} min",
+  "@mealPlanMinutes": { "description": "Dakika", "placeholders": { "count": {} } },
+
+  "mealPlanServings": "{count} servings",
+  "@mealPlanServings": { "description": "Porsiyon", "placeholders": { "count": {} } },
+
+  "slotKahvalti": "Breakfast",
+  "@slotKahvalti": { "description": "Kahvaltı" },
+
+  "slotOgle": "Lunch",
+  "@slotOgle": { "description": "Öğle" },
+
+  "slotAksam": "Dinner",
+  "@slotAksam": { "description": "Akşam" },
+
+  "slotAraOgun": "Snack",
+  "@slotAraOgun": { "description": "Ara öğün" },
+
+  "slotAnaOgun": "Main Meal",
+  "@slotAnaOgun": { "description": "Ana öğün" },
+
+  "slotAtistirmalik": "Snack",
+  "@slotAtistirmalik": { "description": "Atıştırmalık" },
+
+  "homeWeeklyPlan": "This Week's Plan",
+  "@homeWeeklyPlan": { "description": "Bu haftanın planı" },
+
+  "homeWeeklyPlanSubtitle": "Healthy choices, happy days.",
+  "@homeWeeklyPlanSubtitle": { "description": "Plan alt başlığı" },
+
+  "homeNoPlan": "No meal plan yet",
+  "@homeNoPlan": { "description": "Plan yok" },
+
+  "homeNoPlanDesc": "Start by creating your first weekly meal plan!",
+  "@homeNoPlanDesc": { "description": "Plan yok açıklama" },
+
+  "homeCreatePlan": "Create Plan",
+  "@homeCreatePlan": { "description": "Plan oluştur" },
+
+  "homeDifficultyKolay": "Easy",
+  "@homeDifficultyKolay": { "description": "Kolay zorluk" },
+
+  "homeDifficultyOrta": "Medium",
+  "@homeDifficultyOrta": { "description": "Orta zorluk" },
+
+  "homeDifficultyZor": "Hard",
+  "@homeDifficultyZor": { "description": "Zor zorluk" },
+
+  "navHome": "Home",
+  "@navHome": { "description": "Navbar ana sayfa" },
+
+  "navProfile": "Profile",
+  "@navProfile": { "description": "Navbar profil" },
+
+  "navRecipes": "Recipes",
+  "@navRecipes": { "description": "Navbar tarifler" },
+
+  "navShopping": "Shopping",
+  "@navShopping": { "description": "Navbar alışveriş" },
+
+  "shoppingTitle": "Shopping List",
+  "@shoppingTitle": { "description": "Alışveriş başlığı" },
+
+  "shoppingSelectMeals": "Select Meals",
+  "@shoppingSelectMeals": { "description": "Öğün seç" },
+
+  "shoppingSelectAll": "Select All",
+  "@shoppingSelectAll": { "description": "Tümünü seç" },
+
+  "shoppingDeselectAll": "Deselect All",
+  "@shoppingDeselectAll": { "description": "Tümünü kaldır" },
+
+  "shoppingGenerateList": "Generate List",
+  "@shoppingGenerateList": { "description": "Liste oluştur" },
+
+  "shoppingEmptyPlan": "Create a weekly meal plan first to generate a shopping list.",
+  "@shoppingEmptyPlan": { "description": "Plan yok" },
+
+  "shoppingNoSelection": "Select at least one meal",
+  "@shoppingNoSelection": { "description": "Seçim yok" },
+
+  "shoppingItemCount": "{count} items",
+  "@shoppingItemCount": { "description": "Malzeme sayısı", "placeholders": { "count": {} } },
+
+  "shoppingCopied": "Shopping list copied!",
+  "@shoppingCopied": { "description": "Liste kopyalandı" },
+
+  "shoppingDeleteTitle": "Delete List",
+  "@shoppingDeleteTitle": { "description": "Listeyi sil başlık" },
+
+  "shoppingDeleteMessage": "This shopping list will be permanently deleted.",
+  "@shoppingDeleteMessage": { "description": "Listeyi sil mesaj" },
+
+  "shoppingSaved": "Shopping list saved!",
+  "@shoppingSaved": { "description": "Liste kaydedildi" },
+
+  "shoppingMyLists": "My Lists",
+  "@shoppingMyLists": { "description": "Listelerim" },
+
+  "shoppingNewList": "New List",
+  "@shoppingNewList": { "description": "Yeni liste" },
+
+  "shoppingAddItemHint": "Add item (e.g. 2 kg tomatoes)",
+  "@shoppingAddItemHint": { "description": "Malzeme ekle placeholder" },
+
+  "shoppingItemAdded": "Added",
+  "@shoppingItemAdded": { "description": "Eklendi" },
+
+  "shoppingItemDeleted": "Deleted",
+  "@shoppingItemDeleted": { "description": "Silindi" },
+
+  "shoppingManualList": "Manual List",
+  "@shoppingManualList": { "description": "Manuel liste" },
+
+  "shoppingManualListDesc": "Create an empty list, add items yourself",
+  "@shoppingManualListDesc": { "description": "Manuel liste açıklama" },
+
+  "profileTitle": "Profile",
+  "@profileTitle": { "description": "Profil ekranı başlığı" },
+
+  "profileLogout": "Log Out",
+  "@profileLogout": { "description": "Çıkış yap butonu" },
+
+  "profileDeleteAccount": "Delete Account",
+  "@profileDeleteAccount": { "description": "Hesabı sil butonu" },
+
+  "profileDeleteAccountTitle": "Delete Account",
+  "@profileDeleteAccountTitle": { "description": "Hesap silme dialog başlığı" },
+
+  "profileDeleteAccountMessage": "Are you sure you want to delete your account? All your data will be permanently deleted. This action cannot be undone.",
+  "@profileDeleteAccountMessage": { "description": "Hesap silme onay mesajı" },
+
+  "profileDeleteAccountConfirm": "Delete",
+  "@profileDeleteAccountConfirm": { "description": "Hesap silme onay butonu" },
+
+  "profileDeleteAccountCancel": "Cancel",
+  "@profileDeleteAccountCancel": { "description": "Hesap silme iptal butonu" },
+
+  "profileDeleteAccountSuccess": "Your account has been deleted.",
+  "@profileDeleteAccountSuccess": { "description": "Hesap silme başarılı mesajı" },
+
+  "profileDeleteAccountError": "Failed to delete account. Please try again.",
+  "@profileDeleteAccountError": { "description": "Hesap silme hata mesajı" },
+
+  "profileLogoutTitle": "Log Out",
+  "@profileLogoutTitle": { "description": "Çıkış dialog başlığı" },
+
+  "profileLogoutMessage": "Are you sure you want to log out?",
+  "@profileLogoutMessage": { "description": "Çıkış onay mesajı" },
+
+  "profileLogoutConfirm": "Log Out",
+  "@profileLogoutConfirm": { "description": "Çıkış onay butonu" },
+
+  "profileLogoutCancel": "Cancel",
+  "@profileLogoutCancel": { "description": "Çıkış iptal butonu" },
+
+  "profileAccountSection": "Account",
+  "@profileAccountSection": { "description": "Hesap bölümü başlığı" },
+
+  "profileEmail": "Email",
+  "@profileEmail": { "description": "E-posta etiketi" },
+
+  "profileName": "Name",
+  "@profileName": { "description": "İsim etiketi" },
+
+  "navSuggest": "Suggest",
+  "@navSuggest": { "description": "Navbar yemek önerisi" },
+
+  "suggestTitle": "What would you like to eat?",
+  "@suggestTitle": { "description": "Öneri modal başlığı" },
+
+  "suggestHint": "e.g. A light dinner, something with chicken...",
+  "@suggestHint": { "description": "Öneri input placeholder" },
+
+  "suggestDefault": "What kind of meal would you like? Share your details and I'll suggest a personalized recipe! 🍳",
+  "@suggestDefault": { "description": "Varsayılan chatbot mesajı" },
+
+  "suggestSend": "Send",
+  "@suggestSend": { "description": "Gönder butonu" },
+
+  "suggestGenerating": "Preparing recipe...",
+  "@suggestGenerating": { "description": "Tarif hazırlanıyor" },
+
+  "suggestAddToPlan": "Add to Plan",
+  "@suggestAddToPlan": { "description": "Plana ekle butonu" },
+
+  "suggestPickDay": "Which day?",
+  "@suggestPickDay": { "description": "Gün seçimi" },
+
+  "suggestPickSlot": "Which meal?",
+  "@suggestPickSlot": { "description": "Öğün seçimi" },
+
+  "suggestAdded": "Recipe added to plan!",
+  "@suggestAdded": { "description": "Plana eklendi mesajı" },
+
+  "suggestReplaceConfirm": "There's already a recipe in this slot. What would you like to do?",
+  "@suggestReplaceConfirm": { "description": "Değiştirme onayı" },
+
+  "suggestReplace": "Replace",
+  "@suggestReplace": { "description": "Değiştir butonu" },
+
+  "suggestAddAlongside": "Add Alongside",
+  "@suggestAddAlongside": { "description": "Mevcut tarifin yanına ekleme" },
+
+  "suggestCancel": "Cancel",
+  "@suggestCancel": { "description": "İptal butonu" },
+
+  "addMealSourceTitle": "How would you like to add?",
+  "@addMealSourceTitle": { "description": "Öğüne ekleme kaynak seçici başlık" },
+  "addMealSourceAI": "Add with AI",
+  "@addMealSourceAI": { "description": "AI ile ekle seçeneği" },
+  "addMealSourceAIDesc": "Let the assistant suggest a recipe",
+  "@addMealSourceAIDesc": { "description": "AI ile ekle açıklama" },
+  "addMealSourceSaved": "From Saved Recipes",
+  "@addMealSourceSaved": { "description": "Kaydedilenlerden ekle seçeneği" },
+  "addMealSourceSavedDesc": "Pick from your saved recipes",
+  "@addMealSourceSavedDesc": { "description": "Kaydedilenlerden ekle açıklama" },
+  "addMealSourceSavedEmpty": "No saved recipes yet",
+  "@addMealSourceSavedEmpty": { "description": "Kaydedilen tarif yok mesajı" },
+  "addMealSourceSavedSearch": "Search recipes...",
+  "@addMealSourceSavedSearch": { "description": "Tarif arama placeholder" },
+
+  "profilePreferencesSection": "My Preferences",
+  "@profilePreferencesSection": { "description": "Profil tercihler bölümü başlığı" },
+
+  "profileCuisines": "Cuisine Preferences",
+  "@profileCuisines": { "description": "Mutfak tercihleri" },
+
+  "profileAllergies": "Allergies",
+  "@profileAllergies": { "description": "Alerjiler" },
+
+  "profileDiets": "Diets",
+  "@profileDiets": { "description": "Diyetler" },
+
+  "profileMealPlan": "Meal Plan",
+  "@profileMealPlan": { "description": "Öğün planı" },
+
+  "profileHousehold": "Household Size",
+  "@profileHousehold": { "description": "Kişi sayısı" },
+
+  "profileDislikes": "Dislikes",
+  "@profileDislikes": { "description": "Sevmedikleri" },
+
+  "profileNoneSelected": "None selected",
+  "@profileNoneSelected": { "description": "Seçim yapılmadı" },
+
+  "profilePersonCount": "{count} People",
+  "@profilePersonCount": { "description": "Kişi sayısı", "placeholders": { "count": {} } },
+
+  "profileEditSave": "Save",
+  "@profileEditSave": { "description": "Kaydet butonu" },
+
+  "profilePreferencesSaved": "Your preferences have been updated.",
+  "@profilePreferencesSaved": { "description": "Tercihler güncellendi" },
+
+  "profilePreferencesError": "Failed to update preferences. Please try again.",
+  "@profilePreferencesError": { "description": "Tercih güncelleme hatası" },
+
+  "profileAppVersion": "Version",
+  "@profileAppVersion": { "description": "Uygulama versiyon etiketi" },
+
+  "homeDailySourceTitle": "How would you like to add?",
+  "@homeDailySourceTitle": { "description": "Kaynak seçimi başlığı" },
+
+  "homeDailySourceSaved": "Choose from Saved",
+  "@homeDailySourceSaved": { "description": "Kaydedilenlerden seç" },
+
+  "homeDailySourceSavedDesc": "Add from your previously saved recipes",
+  "@homeDailySourceSavedDesc": { "description": "Kaydedilenlerden seç açıklama" },
+
+  "homeDailySourceAI": "Get Recipe with AI",
+  "@homeDailySourceAI": { "description": "AI ile tarif al" },
+
+  "homeDailySourceAIDesc": "Get a new recipe suggestion from chatbot",
+  "@homeDailySourceAIDesc": { "description": "AI ile tarif al açıklama" },
+
+  "homeDailySavedPickerTitle": "Saved Recipes",
+  "@homeDailySavedPickerTitle": { "description": "Kaydedilen tarifler seçici başlığı" },
+
+  "homeDailySavedPickerEmpty": "No saved recipes yet.\nScan recipes or get AI suggestions to build your collection.",
+  "@homeDailySavedPickerEmpty": { "description": "Boş kaydedilen tarifler" },
+
+  "homeDailySavedAdded": "{recipeName} added to meal!",
+  "@homeDailySavedAdded": { "description": "Kaydedilen tarif eklendi", "placeholders": { "recipeName": {} } },
+
+  "homeDailyDeleteTitle": "Delete Recipe",
+  "@homeDailyDeleteTitle": { "description": "Tarif silme başlığı" },
+
+  "homeDailyDeleteMessage": "{recipeName} will be removed from this meal. Are you sure?",
+  "@homeDailyDeleteMessage": { "description": "Tarif silme mesajı", "placeholders": { "recipeName": {} } },
+
+  "homeDailyDeleteConfirm": "Delete",
+  "@homeDailyDeleteConfirm": { "description": "Tarif silme onay" },
+
+  "homeDailyDeleteCancel": "Cancel",
+  "@homeDailyDeleteCancel": { "description": "Tarif silme iptal" },
+
+  "homeDailyDeleted": "{recipeName} removed.",
+  "@homeDailyDeleted": { "description": "Tarif silindi mesajı", "placeholders": { "recipeName": {} } },
+
+  "shareReceived": "Analyzing shared image...",
+  "@shareReceived": { "description": "Paylaşılan görsel analiz ediliyor" },
+
+  "shareSuccess": "{recipeName} added to your saved recipes!",
+  "@shareSuccess": { "description": "Paylaşılan tarif kaydedildi", "placeholders": { "recipeName": {} } },
+
+  "shareError": "Could not analyze the shared image.",
+  "@shareError": { "description": "Paylaşım analiz hatası" },
+
+  "shareLoginRequired": "Please sign in to save the recipe.",
+  "@shareLoginRequired": { "description": "Giriş gerekli" },
+
+  "homePlanExpired": "This week's plan has ended",
+  "@homePlanExpired": { "description": "Plan sona erdi" },
+
+  "homePlanExpiredDesc": "Create a new plan for this week!",
+  "@homePlanExpiredDesc": { "description": "Plan sona erdi açıklama" },
+
+  "homeNewWeekPlan": "Plan New Week",
+  "@homeNewWeekPlan": { "description": "Yeni hafta planla butonu" },
+
+  "homePlanCountdown": "Plan ends in {count} days",
+  "@homePlanCountdown": { "description": "Plan geri sayım", "placeholders": { "count": {} } },
+
+  "homePlanCountdownTomorrow": "Plan ends tomorrow!",
+  "@homePlanCountdownTomorrow": { "description": "Plan yarın bitiyor" },
+
+  "homeRegenerateRemaining": "Refresh Remaining Days",
+  "@homeRegenerateRemaining": { "description": "Kalan günleri yenile" },
+
+  "homeRegeneratingRemaining": "Refreshing remaining days...",
+  "@homeRegeneratingRemaining": { "description": "Kalan günler yenileniyor" },
+
+  "homeRegenerateSuccess": "Remaining days refreshed!",
+  "@homeRegenerateSuccess": { "description": "Kalan günler yenilendi" },
+
+  "homeRegeneratingDay": "Refreshing day...",
+  "@homeRegeneratingDay": { "description": "Gün yenileniyor" },
+
+  "homeRegeneratingDaySubtitle": "Our AI chef is preparing new recipes",
+  "@homeRegeneratingDaySubtitle": { "description": "Gün yenileniyor alt metin" },
+
+  "homeRegeneratingSlot": "Refreshing recipe...",
+  "@homeRegeneratingSlot": { "description": "Slot yenileniyor" },
+
+  "homeRegeneratingSlotSubtitle": "Preparing a new recipe for you",
+  "@homeRegeneratingSlotSubtitle": { "description": "Slot yenileniyor alt metin" },
+
+  "homeSlotRefreshed": "{recipeName} refreshed!",
+  "@homeSlotRefreshed": { "description": "Slot yenilendi", "placeholders": { "recipeName": {} } },
+
+  "homeWeeklyEdit": "Edit Plan",
+  "@homeWeeklyEdit": { "description": "Planı düzenle" },
+
+  "homeWeeklyEditTitle": "Edit Plan",
+  "@homeWeeklyEditTitle": { "description": "Plan düzenleme başlığı" },
+
+  "homeWeeklyEditRegenRemaining": "Refresh Remaining Days",
+  "@homeWeeklyEditRegenRemaining": { "description": "Kalan günleri yenile" },
+
+  "homeWeeklyEditRegenRemainingDesc": "Regenerate meals from today onward",
+  "@homeWeeklyEditRegenRemainingDesc": { "description": "Kalan günleri yenile açıklama" },
+
+  "homeWeeklyEditNewPlan": "Plan New Week",
+  "@homeWeeklyEditNewPlan": { "description": "Yeni hafta planla" },
+
+  "homeWeeklyEditNewPlanDesc": "Create the whole week from scratch",
+  "@homeWeeklyEditNewPlanDesc": { "description": "Yeni hafta planla açıklama" },
+
+  "homeWeeklyEditRegenDay": "Refresh This Day",
+  "@homeWeeklyEditRegenDay": { "description": "Bu günü yenile" },
+
+  "homeWeeklyEditRegenDayDesc": "Regenerate only the selected day's meals",
+  "@homeWeeklyEditRegenDayDesc": { "description": "Bu günü yenile açıklama" },
+
+  "homeRefreshDialogTitle": "Refresh Recipe",
+  "@homeRefreshDialogTitle": { "description": "Tarif yenileme dialog başlığı" },
+
+  "homeRefreshDialogDesc": "A new recipe will be suggested instead of {recipeName}.",
+  "@homeRefreshDialogDesc": { "description": "Tarif yenileme dialog açıklaması", "placeholders": { "recipeName": {} } },
+
+  "homeRefreshDialogHint": "e.g. Something lighter, more protein...",
+  "@homeRefreshDialogHint": { "description": "Tarif yenileme opsiyonel açıklama hint" },
+
+  "homeRefreshAutoButton": "Auto Refresh",
+  "@homeRefreshAutoButton": { "description": "Otomatik yenile butonu" },
+
+  "homeRefreshWithDescButton": "Refresh with AI",
+  "@homeRefreshWithDescButton": { "description": "AI ile açıklamalı yenile butonu" },
+
+  "savedFilterAll": "All",
+  "@savedFilterAll": { "description": "Tümü filtre" },
+
+  "savedFilterQuick": "Quick (≤30m)",
+  "@savedFilterQuick": { "description": "Hızlı filtre" },
+
+  "savedFilterMedium": "Medium (30-60m)",
+  "@savedFilterMedium": { "description": "Orta filtre" },
+
+  "savedFilterLong": "Long (60m+)",
+  "@savedFilterLong": { "description": "Uzun filtre" },
+
+  "savedStarred": "Favorites",
+  "@savedStarred": { "description": "Favoriler" },
+
+  "savedStarAdded": "Added to favorites",
+  "@savedStarAdded": { "description": "Favoriye eklendi" },
+
+  "savedStarRemoved": "Removed from favorites",
+  "@savedStarRemoved": { "description": "Favoriden çıkarıldı" },
+
+  "savedRatedLoved": "Loved It",
+  "@savedRatedLoved": { "description": "Bayıldım bölümü başlığı" },
+
+  "savedRatedGood": "Liked",
+  "@savedRatedGood": { "description": "Güzel bölümü başlığı" },
+
+  "profileMyRatings": "My Ratings",
+  "@profileMyRatings": { "description": "Profil değerlendirmelerim başlığı" },
+  "profileMyRatingsEmpty": "No rated recipes yet",
+  "@profileMyRatingsEmpty": { "description": "Değerlendirme yok" },
+  "profileRatingRemoved": "Rating removed",
+  "@profileRatingRemoved": { "description": "Değerlendirme kaldırıldı" },
+  "profileRatingUpdated": "Rating updated",
+  "@profileRatingUpdated": { "description": "Değerlendirme güncellendi" },
+
+  "addToShoppingList": "Add to Shopping List",
+  "@addToShoppingList": { "description": "Alışveriş listesine ekle" },
+  "createNewList": "Create New List",
+  "@createNewList": { "description": "Yeni liste oluştur" },
+  "addedToList": "Added to list",
+  "@addedToList": { "description": "Listeye eklendi" },
+
+  "addToPlan": "Add to Plan",
+  "@addToPlan": { "description": "Plana ekle" },
+
+  "saveRecipeButton": "Save",
+  "@saveRecipeButton": { "description": "Tarifi kaydet butonu" },
+
+  "recipeAlreadySaved": "Already saved!",
+  "@recipeAlreadySaved": { "description": "Tarif zaten kayıtlı" },
+
+  "recipeSavedSuccess": "Recipe saved!",
+  "@recipeSavedSuccess": { "description": "Tarif kaydedildi" },
+  "selectDay": "Select Day",
+  "@selectDay": { "description": "Gün seç" },
+  "selectMeal": "Select Meal",
+  "@selectMeal": { "description": "Öğün seç" },
+  "addedToPlan": "Added to plan",
+  "@addedToPlan": { "description": "Plana eklendi" },
+  "noPlanAvailable": "No plan for this week. Create one first.",
+  "@noPlanAvailable": { "description": "Bu hafta için plan yok" },
+
+  "savedGroupDate": "By Date",
+  "@savedGroupDate": { "description": "Tarihe göre grupla" },
+  "savedGroupDuration": "By Duration",
+  "@savedGroupDuration": { "description": "Süreye göre grupla" },
+  "savedGroupCuisine": "By Cuisine",
+  "@savedGroupCuisine": { "description": "Mutfağa göre grupla" },
+
+  "savedGroupToday": "Today",
+  "@savedGroupToday": { "description": "Bugün grubu" },
+  "savedGroupYesterday": "Yesterday",
+  "@savedGroupYesterday": { "description": "Dün grubu" },
+  "savedGroupThisWeek": "This Week",
+  "@savedGroupThisWeek": { "description": "Bu hafta grubu" },
+  "savedGroupThisMonth": "This Month",
+  "@savedGroupThisMonth": { "description": "Bu ay grubu" },
+  "savedGroupOlder": "Older",
+  "@savedGroupOlder": { "description": "Daha eski grubu" },
+
+  "savedGroupQuickRecipes": "Quick (≤30m)",
+  "@savedGroupQuickRecipes": { "description": "Hızlı tarifler grubu" },
+  "savedGroupMediumRecipes": "Medium (30-60m)",
+  "@savedGroupMediumRecipes": { "description": "Orta süreli tarifler grubu" },
+  "savedGroupLongRecipes": "Long (60m+)",
+  "@savedGroupLongRecipes": { "description": "Uzun süreli tarifler grubu" },
+
+  "homeNoPlanForDay": "No plan for this day",
+  "@homeNoPlanForDay": { "description": "Bu gün için plan yok" },
+
+  "homeNoPlanForDayDesc": "Would you like to add a plan for this day?",
+  "@homeNoPlanForDayDesc": { "description": "Bu güne plan ekle açıklama" },
+
+  "homeNextWeekNoPlan": "No plan for this week",
+  "@homeNextWeekNoPlan": { "description": "Sonraki hafta için plan yok" },
+
+  "homeNextWeekNoPlanDesc": "Would you like to generate a meal plan for this week?",
+  "@homeNextWeekNoPlanDesc": { "description": "Sonraki hafta planı oluştur açıklama" },
+
+  "homeNextWeekGenerate": "Generate Weekly Plan",
+  "@homeNextWeekGenerate": { "description": "Haftalık plan oluştur butonu" },
+
+  "savedSelectMode": "{count} selected",
+  "@savedSelectMode": { "description": "Seçim modu sayaç", "placeholders": { "count": {} } },
+
+  "savedDeleteSelected": "Delete Selected",
+  "@savedDeleteSelected": { "description": "Seçilenleri sil butonu" },
+
+  "savedDeleteConfirmTitle": "Delete Recipes",
+  "@savedDeleteConfirmTitle": { "description": "Silme onay başlığı" },
+
+  "savedDeleteConfirmMessage": "{count, plural, =1{This recipe will be permanently deleted.} other{These {count} recipes will be permanently deleted.}}",
+  "@savedDeleteConfirmMessage": { "description": "Silme onay mesajı", "placeholders": { "count": {} } },
+
+  "savedDeleteConfirmButton": "Delete",
+  "@savedDeleteConfirmButton": { "description": "Silme onay butonu" },
+
+  "savedDeleteSuccess": "{count, plural, =1{Recipe deleted.} other{{count} recipes deleted.}}",
+  "@savedDeleteSuccess": { "description": "Silme başarılı mesajı", "placeholders": { "count": {} } },
+
+  "savedDeleteSingleTitle": "Delete Recipe",
+  "@savedDeleteSingleTitle": { "description": "Tek tarif silme başlığı" },
+
+  "savedDeleteSingleMessage": "This recipe will be permanently removed from your saved recipes.",
+  "@savedDeleteSingleMessage": { "description": "Tek tarif silme mesajı" },
+
+  "tagAll": "All",
+  "@tagAll": { "description": "Tüm etiketler filtresi" },
+  "tagManage": "Manage Tags",
+  "@tagManage": { "description": "Etiket yönetimi başlığı" },
+  "tagAdd": "Add Tag",
+  "@tagAdd": { "description": "Etiket ekle butonu" },
+  "tagName": "Tag name",
+  "@tagName": { "description": "Etiket adı placeholder" },
+  "tagColor": "Color",
+  "@tagColor": { "description": "Renk seçimi etiketi" },
+  "tagSave": "Save",
+  "@tagSave": { "description": "Etiket kaydet butonu" },
+  "tagDelete": "Delete Tag",
+  "@tagDelete": { "description": "Etiket sil butonu" },
+  "tagDeleteConfirm": "This tag will be removed from all recipes. Continue?",
+  "@tagDeleteConfirm": { "description": "Etiket silme onay mesajı" },
+  "tagEmpty": "No tags created yet",
+  "@tagEmpty": { "description": "Etiket boş durumu" },
+  "tagEditRecipe": "Tag",
+  "@tagEditRecipe": { "description": "Tarife etiket ekle" },
+  "tagCreated": "Tag created",
+  "@tagCreated": { "description": "Etiket oluşturuldu" },
+  "tagDeleted": "Tag deleted",
+  "@tagDeleted": { "description": "Etiket silindi" },
+  "tagUpdated": "Tags updated",
+  "@tagUpdated": { "description": "Etiketler güncellendi" },
+  "tagNoTag": "Untagged",
+  "@tagNoTag": { "description": "Etiketsiz tarif filtresi" },
+
+  "cancel": "Cancel",
+  "@cancel": { "description": "İptal butonu" },
+
+  "priceComparisonTitle": "Price Comparison",
+  "@priceComparisonTitle": { "description": "Fiyat karşılaştırma başlığı" },
+
+  "priceComparisonError": "Could not load price data. Please try again.",
+  "@priceComparisonError": { "description": "Fiyat yükleme hatası" },
+
+  "priceComparisonOptimalPlan": "Smart Shopping Plan",
+  "@priceComparisonOptimalPlan": { "description": "Akıllı alışveriş planı başlığı" },
+
+  "priceComparisonEstimatedTotal": "Estimated Total",
+  "@priceComparisonEstimatedTotal": { "description": "Tahmini toplam" },
+
+  "priceComparisonFoundCount": "{found} / {total} items found",
+  "@priceComparisonFoundCount": { "description": "Bulunan ürün sayısı", "placeholders": { "found": {}, "total": {} } },
+
+  "priceComparisonMarketCount": "across {count} stores",
+  "@priceComparisonMarketCount": { "description": "Market sayısı", "placeholders": { "count": {} } },
+
+  "priceComparisonViewOptimal": "Smart Pick",
+  "@priceComparisonViewOptimal": { "description": "Akıllı öneri modu" },
+
+  "priceComparisonViewByMarket": "By Store",
+  "@priceComparisonViewByMarket": { "description": "Market bazlı mod" },
+
+  "priceComparisonViewByItem": "By Item",
+  "@priceComparisonViewByItem": { "description": "Ürün bazlı mod" },
+
+  "priceComparisonNotFound": "Price not found",
+  "@priceComparisonNotFound": { "description": "Fiyat bulunamadı" },
+
+  "priceComparisonCheapest": "CHEAPEST",
+  "@priceComparisonCheapest": { "description": "En uygun etiketi" },
+
+  "priceComparisonEmpty": "No current price data found for items in your list.",
+  "@priceComparisonEmpty": { "description": "Fiyat verisi boş" },
+
+  "priceComparisonButton": "Compare Prices",
+  "@priceComparisonButton": { "description": "Fiyat karşılaştır butonu" },
+
+  "priceComparisonButtonDesc": "Find the best store, shop smart",
+  "@priceComparisonButtonDesc": { "description": "Fiyat karşılaştırma buton açıklaması" },
+
+  "priceComparisonDataSource": "Data source: marketfiyati.org.tr",
+  "@priceComparisonDataSource": { "description": "Veri kaynağı" },
+
+  "priceComparisonLastUpdate": "Last update: {date}",
+  "@priceComparisonLastUpdate": { "description": "Son güncelleme tarihi", "placeholders": { "date": {} } },
+
+  "priceComparisonLastUpdateYesterday": "(yesterday)",
+  "@priceComparisonLastUpdateYesterday": { "description": "Dünün verisi" },
+  "priceComparisonLastUpdateDaysAgo": "({days} days ago)",
+  "@priceComparisonLastUpdateDaysAgo": { "description": "X gün önceki veri", "placeholders": { "days": {} } },
+
+  "priceComparisonDisclaimerTitle": "About Data Source",
+  "@priceComparisonDisclaimerTitle": { "description": "Disclaimer başlığı" },
+
+  "priceComparisonDisclaimer": "Price data displayed on this screen is sourced from marketfiyati.org.tr, a platform developed by TÜBİTAK BİLGEM under the coordination of the Republic of Turkey Ministry of Industry and Technology.\n\nData is based on information provided by A101, BİM, CarrefourSA, Hakmar, Migros, Tarım Kredi Cooperatives, and ŞOK supermarkets.\n\nCepte Şef does not guarantee the accuracy, timeliness, or completeness of price data. Prices shown are for informational purposes only. Actual store prices may vary based on location, stock availability, and promotions.\n\nCepte Şef cannot be held responsible for any damages arising from the use of this data.",
+  "@priceComparisonDisclaimer": { "description": "Yasal uyarı metni" }
+}

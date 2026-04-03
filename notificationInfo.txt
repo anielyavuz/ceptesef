@@ -1,0 +1,505 @@
+# Bildirim Sistemi — Tam Teknik Doküman
+# Bu dokümanı Claude Code'a verip başka projede aynı sistemi kurdurabilirsin.
+# Son güncelleme: 16 Mart 2026
+
+---
+
+## GENEL MİMARİ
+
+Sistem 5 katmandan oluşur:
+
+1. FCM Push Notification (data-only) — Cloud Functions veya Python ile gönderim
+2. Flutter Foreground Listener — uygulama açıkken mesajı yakalama
+3. In-App Banner — üstten kayan bildirim overlay'i
+4. Firestore Inbox — tüm bildirimlerin DB'ye kaydedilmesi
+5. Inbox Ekranı — timeline UI, swipe-to-delete, badge
+6. Foreground Service Timer — focus/timer bildiriminin kilit ekranında görünmesi
+
+---
+
+## BAĞIMLILIKLAR (pubspec.yaml)
+
+```yaml
+dependencies:
+  firebase_core: ^3.12.1
+  firebase_messaging: ^15.2.3
+  firebase_auth: ^5.5.2
+  cloud_firestore: ^5.6.3
+  flutter_local_notifications: ^19.2.1
+  flutter_foreground_task: ^9.2.1
+  flutter_bloc: ^9.1.0   # state management (Cubit)
+  get_it: ^8.0.3          # dependency injection
+```
+
+---
+
+## KRİTİK KARAR: DATA-ONLY MESSAGE
+
+Android'de `notification` payload'lu FCM mesajları foreground'da Flutter'ın
+`onMessage` listener'ına DÜŞMEZler. Android sistemi kendisi handle eder.
+
+ÇÖZÜM: Her zaman DATA-ONLY message gönder.
+
+```
+❌ YANLIŞ (Android foreground'da çalışmaz):
+  notification: { title: "...", body: "..." }
+
+✅ DOĞRU (her zaman Flutter onMessage'a düşer):
+  data: { title: "...", body: "...", type: "push" }
+```
+
+iOS'ta data-only mesajlar için APNS payload'a alert eklemen gerekir
+(aşağıdaki Cloud Function kodunda gösterilmiş).
+
+---
+
+## 1. ANDROID MANIFEST
+
+android/app/src/main/AndroidManifest.xml içine ekle:
+
+```xml
+<!-- Bildirim izinleri -->
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+<!-- <application> tagı içine: -->
+
+<!-- FCM default notification channel -->
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_channel_id"
+    android:value="fcm_default" />
+
+<!-- Default notification icon -->
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_icon"
+    android:resource="@mipmap/ic_launcher" />
+```
+
+---
+
+## 2. MAIN.DART KURULUMU
+
+```dart
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // FCM background handler (top-level function olmalı)
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  setupServiceLocator();
+
+  // FCM notification channel'ı Android'de erken oluştur
+  final flnp = FlutterLocalNotificationsPlugin();
+  final androidPlugin = flnp.resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>();
+  if (androidPlugin != null) {
+    await androidPlugin.createNotificationChannel(
+      const AndroidNotificationChannel(
+        'fcm_default',
+        'Notifications',
+        description: 'Push notifications',
+        importance: Importance.high,
+      ),
+    );
+  }
+
+  // Foreground FCM listener'ı ERKEN başlat (auth'dan bağımsız)
+  await getIt<NotificationService>().setupForegroundListener();
+
+  // Focus timer servisi başlat
+  await getIt<FocusNotificationService>().init();
+
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return WithForegroundTask(  // <-- foreground service için şart
+      child: MaterialApp.router(...),
+    );
+  }
+}
+```
+
+---
+
+## 3. NOTIFICATION SERVICE (FCM Push)
+
+Dosya: lib/core/services/notification_service.dart
+
+Bu servis:
+- FCM token'ı alır ve Firestore'a kaydeder
+- Her home yüklemesinde token refresh eder
+- Foreground'da gelen mesajları yakalar
+- In-app banner callback'i tetikler
+- Firestore inbox'a kaydeder
+
+```dart
+/// Top-level background handler — main() öncesi tanımlanmalı
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Background'da gelen mesajlar burada handle edilir
+}
+
+typedef InAppBannerCallback = void Function(String title, String body);
+
+class NotificationService {
+  final FirebaseMessaging _messaging;
+  final UserProfileService _profileService;  // FCM token kaydetmek için
+  final InboxService _inboxService;          // Firestore'a bildirim yazmak için
+  bool _isListeningRefresh = false;
+  bool _isForegroundListenerSetup = false;
+
+  /// UI katmanından set edilir — banner göstermek için
+  InAppBannerCallback? onShowBanner;
+
+  final FlutterLocalNotificationsPlugin _localNotifications = ...;
+  static const _fcmChannelId = 'fcm_default';
+
+  /// İzin iste + token kaydet + listener kur
+  Future<bool> requestPermissionAndSetup() async { ... }
+
+  /// Token'ı yenile (home her yüklendiğinde çağır)
+  Future<void> refreshFcmToken() async { ... }
+
+  /// Foreground listener — main.dart'tan erken çağır
+  Future<void> setupForegroundListener() async {
+    if (_isForegroundListenerSetup) return;
+    _isForegroundListenerSetup = true;
+
+    await _initLocalNotifications();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // ÖNEMLİ: Hem notification hem data payload'ı destekle
+      final title = message.notification?.title ??
+          message.data['title'] as String? ?? '';
+      final body = message.notification?.body ??
+          message.data['body'] as String? ?? '';
+
+      if (title.isEmpty && body.isEmpty) return;
+
+      // 1. Firestore'a kaydet
+      _inboxService.savePushNotification(title: title, body: body);
+
+      // 2. In-app banner göster (varsa) yoksa system notification
+      if (onShowBanner != null) {
+        onShowBanner!(title, body);
+      } else {
+        _localNotifications.show(...);
+      }
+    });
+  }
+}
+```
+
+ÖNEMLİ: setupForegroundListener() MUTLAKA main.dart'tan çağrılmalı.
+Auth akışına bağlarsan, auth hatası olduğunda listener hiç kurulmaz
+ve foreground'da bildirim almassın.
+
+---
+
+## 4. FCM TOKEN YÖNETİMİ
+
+Token refresh stratejisi:
+- Auth olunca: requestPermissionAndSetup() → token kaydeder
+- App resume'da: AuthCubit lifecycle listener → refreshFcmToken()
+- Home her yüklendiğinde: HomeCubit.loadHome() → refreshFcmToken()
+- Token değişince: onTokenRefresh stream → otomatik güncelleme
+
+UserProfileService'de:
+```dart
+Future<void> saveFcmToken(String token) async {
+  if (_uid == null) return;
+  await _usersRef.doc(_uid).update({'fcmToken': token});
+  invalidateCache();
+}
+```
+
+Firestore user document'ında `fcmToken` alanı saklanır.
+
+---
+
+## 5. IN-APP BANNER WIDGET
+
+Dosya: lib/core/widgets/in_app_notification_banner.dart
+
+Özellikler:
+- Üstten slide-down animasyon (350ms, easeOutCubic)
+- 4 saniye sonra otomatik kaybolma
+- Yukarı swipe ile kapatma
+- Tıklayınca inbox'a yönlendirme
+- Overlay kullanır (tüm ekranların üstünde)
+
+Kullanım — ShellScreen (ana navigasyon) initState'inde bağla:
+```dart
+getIt<NotificationService>().onShowBanner = (title, body) {
+  if (!mounted) return;
+  InAppNotificationBanner.show(
+    context,
+    title: title,
+    body: body,
+    onTap: () => context.push('/inbox'),
+  );
+  // Badge count güncelle
+  _homeCubit.refreshHome();
+};
+```
+
+dispose'da temizle:
+```dart
+getIt<NotificationService>().onShowBanner = null;
+```
+
+---
+
+## 6. FIRESTORE INBOX MODELİ
+
+Koleksiyon: users/{userId}/notifications/{notificationId}
+
+```dart
+enum InboxNotificationType { challengeInvite, pushNotification }
+
+class InboxNotification {
+  final String id;
+  final InboxNotificationType type;
+
+  // Push notification alanları
+  final String? title;
+  final String? body;
+
+  // Challenge invite alanları (opsiyonel)
+  final String? challengeId;
+  final String? challengeTitle;
+  final String? fromUserId;
+  final String? fromUserName;
+
+  final DateTime createdAt;
+  final bool read;
+  final String? actionTaken; // "accepted", "rejected", null
+}
+```
+
+InboxService metodları:
+- savePushNotification(title, body) — gelen bildirimi kaydet
+- getNotifications() — tümünü getir (createdAt desc)
+- getUnreadCount() — okunmamış sayısı (badge için)
+- markAsRead(id) — okundu işaretle
+- deleteNotification(id) — sil
+
+---
+
+## 7. INBOX EKRANI
+
+Dosya: lib/features/inbox/screens/inbox_screen.dart
+
+Özellikler:
+- Tarihe göre gruplama (Bugün / Dün / tarih)
+- Timeline çizgisi (dot + dashed line)
+- Okunmamış bildirimler border ile vurgulanır
+- Sola kaydırarak silme (Dismissible + optimistic removal)
+- Push notification kartı: icon + title + body + saat
+- Challenge invite kartı: icon + title + accept/reject butonları
+
+InboxCubit:
+- loadNotifications() — Firestore'dan yükle
+- markAsRead(id) — okundu
+- deleteNotification(id) — optimistic silme
+
+Home ekranındaki badge: HomeCubit.loadHome() içinde
+_inboxService.getUnreadCount() çağrılır ve state'e yazılır.
+
+---
+
+## 8. FOREGROUND SERVICE TIMER (Kilit Ekranı Sayaç)
+
+Dosya: lib/core/services/focus_notification_service.dart
+
+flutter_foreground_task paketi kullanır.
+Android'de gerçek foreground service — sistem tarafından kill edilmez.
+Ekran kilitliyken bildirim çubuğunda sayaç görünür.
+
+```dart
+import 'package:flutter_foreground_task/flutter_foreground_task.dart' as foreground;
+
+class FocusNotificationService {
+  // init() — foreground task + local notifications başlat
+  // startForegroundTimer(bookTitle) — servis başlat, bildirim göster
+  // updateTimerNotification(elapsed, bookTitle) — her 10 sn güncelle
+  // cancelTimerNotification() — servis durdur
+
+  Future<void> init() async {
+    foreground.FlutterForegroundTask.init(
+      androidNotificationOptions: foreground.AndroidNotificationOptions(
+        channelId: 'focus_timer',
+        channelName: 'Focus Timer',
+        channelImportance: foreground.NotificationChannelImportance.LOW,
+        priority: foreground.NotificationPriority.LOW,
+        visibility: foreground.NotificationVisibility.VISIBILITY_PUBLIC,
+      ),
+      foregroundTaskOptions: foreground.ForegroundTaskOptions(
+        eventAction: foreground.ForegroundTaskEventAction.nothing(),
+        allowWakeLock: true,
+      ),
+    );
+  }
+}
+```
+
+ÖNEMLİ: flutter_foreground_task ve flutter_local_notifications'ın
+NotificationVisibility enum'u çakışır. Import'u `as foreground` ile yap.
+
+Cubit entegrasyonu:
+- startTimer() → startForegroundTimer()
+- _startPeriodicTimer() → her 10 sn updateTimerNotification()
+- pauseTimer() → cancelTimerNotification()
+- resumeTimer() → startForegroundTimer() tekrar
+- stopTimer() → cancelTimerNotification()
+
+---
+
+## 9. CLOUD FUNCTION — DATA-ONLY MESSAGE GÖNDERİMİ
+
+Dosya: functions/src/notifications/sendNotification.ts
+
+```typescript
+export async function sendPushNotification(
+  token: string, title: string, body: string,
+  data?: Record<string, string>
+): Promise<void> {
+  const message: admin.messaging.Message = {
+    token,
+    // Android: DATA-ONLY (onMessage'a düşer)
+    data: { title, body, ...(data ?? {}) },
+    android: { priority: "high" },
+    // iOS: APNS alert gerekli (data-only mesajlar iOS'ta gösterilmez)
+    apns: {
+      payload: {
+        aps: {
+          "content-available": 1,
+          sound: "default",
+          badge: 1,
+          alert: { title, body },
+        },
+      },
+    },
+  };
+  await admin.messaging().send(message);
+}
+```
+
+---
+
+## 10. TEST — PYTHON İLE BİLDİRİM GÖNDERİMİ
+
+Dosya: admin/testBildirim.py
+
+```python
+import firebase_admin
+from firebase_admin import credentials, firestore, messaging
+
+cred = credentials.Certificate("service-account-key.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
+def send_test_notification(token, title, body):
+    message = messaging.Message(
+        data={"title": title, "body": body, "type": "push"},
+        android=messaging.AndroidConfig(priority="high"),
+        token=token,
+    )
+    return messaging.send(message)
+
+# Kullanıcıyı Firestore'dan bul, fcmToken al, gönder
+```
+
+ÖNEMLİ: Python'da da data-only message gönder (notification= kullanma).
+
+---
+
+## 11. SERVICE LOCATOR KAYDI
+
+```dart
+// InboxService ÖNCE kaydedilmeli (NotificationService bağımlı)
+getIt.registerLazySingleton<InboxService>(() => InboxService());
+getIt.registerLazySingleton<NotificationService>(
+  () => NotificationService(
+    profileService: getIt<UserProfileService>(),
+    inboxService: getIt<InboxService>(),
+  ),
+);
+getIt.registerLazySingleton<FocusNotificationService>(
+  () => FocusNotificationService(),
+);
+```
+
+---
+
+## 12. L10N KEY'LER (EN + TR minimum)
+
+```json
+"inbox": "Inbox" / "Gelen Kutusu",
+"noNotifications": "No notifications" / "Bildirim yok",
+"today": "Today" / "Bugün",
+"yesterday": "Yesterday" / "Dün",
+"notificationDeleted": "Notification deleted" / "Bildirim silindi"
+```
+
+---
+
+## ÖZET AKIŞ
+
+```
+Cloud Function / Python
+  → data-only FCM message gönder (title+body data payload'da)
+  → Android: high priority
+  → iOS: APNS alert payload ekle
+
+Flutter (foreground):
+  → FirebaseMessaging.onMessage tetiklenir
+  → title/body hem notification hem data payload'dan parse edilir
+  → InboxService.savePushNotification() → Firestore'a yaz
+  → onShowBanner callback → InAppNotificationBanner.show()
+  → Banner üstten kayar, 4sn sonra kaybolur, tıklayınca inbox'a gider
+  → HomeCubit.refreshHome() → badge güncellenir
+
+Flutter (background/killed):
+  → Android: data-only mesaj FLTFireMsgReceiver tarafından alınır
+  → onMessageOpenedApp → tıklayınca Firestore'a kaydet
+
+Focus Timer:
+  → startTimer() → FlutterForegroundTask.startService()
+  → Her 10sn → updateService(notificationTitle, notificationText)
+  → Kilit ekranında sayaç görünür
+  → stopTimer() → FlutterForegroundTask.stopService()
+```
+
+---
+
+## TUZAKLAR & ÖĞRENİLEN DERSLER
+
+1. Android notification payload'lu mesajlar foreground'da onMessage'a DÜŞMEZ.
+   Her zaman data-only message kullan.
+
+2. Android notification channel oluşturmayı main.dart'ta yap.
+   Yoksa bildirim sessizce drop edilir.
+
+3. setupForegroundListener() auth'a bağlama, main.dart'tan çağır.
+   Auth hata verirse listener hiç kurulmaz.
+
+4. FCM token her home yüklemesinde refresh et.
+   Emülatör/cihaz değişimlerinde eski token kalabilir.
+
+5. flutter_foreground_task ve flutter_local_notifications'ın
+   NotificationVisibility enum'u çakışır. `as foreground` kullan.
+
+6. iOS'ta data-only mesajlar bildirim göstermez.
+   APNS payload'a alert eklemelisin.
+
+7. AndroidManifest'e com.google.firebase.messaging.default_notification_channel_id
+   meta-data ekle yoksa background bildirimler gösterilmez.

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-container": "#672c00",
+              "surface-tint": "#076e21",
+              "on-primary-container": "#f7fff1",
+              "primary-fixed-dim": "#80db7f",
+              "on-error-container": "#93000a",
+              "background": "#f4fbf6",
+              "surface": "#f4fbf6",
+              "on-primary": "#ffffff",
+              "on-tertiary-container": "#f3fffd",
+              "surface-bright": "#f4fbf6",
+              "on-secondary": "#ffffff",
+              "error": "#ba1a1a",
+              "on-surface-variant": "#3f493d",
+              "primary-container": "#2b8535",
+              "tertiary-fixed": "#c7e9e6",
+              "tertiary": "#43625f",
+              "inverse-on-surface": "#ecf2ed",
+              "on-error": "#ffffff",
+              "surface-container-high": "#e3eae5",
+              "primary-fixed": "#9bf899",
+              "tertiary-container": "#5b7a78",
+              "surface-variant": "#dde4df",
+              "secondary-fixed": "#ffdbc9",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#dde4df",
+              "on-tertiary-fixed-variant": "#2d4c4a",
+              "surface-container": "#e9f0ea",
+              "surface-container-low": "#eff5f0",
+              "on-surface": "#161d1a",
+              "tertiary-fixed-dim": "#accdca",
+              "outline": "#6f7a6c",
+              "on-tertiary-fixed": "#00201e",
+              "secondary-container": "#fc8a40",
+              "outline-variant": "#bfcab9",
+              "on-background": "#161d1a",
+              "primary": "#026b1e",
+              "secondary": "#9b4500",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary": "#ffffff",
+              "secondary-fixed-dim": "#ffb68d",
+              "on-secondary-fixed": "#331200",
+              "surface-dim": "#d5dcd7",
+              "inverse-primary": "#80db7f",
+              "inverse-surface": "#2b322f",
+              "on-primary-fixed": "#002204",
+              "on-primary-fixed-variant": "#005315",
+              "on-secondary-fixed-variant": "#763300"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f4fbf6;
+            color: #161d1a;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-header {
+            background: rgba(244, 251, 246, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        .asymmetric-grid > :nth-child(3n) {
+            grid-column: span 2;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="glass-header sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="text-title-lg font-bold text-on-surface">Meal Planner</h1>
+</div>
+</header>
+<main class="flex-1 max-w-2xl mx-auto w-full px-6 py-8 flex flex-col">
+<!-- ProgressBar Section -->
+<div class="mb-10">
+<div class="flex justify-between items-end mb-3">
+<span class="text-label-md font-semibold text-primary uppercase tracking-wider">Onboarding Progress</span>
+<span class="text-title-sm font-bold text-on-surface">75%</span>
+</div>
+<div class="h-3 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container rounded-full transition-all duration-500" style="width: 75%;"></div>
+</div>
+</div>
+<!-- Hero Headline -->
+<div class="mb-12">
+<h2 class="text-[2.5rem] leading-[1.1] font-extrabold text-on-surface tracking-tight mb-4">
+                Yemekler kaç kişilik hazırlanacak?
+            </h2>
+<p class="text-body-lg text-on-surface-variant max-w-md">
+                Size en uygun porsiyonları ve alışveriş listesini hazırlayabilmemiz için ev halkı sayısını seçin.
+            </p>
+</div>
+<!-- Household Selection Bento Grid -->
+<div class="asymmetric-grid mb-12">
+<!-- Option 1 -->
+<button class="group relative flex flex-col p-6 rounded-lg bg-surface-container-lowest hover:bg-primary-fixed transition-all duration-300 text-left border-none outline-none ring-1 ring-outline-variant ring-opacity-10 shadow-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 group-hover:bg-on-primary">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</div>
+<span class="text-title-lg font-bold text-on-surface">1</span>
+<span class="text-label-md text-on-surface-variant group-hover:text-on-primary-fixed-variant">Sadece Ben</span>
+</button>
+<!-- Option 2 -->
+<button class="group relative flex flex-col p-6 rounded-lg bg-surface-container-lowest hover:bg-primary-fixed transition-all duration-300 text-left border-none outline-none ring-1 ring-outline-variant ring-opacity-10 shadow-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 group-hover:bg-on-primary">
+<span class="material-symbols-outlined text-primary" data-icon="group">group</span>
+</div>
+<span class="text-title-lg font-bold text-on-surface">2</span>
+<span class="text-label-md text-on-surface-variant group-hover:text-on-primary-fixed-variant">Çiftler</span>
+</button>
+<!-- Option 3 (Wider/Featured) -->
+<button class="group relative flex items-center justify-between p-8 rounded-lg bg-surface-container-lowest hover:bg-primary-fixed transition-all duration-300 text-left border-none outline-none ring-1 ring-outline-variant ring-opacity-10 shadow-sm overflow-hidden">
+<div>
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 group-hover:bg-on-primary">
+<span class="material-symbols-outlined text-primary" data-icon="family_restroom">family_restroom</span>
+</div>
+<span class="text-title-lg font-bold text-on-surface">3 - 4</span>
+<span class="block text-label-md text-on-surface-variant group-hover:text-on-primary-fixed-variant">Küçük Aile</span>
+</div>
+<div class="hidden sm:block opacity-20 group-hover:opacity-40 transition-opacity">
+<span class="material-symbols-outlined text-[100px]" data-icon="restaurant" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+</button>
+<!-- Option 4 -->
+<button class="group relative flex flex-col p-6 rounded-lg bg-surface-container-lowest hover:bg-primary-fixed transition-all duration-300 text-left border-none outline-none ring-1 ring-outline-variant ring-opacity-10 shadow-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 group-hover:bg-on-primary">
+<span class="material-symbols-outlined text-primary" data-icon="groups">groups</span>
+</div>
+<span class="text-title-lg font-bold text-on-surface">5+</span>
+<span class="text-label-md text-on-surface-variant group-hover:text-on-primary-fixed-variant">Kalabalık</span>
+</button>
+<!-- Option 5 -->
+<button class="group relative flex flex-col p-6 rounded-lg bg-surface-container-lowest hover:bg-primary-fixed transition-all duration-300 text-left border-none outline-none ring-1 ring-outline-variant ring-opacity-10 shadow-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 group-hover:bg-on-primary">
+<span class="material-symbols-outlined text-primary" data-icon="diversity_3">diversity_3</span>
+</div>
+<span class="text-title-lg font-bold text-on-surface">Özel</span>
+<span class="text-label-md text-on-surface-variant group-hover:text-on-primary-fixed-variant">Misafir Ağırlama</span>
+</button>
+</div>
+<!-- Action Section -->
+<div class="mt-auto pt-8">
+<button class="w-full py-5 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold text-lg shadow-xl shadow-primary/10 hover:shadow-primary/20 transition-all flex items-center justify-center gap-3">
+                Planımı Oluştur
+                <span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</button>
+<p class="text-center mt-6 text-label-md text-on-surface-variant">
+                Dilediğiniz zaman ayarlardan değiştirebilirsiniz.
+            </p>
+</div>
+</main>
+<!-- BottomNavBar (Optional based on shell/canvas logic, but included here for brand persistence as it's a destination path) -->
+<nav class="bg-surface-container-lowest border-t border-outline-variant border-opacity-10 px-6 py-3 flex justify-around items-center">
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="calendar_month" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="text-[10px] font-bold">Plan</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="text-[10px] font-bold">Groceries</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="text-[10px] font-bold">Recipes</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,158 @@
+{
+  "description": "Cepte Şef veri yapısı — Gemini çıktısı, Firestore cache ve dış kaynak import formatı",
+  "version": 2,
+
+  "tarif_sema": {
+    "description": "Tek bir tarifin tam veri yapısı. Gemini üretimi, Firestore cache ve dış import bu formata uymalı.",
+    "fields": {
+      "id":                    { "type": "string",   "required": true,  "example": "mercimek_corbasi",        "description": "Slug ID — Türkçe karakter yok, boşluk yerine _, küçük harf" },
+      "yemek_adi":             { "type": "string",   "required": true,  "example": "Mercimek Çorbası",        "description": "Türkçe yemek adı" },
+      "ogun_tipi":             { "type": "string",   "required": true,  "example": "corba",                   "description": "Öğün tipi", "allowed_values": ["kahvalti", "corba", "ana_yemek", "salata_meze", "tatli", "ara_ogun"] },
+      "mutfaklar":             { "type": "string[]", "required": true,  "example": ["turk", "ev_yemekleri"],   "description": "Ait olduğu mutfak(lar) — ilk eleman birincil mutfak (cache doc key'i)", "allowed_values": ["turk", "ev_yemekleri", "akdeniz", "izgara", "italyan", "uzak_dogu", "meksika", "fast_food", "deniz_urunleri", "sokak_lezzetleri", "fit", "vegan_mutfagi", "tatlilar", "corbalar", "salata", "hamur_isi", "fransiz", "ortadogu", "one_pot", "dunya", "aperatif", "bebek_cocuk", "glutensiz", "hizli_kahvalti", "guney_amerika"] },
+      "alerjenler":            { "type": "string[]", "required": true,  "example": ["gluten", "sut"],          "description": "İÇERDİĞİ alerjenler (boş dizi olabilir)", "allowed_values": ["gluten", "yer_fistigi", "sut", "yumurta", "soya", "deniz_urunleri"] },
+      "diyetler":              { "type": "string[]", "required": true,  "example": ["vejetaryen"],             "description": "UYUMLU olduğu diyetler (boş dizi olabilir)", "allowed_values": ["vejetaryen", "vegan", "keto", "kilo_verme", "kilo_alma", "yuksek_protein", "dusuk_karbonhidrat", "diyabet_dostu"] },
+      "zorluk":                { "type": "string",   "required": true,  "example": "orta",                    "description": "Zorluk seviyesi", "allowed_values": ["kolay", "orta", "zor"] },
+      "kalori":                { "type": "int",      "required": true,  "example": 350,                       "description": "Tahmini kişi başı kalori (kcal)" },
+      "malzemeler":            { "type": "string[]", "required": true,  "example": ["1 su bardağı kırmızı mercimek", "1 adet soğan"], "description": "Miktar + malzeme formatında liste" },
+      "yapilis":               { "type": "string[]", "required": true,  "example": ["Soğanı doğrayın.", "Kavurun."], "description": "Adım adım yapılış talimatları" },
+      "hazirlanma_suresi_dk":  { "type": "int",      "required": true,  "example": 10,                        "description": "Hazırlama süresi (dakika)" },
+      "pisirme_suresi_dk":     { "type": "int",      "required": true,  "example": 25,                        "description": "Pişirme süresi (dakika, pişirme yoksa 0)" },
+      "toplam_sure_dk":        { "type": "int",      "required": true,  "example": 35,                        "description": "Toplam süre (dakika)" },
+      "kisi_sayisi":           { "type": "int",      "required": true,  "example": 4,                         "description": "Kaç kişilik" }
+    }
+  },
+
+  "firestore_cache_yapisi": {
+    "description": "Firestore tarifler koleksiyonu — mutfak bazlı gruplama",
+    "collection": "tarifler",
+    "document_key": "mutfaklar[0] — birincil mutfak adı (örn: turk, akdeniz, italyan)",
+    "document_structure": {
+      "recipes": {
+        "type": "array",
+        "description": "O mutfağa ait tarifler dizisi. Her eleman tarif_sema formatında.",
+        "items": "tarif_sema"
+      },
+      "updatedAt": {
+        "type": "Timestamp",
+        "description": "Son güncelleme zamanı"
+      }
+    },
+    "example_path": "tarifler/turk",
+    "example_doc": {
+      "recipes": [
+        {
+          "id": "mercimek_corbasi",
+          "yemek_adi": "Mercimek Çorbası",
+          "ogun_tipi": "corba",
+          "mutfaklar": ["turk", "ev_yemekleri"],
+          "alerjenler": ["gluten"],
+          "diyetler": ["vejetaryen"],
+          "zorluk": "kolay",
+          "kalori": 180,
+          "malzemeler": ["1 su bardağı kırmızı mercimek", "1 adet soğan", "1 adet havuç", "2 yemek kaşığı zeytinyağı", "1 çay kaşığı tuz", "1 çay kaşığı karabiber", "1 litre su"],
+          "yapilis": ["Soğan ve havucu küçük küçük doğrayın.", "Zeytinyağında kavurun.", "Mercimeği ekleyip 2 dk kavurun.", "Suyu ekleyip 20 dk pişirin.", "Blenderdan geçirin, baharatları ekleyin."],
+          "hazirlanma_suresi_dk": 10,
+          "pisirme_suresi_dk": 25,
+          "toplam_sure_dk": 35,
+          "kisi_sayisi": 4
+        }
+      ],
+      "updatedAt": "Timestamp"
+    },
+    "notes": [
+      "Her tarif birincil mutfağının (mutfaklar[0]) doc'una yazılır",
+      "arrayUnion ile eklenir — duplicate'ler id bazlı kontrol edilmeli",
+      "Tek doc max 1MB — mutfak başına ~3000 tarif sığar",
+      "Dış kaynak import: aynı formatta recipes dizisine eklenir"
+    ]
+  },
+
+  "haftalik_plan_sema": {
+    "description": "Gemini'ın döneceği haftalık plan çıktısı",
+    "fields": {
+      "hafta_baslangic": { "type": "string", "example": "2026-03-23" },
+      "ogun_plani": { "type": "string", "example": "standart" },
+      "gunler": {
+        "type": "array",
+        "length": 7,
+        "items": {
+          "gun": { "type": "string", "example": "2026-03-23" },
+          "gun_adi": { "type": "string", "example": "Pazartesi" },
+          "ogunler": {
+            "type": "object",
+            "description": "slot_adi → tarif_sema",
+            "example_keys": ["kahvalti", "ogle", "aksam"]
+          }
+        }
+      }
+    }
+  },
+
+  "kullanici_tercihleri": {
+    "description": "Onboarding'den gelen kullanıcı tercihleri",
+    "fields": {
+      "mutfaklar":    { "type": "string[]", "description": "Sevilen mutfak türleri" },
+      "alerjenler":   { "type": "string[]", "description": "Alerjiler (custom: prefix'li olanlar dahil)" },
+      "diyetler":     { "type": "string[]", "description": "Uygulanan diyetler" },
+      "ogun_plani":   { "type": "string",   "description": "Günlük öğün düzeni" },
+      "kisi_sayisi":  { "type": "int",      "description": "Hane halkı sayısı" },
+      "sevmedikleri": { "type": "string[]", "description": "Sevmedikleri malzemeler (custom: prefix'li dahil)" }
+    }
+  },
+
+  "ogun_planlari": {
+    "standart": { "slotlar": ["kahvalti", "ogle", "aksam"] },
+    "minimal":  { "slotlar": ["kahvalti", "aksam"] },
+    "yogun":    { "slotlar": ["kahvalti", "ara_ogun_1", "ogle", "ara_ogun_2", "aksam"] },
+    "esnek":    { "slotlar": ["ana_ogun_1", "ana_ogun_2", "ara_ogun"] }
+  },
+
+  "dis_kaynak_import_formati": {
+    "description": "Dış kaynaklardan (web scraping, API, manuel) tarif eklerken kullanılacak format",
+    "instructions": [
+      "Her tarif tarif_sema formatına tam uymalı — tüm alanlar required",
+      "id: yemek adından slug üret (mercimek_corbasi, tavuk_sote gibi)",
+      "mutfaklar[0]: birincil mutfak — hangi Firestore doc'una yazılacağını belirler",
+      "alerjenler: malzeme listesine bakarak doldur (gluten → un/bulgur/makarna, sut → süt/yoğurt/peynir vb.)",
+      "diyetler: malzeme listesine bakarak doldur (et yoksa → vejetaryen, hayvansal yoksa → vegan vb.)",
+      "kalori: tahmini kişi başı kcal",
+      "malzemeler: her eleman '<miktar> <birim> <malzeme>' formatında",
+      "yapilis: her eleman kısa bir cümle, sıralı adımlar",
+      "Firestore'a yazarken: tarifler/{mutfaklar[0]} doc'unda recipes dizisine arrayUnion ile ekle"
+    ],
+    "example_import_batch": [
+      {
+        "id": "tavuk_sote",
+        "yemek_adi": "Tavuk Sote",
+        "ogun_tipi": "ana_yemek",
+        "mutfaklar": ["turk", "ev_yemekleri"],
+        "alerjenler": [],
+        "diyetler": ["kilo_verme", "yuksek_protein", "dusuk_karbonhidrat"],
+        "zorluk": "kolay",
+        "kalori": 280,
+        "malzemeler": ["500 g tavuk göğsü", "2 adet biber", "2 adet domates", "1 adet soğan", "2 yk zeytinyağı", "tuz, karabiber"],
+        "yapilis": ["Tavuğu kuşbaşı doğrayın.", "Zeytinyağında kavurun.", "Sebzeleri ekleyin.", "15 dk pişirin."],
+        "hazirlanma_suresi_dk": 10,
+        "pisirme_suresi_dk": 20,
+        "toplam_sure_dk": 30,
+        "kisi_sayisi": 4
+      },
+      {
+        "id": "caesar_salata",
+        "yemek_adi": "Caesar Salata",
+        "ogun_tipi": "salata_meze",
+        "mutfaklar": ["dunya", "salata", "fit"],
+        "alerjenler": ["gluten", "sut", "yumurta"],
+        "diyetler": ["kilo_verme"],
+        "zorluk": "kolay",
+        "kalori": 220,
+        "malzemeler": ["1 bağ marul", "50 g parmesan", "2 dilim ekmek", "1 yk zeytinyağı", "1 yk limon suyu", "1 diş sarımsak"],
+        "yapilis": ["Ekmeği küp küp kesip kızartın.", "Marulu yıkayıp doğrayın.", "Sosu hazırlayın.", "Birleştirip servis edin."],
+        "hazirlanma_suresi_dk": 15,
+        "pisirme_suresi_dk": 0,
+        "toplam_sure_dk": 15,
+        "kisi_sayisi": 2
+      }
+    ]
+  }
+}

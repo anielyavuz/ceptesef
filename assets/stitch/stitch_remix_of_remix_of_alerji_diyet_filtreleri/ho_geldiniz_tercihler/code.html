@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f4fbf6;
+            color: #161d1a;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .editorial-shadow {
+            box-shadow: 0px 12px 32px rgba(22, 29, 26, 0.06);
+        }
+        .glass-header {
+            background: rgba(244, 251, 246, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, #026b1e 0%, #2b8535 100%);
+        }
+        .asymmetric-grid-item:nth-child(even) {
+            margin-top: 1.5rem;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "on-secondary-container": "#672c00",
+                "surface-tint": "#076e21",
+                "on-primary-container": "#f7fff1",
+                "primary-fixed-dim": "#80db7f",
+                "on-error-container": "#93000a",
+                "background": "#f4fbf6",
+                "surface": "#f4fbf6",
+                "on-primary": "#ffffff",
+                "on-tertiary-container": "#f3fffd",
+                "surface-bright": "#f4fbf6",
+                "on-secondary": "#ffffff",
+                "error": "#ba1a1a",
+                "on-surface-variant": "#3f493d",
+                "primary-container": "#2b8535",
+                "tertiary-fixed": "#c7e9e6",
+                "tertiary": "#43625f",
+                "inverse-on-surface": "#ecf2ed",
+                "on-error": "#ffffff",
+                "surface-container-high": "#e3eae5",
+                "primary-fixed": "#9bf899",
+                "tertiary-container": "#5b7a78",
+                "surface-variant": "#dde4df",
+                "secondary-fixed": "#ffdbc9",
+                "error-container": "#ffdad6",
+                "surface-container-highest": "#dde4df",
+                "on-tertiary-fixed-variant": "#2d4c4a",
+                "surface-container": "#e9f0ea",
+                "surface-container-low": "#eff5f0",
+                "on-surface": "#161d1a",
+                "tertiary-fixed-dim": "#accdca",
+                "outline": "#6f7a6c",
+                "on-tertiary-fixed": "#00201e",
+                "secondary-container": "#fc8a40",
+                "outline-variant": "#bfcab9",
+                "on-background": "#161d1a",
+                "primary": "#026b1e",
+                "secondary": "#9b4500",
+                "surface-container-lowest": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "secondary-fixed-dim": "#ffb68d",
+                "on-secondary-fixed": "#331200",
+                "surface-dim": "#d5dcd7",
+                "inverse-primary": "#80db7f",
+                "inverse-surface": "#2b322f",
+                "on-primary-fixed": "#002204",
+                "on-primary-fixed-variant": "#005315",
+                "on-secondary-fixed-variant": "#763300"
+              },
+              fontFamily: {
+                "headline": ["Plus Jakarta Sans"],
+                "body": ["Plus Jakarta Sans"],
+                "label": ["Plus Jakarta Sans"]
+              },
+              borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+<!-- Top Navigation (Shell Component) -->
+<header class="glass-header sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="text-title-lg font-bold">Meal Planner</h1>
+</div>
+<div class="w-10"></div> <!-- Spacer for balance -->
+</header>
+<!-- Progress Indicator (Shared Component) -->
+<div class="px-8 mt-6">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-label-md font-medium text-on-surface-variant">Onboarding Progress</span>
+<span class="text-label-md font-bold text-primary">25%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full gradient-primary w-1/4 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Main Content (Canvas) -->
+<main class="flex-grow px-8 pt-10 pb-32">
+<section class="max-w-2xl mx-auto">
+<div class="mb-12">
+<h2 class="text-display-md font-extrabold text-on-surface leading-tight tracking-tight">
+                    Neleri seversiniz?
+                </h2>
+<p class="text-body-lg text-on-surface-variant mt-3 max-w-sm">
+                    Size özel bir plan hazırlayabilmemiz için favori mutfaklarınızı seçin.
+                </p>
+</div>
+<!-- Asymmetric Bento-style Grid -->
+<div class="grid grid-cols-2 gap-6 items-start">
+<!-- Category Card: Türk Mutfağı -->
+<div class="asymmetric-grid-item group cursor-pointer">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest h-64 transition-transform hover:scale-[1.02] editorial-shadow">
+<img alt="Turkish Food" class="absolute inset-0 w-full h-full object-cover" data-alt="Traditional Turkish appetizers and kebabs layout" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsVQNaAZGithDVKRUZBy4DzP722wHZ92V_4cZW0xlPzcvSlE9X3w2Az2-dfpGUjZLWKUrLRHfO_UWwaFi9ks9j3lWFPprpg7C3WQbrS8IWZhjlp8I8LdSuS7eP_9WkWYtzX-AOe1UaP_Rn8DoAWuu9dfg7p7y2J-uuprthY5IA-Z_FDhIpmUIwbzJVLig4VhGDYX9y7euAP7GfMCXC_YkoHR4SSWbfG8ZHjPpv4zmSGqUunLNi5wM8R9LSjcxopQhf8MgTeGF2M_E"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<span class="text-white font-bold text-title-lg">Türk Mutfağı</span>
+<div class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/30">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Category Card: Akdeniz -->
+<div class="asymmetric-grid-item group cursor-pointer">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest h-52 transition-transform hover:scale-[1.02] editorial-shadow">
+<img alt="Mediterranean" class="absolute inset-0 w-full h-full object-cover" data-alt="Fresh Mediterranean salad with olives and feta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOQlMHGyXEwVS39Pj8HUruI1bWzNxDajZ0xZXS2B-cIWSQ1jB4nMIetivAnSyjPHtiFARY-fH6zS8IkHd2CzsNBbNQ4p-YBJKd8C9q8eJcFRSlKpCyTk5xu1h0Vnv-Tosa0i91aqBmxYLdWcEKWzrOKqHqYQ3waK0gGWfZZXNkbYrLu9aupxGHYC5AhaptWjWjXCrOJ0RGvuOHHOybOICzl2nMnWjWRSyJ9Jlm-sx1yy7Y8Ns2vPVNUxSSIEN3G0-uOE_QBBMcJyg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 text-white font-bold text-title-lg">Akdeniz</div>
+</div>
+</div>
+<!-- Category Card: Diyet Yemekleri -->
+<div class="asymmetric-grid-item group cursor-pointer">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest h-52 transition-transform hover:scale-[1.02] editorial-shadow">
+<img alt="Diet Food" class="absolute inset-0 w-full h-full object-cover" data-alt="Healthy bowl with quinoa and vegetables" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpSfwD7NicdMkIGAJ6QIy4lA2TIfdF65KQL5VjKXPPG1fyCif2W3sArFn02wMdXb-6ugyRiVidl3ldm3FrzrIp2hDPl3AASXao7205ELB60R6yrI2n_mJZmVmUlEqqscRFkekSKRvqFFuaAGtMk4gmbPpprGjjXKky-UNWbVZvd3PEbBFgSKthtZMd5r9aZBFG9TC3I1H2wTu-NS9PUDtW22wE-5hwZaXYNJTEySGC9xEOEK1JIlxftJDKSazXdnfI-KZX99uoIBc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+<span class="text-white font-bold text-title-lg">Diyet Yemekleri</span>
+<div class="bg-tertiary-container px-2 py-1 rounded text-[10px] text-on-tertiary-container font-bold uppercase tracking-wider">Popüler</div>
+</div>
+</div>
+</div>
+<!-- Category Card: Tatlılar -->
+<div class="asymmetric-grid-item group cursor-pointer">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest h-64 transition-transform hover:scale-[1.02] editorial-shadow">
+<img alt="Desserts" class="absolute inset-0 w-full h-full object-cover" data-alt="Gourmet dessert with berries and cream" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpQ5vAa_e94r-FNvuWgp3NMRkJDUnwuCIFZHUMvSkKJGKRdOWkZ4PQfIDFgWPDj6MKlzLnRdnLJ58CtHQol2CnpBEKgDO15KDaqIrxvx6omeKb8lF7YP_0F0lgs9BB4jIyGJgxETef4IS94DwD5FcF__UbaicveuR1rz0_1k3IWLZwQxoy3hi1Qj2nxXYVLar4q_IZNv4wZiEe-BFuXpWnFCpKs_mULE2OJLtZGkB7ipQoICpJWZ4u5Q2YhbkI9ZcISDeF4OaulSE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 text-white font-bold text-title-lg">Tatlılar</div>
+</div>
+</div>
+<!-- Full Width Card: Deniz Ürünleri -->
+<div class="col-span-2 group cursor-pointer">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-lowest h-40 transition-transform hover:scale-[1.01] editorial-shadow">
+<img alt="Seafood" class="absolute inset-0 w-full h-full object-cover" data-alt="Grilled salmon with lemon and herbs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCsi7TArCIa0kMUU14lj99-7MOFHqdJU4W5Dr7ZlBkH3zISuxOJWEEoNzFfNyilMqvc_iDXtT8Tj78rrATn_DFWGJqjMLH5y_GY1Aigdhke2TT6mjbFha2wKa4dOkSUBdemGGN1HheV-VkKjDvWTEVG1sB3GNiVLYX0ibzbD7XSUkWzcJPuABgFDJPogFcdyY3enW0yXrK9rdw8PtO0VWy4TSV4vtCK2uR0LJ40C38oI4QWjKbarlL24hppOqrCZkDmp4ATOaWTLM"/>
+<div class="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
+<div class="absolute left-6 top-1/2 -translate-y-1/2">
+<h3 class="text-white font-bold text-headline-sm">Deniz Ürünleri</h3>
+<p class="text-white/80 text-body-sm">Haftalık taze seçenekler</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Action Area -->
+<div class="fixed bottom-0 left-0 right-0 p-8 glass-header">
+<div class="max-w-2xl mx-auto flex flex-col items-center">
+<button class="w-full gradient-primary text-on-primary py-5 rounded-full font-bold text-lg editorial-shadow transition-all active:scale-95 flex items-center justify-center gap-2">
+                Devam Et
+                <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Hidden Bottom Nav Bar (Exclusion Protocol: Linear Process) -->
+<!-- The BottomNavBar is hidden for this focus-heavy onboarding task -->
+</body></html>

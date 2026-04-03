@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zest &amp; Bloom Style Guide</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            zestPrimary: '#48A14D',
+            zestSecondary: '#FFB84D',
+            zestAccent: '#F26D5B',
+            zestCharcoal: '#1A1A1A',
+            zestGray: '#F5F5F5',
+            zestMuted: '#94A3B8',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-typography">
+    body {
+      background-color: #FFFFFF;
+      color: #1A1A1A;
+      -webkit-font-smoothing: antialiased;
+    }
+    .color-card {
+      transition: transform 0.2s ease-in-out;
+    }
+    .color-card:hover {
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+<body class="font-sans">
+<!-- BEGIN: StyleGuideHeader -->
+<header class="px-6 py-12 lg:px-12 border-b border-gray-100">
+<div class="max-w-7xl mx-auto">
+<span class="text-zestPrimary font-bold tracking-widest text-xs uppercase mb-2 block">Visual Identity</span>
+<h1 class="text-4xl lg:text-6xl font-extrabold tracking-tight text-zestCharcoal">Zest &amp; Bloom</h1>
+<p class="mt-4 text-zestMuted text-lg max-w-2xl leading-relaxed">
+        A premium design language for high-end food planning, emphasizing freshness, health, and modern editorial aesthetics.
+      </p>
+</div>
+</header>
+<!-- END: StyleGuideHeader -->
+<main class="max-w-7xl mx-auto px-6 py-12 lg:px-12">
+<!-- BEGIN: PrimaryColorSection -->
+<section class="mb-20" data-purpose="primary-color-display">
+<h2 class="text-sm font-bold uppercase tracking-widest text-zestMuted mb-8">01. Primary Signature</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+<div class="group relative">
+<div class="h-64 w-full bg-zestPrimary rounded-2xl shadow-xl flex items-end p-8">
+<div class="text-white">
+<p class="text-sm font-medium opacity-80 mb-1 uppercase tracking-wide">Brand Green</p>
+<p class="text-3xl font-bold">#48A14D</p>
+</div>
+</div>
+<!-- Label for accessibility or export -->
+<div class="mt-4 flex justify-between items-center px-2">
+<span class="font-bold text-zestCharcoal">Forest Zest</span>
+<span class="text-xs text-zestMuted">Used for CTA, Branding, Navigation</span>
+</div>
+</div>
+<div class="space-y-6">
+<p class="text-xl text-zestCharcoal font-medium leading-snug">
+            The core of our identity. Inspired by fresh kale, herbs, and the vitality of organic produce.
+          </p>
+<div class="grid grid-cols-3 gap-4">
+<div class="h-16 bg-zestPrimary/10 rounded-lg border border-zestPrimary/20"></div>
+<div class="h-16 bg-zestPrimary/40 rounded-lg"></div>
+<div class="h-16 bg-zestPrimary/70 rounded-lg"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: PrimaryColorSection -->
+<!-- BEGIN: ColorPaletteGrid -->
+<section class="mb-20" data-purpose="palette-grid">
+<h2 class="text-sm font-bold uppercase tracking-widest text-zestMuted mb-8">02. Color Palette</h2>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Secondary Orange -->
+<div class="color-card" data-purpose="color-swatch">
+<div class="aspect-square bg-zestSecondary rounded-2xl mb-4 shadow-sm"></div>
+<h3 class="font-bold text-zestCharcoal">Harvest Amber</h3>
+<p class="text-xs font-mono text-zestMuted">#FFB84D</p>
+</div>
+<!-- Secondary Coral -->
+<div class="color-card" data-purpose="color-swatch">
+<div class="aspect-square bg-zestAccent rounded-2xl mb-4 shadow-sm"></div>
+<h3 class="font-bold text-zestCharcoal">Wild Peach</h3>
+<p class="text-xs font-mono text-zestMuted">#F26D5B</p>
+</div>
+<!-- Deep Charcoal -->
+<div class="color-card" data-purpose="color-swatch">
+<div class="aspect-square bg-zestCharcoal rounded-2xl mb-4 shadow-sm"></div>
+<h3 class="font-bold text-zestCharcoal">Midnight Basil</h3>
+<p class="text-xs font-mono text-zestMuted">#1A1A1A</p>
+</div>
+<!-- Light Neutral -->
+<div class="color-card" data-purpose="color-swatch">
+<div class="aspect-square bg-zestGray rounded-2xl mb-4 shadow-sm border border-gray-100"></div>
+<h3 class="font-bold text-zestCharcoal">Linen Cloud</h3>
+<p class="text-xs font-mono text-zestMuted">#F5F5F5</p>
+</div>
+</div>
+</section>
+<!-- END: ColorPaletteGrid -->
+<!-- BEGIN: TypographySection -->
+<section class="mb-20" data-purpose="typography-spec">
+<div class="border-t border-gray-100 pt-12">
+<h2 class="text-sm font-bold uppercase tracking-widest text-zestMuted mb-8">03. Typography</h2>
+<div class="space-y-12">
+<!-- Large Sample -->
+<div class="pb-8 border-b border-gray-50">
+<div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+<h3 class="text-7xl font-extrabold text-zestCharcoal leading-none">Aa</h3>
+<div class="text-right">
+<p class="text-lg font-bold">Plus Jakarta Sans</p>
+<p class="text-sm text-zestMuted">Geometric Sans-Serif</p>
+</div>
+</div>
+</div>
+<!-- Type Scale -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<div class="space-y-8">
+<div data-purpose="type-example">
+<p class="text-xs text-zestMuted mb-2">Heading 1 / Bold</p>
+<h1 class="text-5xl font-extrabold text-zestCharcoal">Fresh Seasonal Meals</h1>
+</div>
+<div data-purpose="type-example">
+<p class="text-xs text-zestMuted mb-2">Heading 2 / Semibold</p>
+<h2 class="text-3xl font-semibold text-zestCharcoal">Your Weekly Planner</h2>
+</div>
+<div data-purpose="type-example">
+<p class="text-xs text-zestMuted mb-2">Heading 3 / Medium</p>
+<h3 class="text-xl font-medium text-zestCharcoal">Discover new flavors daily.</h3>
+</div>
+</div>
+<div class="space-y-8">
+<div data-purpose="type-example">
+<p class="text-xs text-zestMuted mb-2">Body Text / Regular</p>
+<p class="text-base text-gray-600 leading-relaxed">
+                  Zest &amp; Bloom helps you organize your culinary life with elegance. Our curated recipes are designed to bring the joy of cooking back to your kitchen through simple, wholesome ingredients and expert guidance.
+                </p>
+</div>
+<div data-purpose="type-example">
+<p class="text-xs text-zestMuted mb-2">Caption / Semibold</p>
+<p class="text-xs font-semibold uppercase tracking-widest text-zestPrimary">Recommended for you</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: TypographySection -->
+<!-- BEGIN: UIComponentsPreview -->
+<section class="mb-20" data-purpose="ui-elements">
+<h2 class="text-sm font-bold uppercase tracking-widest text-zestMuted mb-8">04. Interface Elements</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Buttons -->
+<div class="p-8 bg-gray-50 rounded-2xl flex flex-col gap-4 items-center justify-center">
+<button class="w-full py-3 px-6 bg-zestPrimary text-white font-bold rounded-full shadow-lg shadow-zestPrimary/20 hover:bg-opacity-90 transition-all">
+            Primary Action
+          </button>
+<button class="w-full py-3 px-6 border-2 border-zestCharcoal text-zestCharcoal font-bold rounded-full hover:bg-zestCharcoal hover:text-white transition-all">
+            Secondary
+          </button>
+</div>
+<!-- Card Style -->
+<div class="p-4 bg-white border border-gray-100 rounded-3xl shadow-sm">
+<div class="w-full aspect-[4/3] bg-zestGray rounded-2xl mb-4 flex items-center justify-center">
+<svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+</div>
+<div class="px-2">
+<span class="text-[10px] font-bold text-zestSecondary uppercase tracking-widest">Easy Prep</span>
+<h4 class="text-lg font-bold text-zestCharcoal">Spring Salad</h4>
+</div>
+</div>
+<!-- Input Field -->
+<div class="p-8 bg-gray-50 rounded-2xl flex flex-col justify-center">
+<label class="block text-xs font-bold text-zestMuted uppercase mb-2 ml-1">Newsletter</label>
+<input class="w-full px-4 py-3 rounded-xl border-gray-200 focus:ring-zestPrimary focus:border-zestPrimary" placeholder="hello@zestbloom.com" type="email"/>
+</div>
+</div>
+</section>
+<!-- END: UIComponentsPreview -->
+</main>
+<!-- BEGIN: Footer -->
+<footer class="bg-zestCharcoal py-16 px-6 lg:px-12 text-center text-white">
+<div class="max-w-7xl mx-auto">
+<p class="text-zestPrimary font-bold text-2xl mb-2">Z&amp;B</p>
+<p class="text-gray-500 text-sm">© 2024 Zest &amp; Bloom Food App. Design System v1.0</p>
+</div>
+</footer>
+<!-- END: Footer -->
+</body></html>
