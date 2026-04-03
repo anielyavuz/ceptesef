@@ -930,7 +930,7 @@ class HomeScreenState extends State<HomeScreen> {
           ),
           IconButton(
             onPressed: _showScanRecipeSheet,
-            icon: const Icon(Icons.photo_camera_rounded),
+            icon: const Icon(Icons.document_scanner_rounded),
             style: IconButton.styleFrom(
               foregroundColor: AppColors.primary,
             ),
