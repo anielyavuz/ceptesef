@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'remote_logger_service.dart';
+import 'slack_notification_service.dart';
 
 
 /// Firebase Authentication servisi
@@ -53,7 +54,7 @@ class AuthService {
         userId: result.user?.uid ?? '',
         email: email,
       );
-      // TODO: Firebase Cloud Functions ile bildirim entegrasyonu yapılacak
+      SlackNotificationService.notifyNewUser(email: email);
       return result;
     } catch (e) {
       RemoteLoggerService.error('register_failed', screen: 'auth',
@@ -84,8 +85,9 @@ class AuthService {
   Future<void> deleteAccount() async {
     final user = _auth.currentUser;
     if (user == null) return;
+    final email = user.email ?? 'unknown';
     RemoteLoggerService.authEvent('account_deleted');
-    // TODO: Firebase Cloud Functions ile bildirim entegrasyonu yapılacak
+    SlackNotificationService.notifyAccountDeleted(email: email);
     RemoteLoggerService.clearContext();
     await user.delete();
   }

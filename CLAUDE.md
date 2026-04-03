@@ -154,9 +154,14 @@ lib/
 - Python test scripti: `admin/test_notification.py` (data-only + APNS alert)
 - **ÖNEMLİ:** Android'de notification payload'lu mesajlar foreground'da onMessage'a DÜŞMEZ, her zaman data-only kullan
 
-## Slack Bildirim Sistemi (Kaldırıldı — Firebase'e taşınacak)
-- Eski `SlackNotificationService` kaldırıldı
-- Yeni kullanıcı kayıt ve hesap silme bildirimleri Firebase Cloud Functions ile yapılacak
+## Slack Bildirim Sistemi
+- `SlackNotificationService` — Slack webhook ile fire-and-forget bildirim gönderir
+- Webhook URL Firestore `system/general` dokümanındaki `slackInfoURL` alanından alınır (lazy, bir kez)
+- Bağımlılık: `http` paketi
+- **Mevcut bildirimler:**
+  - `notifyNewUser()` — Yeni kullanıcı kayıt olduğunda
+  - `notifyAccountDeleted()` — Kullanıcı hesabını sildiğinde
+- **Yeni bildirim eklemek için:** `SlackNotificationService`'e statik metod ekle, ilgili yerden çağır
 
 ## Firestore Yapısı
 - `system/general` — Uygulama konfigürasyonu (geminiApiKey, modelName)
