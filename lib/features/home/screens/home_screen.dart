@@ -645,12 +645,8 @@ class HomeScreenState extends State<HomeScreen> {
 
   /// Plan verilerini Firestore'dan yeniden yükler (dışarıdan erişilebilir)
   Future<void> refreshMealPlan() async {
-    if (_viewMode == 0) {
-      await _loadMealPlan();
-      await _loadNextWeekPlan();
-    } else {
-      await _loadDailyPlan();
-    }
+    await _loadMealPlan();
+    await _loadNextWeekPlan();
   }
 
   Future<void> _loadMealPlan() async {
@@ -896,11 +892,8 @@ class HomeScreenState extends State<HomeScreen> {
                     slivers: [
                       // Header + bildirim
                       SliverToBoxAdapter(child: _buildHeader(l10n)),
-                      // Mod seçici
-                      SliverToBoxAdapter(child: _buildModeToggle(l10n)),
                       // İçerik
-                      if (_viewMode == 0) ..._buildWeeklyContent(l10n),
-                      if (_viewMode == 1) ..._buildDailyContent(l10n),
+                      ..._buildWeeklyContent(l10n),
                     ],
                   ),
           ),
@@ -910,7 +903,6 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHeader(AppLocalizations l10n) {
-    final isWeekly = _viewMode == 0;
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 12, 0),
       child: Row(
@@ -920,7 +912,7 @@ class HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isWeekly ? l10n.homeWeeklyPlan : l10n.homeDailyTitle,
+                  l10n.homeWeeklyPlan,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.w800,
                         color: AppColors.charcoal,
@@ -928,9 +920,7 @@ class HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  isWeekly
-                      ? l10n.homeWeeklyPlanSubtitle
-                      : l10n.homeDailySubtitle,
+                  l10n.homeWeeklyPlanSubtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.charcoal.withValues(alpha: 0.5),
                       ),
@@ -940,7 +930,7 @@ class HomeScreenState extends State<HomeScreen> {
           ),
           IconButton(
             onPressed: _showScanRecipeSheet,
-            icon: const Icon(Icons.photo_camera_rounded),
+            icon: const Icon(Icons.document_scanner_rounded),
             style: IconButton.styleFrom(
               foregroundColor: AppColors.primary,
             ),
@@ -1854,7 +1844,7 @@ class HomeScreenState extends State<HomeScreen> {
     final daysFromMonday = (today.weekday - DateTime.monday) % 7;
     final thisMonday = today.subtract(Duration(days: daysFromMonday));
 
-    final showEditButton = _viewMode == 0 &&
+    final showEditButton =
         _mealPlan != null &&
         !_isPlanExpired &&
         !_isNextWeekDate(_selectedDateStr) &&
