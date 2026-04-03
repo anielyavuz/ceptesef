@@ -208,15 +208,20 @@ Tüm renkler `lib/core/theme/app_colors.dart` içinde tanımlıdır. Yeni renk e
 - Servisler Provider ile sağlanır, `context.read<Service>()` ile erişilir
 
 ## Geliştirme Akışı (Claude Code Mobile → PC Test)
+
+> **KRİTİK KURAL: `main` branch'e doğrudan commit veya push YASAKTIR.**
+> Kullanıcı dahil hiç kimse main'e doğrudan push yapmamalı.
+> Tüm değişiklikler yeni branch + PR üzerinden yapılır.
+> Bu kural Claude Code mobil, masaüstü ve tüm ortamlar için geçerlidir.
+
 - **GitHub Repo:** `anielyavuz/ceptesef` (main branch korunur)
 - **Bug fix / yeni özellik** Claude Code mobil üzerinden yapılır
-- Claude Code değişiklikleri **yeni branch** üzerine commit eder (asla doğrudan main'e push etme)
+- Claude Code değişiklikleri **yeni branch** üzerine commit eder
 - Branch isimlendirme: `fix/kisa-aciklama` veya `feature/kisa-aciklama`
 - Değişiklik tamamlanınca **PR açılır** (main'e doğru)
 - Kullanıcı PC'de `git pull` + branch checkout yapıp test eder
 - Test başarılıysa kullanıcı PR'ı merge eder
-- **ÖNEMLİ:** `main` branch'e doğrudan push YASAKTIR — her değişiklik branch + PR üzerinden geçmeli
-- **ÖNEMLİ:** PR açarken `flutter analyze` çalıştır, hata varsa önce düzelt
+- PR açarken `flutter analyze` çalıştır, hata varsa önce düzelt
 
 ### PR Açıklama Formatı (Zorunlu)
 PR açarken aşağıdaki formatta açıklama yaz. Kullanıcı PC'de test ederken bu listeyi takip edecek:
