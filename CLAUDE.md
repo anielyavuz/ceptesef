@@ -218,6 +218,31 @@ Tüm renkler `lib/core/theme/app_colors.dart` içinde tanımlıdır. Yeni renk e
 - **ÖNEMLİ:** `main` branch'e doğrudan push YASAKTIR — her değişiklik branch + PR üzerinden geçmeli
 - **ÖNEMLİ:** PR açarken `flutter analyze` çalıştır, hata varsa önce düzelt
 
+### PR Açıklama Formatı (Zorunlu)
+PR açarken aşağıdaki formatta açıklama yaz. Kullanıcı PC'de test ederken bu listeyi takip edecek:
+
+```
+## Ne Değişti
+- [kısa özet — hangi sorun çözüldü veya ne eklendi]
+
+## Değişen Dosyalar
+- `lib/features/.../xxx.dart` — ne değişti (ör: yeni buton eklendi, null check düzeltildi)
+- `lib/core/.../yyy.dart` — ne değişti
+
+## Test Adımları
+1. [ ] Uygulamayı aç
+2. [ ] Şu ekrana git → şunu yap → beklenen sonuç
+3. [ ] Edge case: şunu dene → crash olmamalı
+4. [ ] (varsa) Farklı dilde test et (TR/EN)
+
+## Etkilenen Ekranlar
+- HomeScreen, RecipeDetailScreen, ...
+
+## Risk / Dikkat Edilecekler
+- (varsa) Bu değişiklik X'i etkileyebilir, Y'yi de kontrol et
+- (yoksa) Düşük riskli, izole değişiklik
+```
+
 ## Lottie Animasyonları
 Lottie animasyonları `assets/animations/lottie/` altında bulunur.
 - `loading.json` — Bekleme/yükleme ekranlarında kullanılacak loading animasyonu
