@@ -133,10 +133,11 @@ class _MealPlanGenerationScreenState extends State<MealPlanGenerationScreen> {
 
       if (indices != null && indices.isNotEmpty) {
         // Seçili günler var — doğru tarih/isimleri hesapla
+        // DaySelectionSheet indeksleri bugünün haftasının Pazartesi'sine göre (0=Pzt, 6=Paz, 7=sonraki Pzt...)
         const gunAdlari = ['Pazartesi', 'Sali', 'Carsamba', 'Persembe', 'Cuma', 'Cumartesi', 'Pazar'];
-        final refDate = widget.startDate ?? DateTime.now();
-        final daysFromMon = (refDate.weekday - DateTime.monday) % 7;
-        final monday = refDate.subtract(Duration(days: daysFromMon));
+        final today = DateTime.now();
+        final daysFromMon = (today.weekday - DateTime.monday) % 7;
+        final monday = DateTime(today.year, today.month, today.day).subtract(Duration(days: daysFromMon));
         final weekStart = '${monday.year}-${monday.month.toString().padLeft(2, '0')}-${monday.day.toString().padLeft(2, '0')}';
 
         // Mevcut planı 7 (veya 14) günlük şablona genişlet
