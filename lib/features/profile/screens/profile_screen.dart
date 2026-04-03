@@ -536,7 +536,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .textTheme
                                   .bodySmall
                                   ?.copyWith(
-                                    color: Colors.blue
+                                    color: AppColors.primary
                                         .withValues(alpha: 0.7),
                                   ),
                             ),
