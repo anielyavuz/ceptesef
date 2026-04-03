@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../core/theme/app_colors.dart';
@@ -6,6 +7,7 @@ import '../../../core/models/meal_plan.dart';
 import '../../../core/models/user_preferences.dart';
 import '../../../core/services/firestore_service.dart';
 import '../../../core/services/gemini_service.dart';
+import '../../../core/services/groq_service.dart';
 import '../../../core/services/remote_logger_service.dart';
 import '../../auth/auth_wrapper.dart';
 import '../../home/screens/home_screen.dart';
@@ -254,13 +256,31 @@ class _MealPlanPreviewScreenState extends State<MealPlanPreviewScreen>
         }
       }
 
+      final groqService = context.read<GroqService>();
       final geminiService = context.read<GeminiService>();
-      final newDay = await geminiService.regenerateDay(
-        widget.preferences,
-        currentDay,
-        otherRecipeNames,
-        customInstruction: customInstruction,
-      );
+
+      MealDay newDay;
+      try {
+        // Önce Groq dene (hızlı)
+        newDay = await groqService.regenerateDay(
+          widget.preferences,
+          currentDay,
+          otherRecipeNames,
+          customInstruction: customInstruction,
+        );
+        RemoteLoggerService.info('regenerate_day_groq_success',
+            screen: 'meal_plan_preview');
+      } on GroqApiException {
+        // Groq başarısız → Gemini fallback
+        RemoteLoggerService.info('regenerate_day_groq_fallback_to_gemini',
+            screen: 'meal_plan_preview');
+        newDay = await geminiService.regenerateDay(
+          widget.preferences,
+          currentDay,
+          otherRecipeNames,
+          customInstruction: customInstruction,
+        );
+      }
 
       RemoteLoggerService.userAction(
         'meal_plan_day_regenerated',
@@ -415,7 +435,11 @@ class _MealPlanPreviewScreenState extends State<MealPlanPreviewScreen>
         }
       }
 
-      final slotLabel = _slotLabel(slotKey, AppLocalizations.of(context));
+      final l10n = AppLocalizations.of(context);
+      final groqSvc = context.read<GroqService>();
+      final geminiSvc = context.read<GeminiService>();
+
+      final slotLabel = _slotLabel(slotKey, l10n);
       final request = StringBuffer();
       request.write('$slotLabel için "${currentRecipe.yemekAdi}" yerine farklı bir tarif öner.');
       request.write(' Şu tarifleri önerme (zaten planda var): ${otherNames.join(", ")}.');
@@ -423,11 +447,22 @@ class _MealPlanPreviewScreenState extends State<MealPlanPreviewScreen>
         request.write(' Kullanıcı isteği: $customInstruction');
       }
 
-      final geminiService = context.read<GeminiService>();
-      final newRecipe = await geminiService.suggestRecipe(
-        userRequest: request.toString(),
-        preferences: widget.preferences,
-      );
+      Recipe newRecipe;
+      try {
+        newRecipe = await groqSvc.suggestRecipe(
+          userRequest: request.toString(),
+          preferences: widget.preferences,
+        );
+        RemoteLoggerService.info('suggest_recipe_groq_success',
+            screen: 'meal_plan_preview');
+      } on GroqApiException {
+        RemoteLoggerService.info('suggest_recipe_groq_fallback_to_gemini',
+            screen: 'meal_plan_preview');
+        newRecipe = await geminiSvc.suggestRecipe(
+          userRequest: request.toString(),
+          preferences: widget.preferences,
+        );
+      }
 
       RemoteLoggerService.userAction(
         'recipe_changed_in_preview',
@@ -538,6 +573,15 @@ class _MealPlanPreviewScreenState extends State<MealPlanPreviewScreen>
         backgroundColor: AppColors.surface,
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Icons.close_rounded),
+          tooltip: l10n.cancel,
+          style: IconButton.styleFrom(
+            foregroundColor: AppColors.charcoal,
+          ),
+        ),
         title: Text(
           l10n.mealPlanPreviewTitle,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -590,6 +634,7 @@ class _MealPlanPreviewScreenState extends State<MealPlanPreviewScreen>
                 final day = entry.value;
                 final isAffected = widget.affectedDayIndices == null ||
                     widget.affectedDayIndices!.contains(idx);
+                final isRegenerating = _regeneratingDay == idx;
                 final label = _shortDayName(day.gunAdi);
                 return Tab(
                   child: Row(
@@ -606,6 +651,33 @@ class _MealPlanPreviewScreenState extends State<MealPlanPreviewScreen>
                         ),
                       ],
                       Text(label),
+                      if (!isRegenerating) ...[
+                        const SizedBox(width: 4),
+                        GestureDetector(
+                          onTap: () => _showRegenerateSheet(idx),
+                          child: Icon(
+                            Icons.refresh_rounded,
+                            size: 14,
+                            color: _tabController.index == idx
+                                ? Colors.white.withValues(alpha: 0.7)
+                                : AppColors.primary.withValues(alpha: 0.5),
+                          ),
+                        ),
+                      ],
+                      if (isRegenerating) ...[
+                        const SizedBox(width: 4),
+                        SizedBox(
+                          width: 12, height: 12,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1.5,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              _tabController.index == idx
+                                  ? Colors.white
+                                  : AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 );
@@ -687,39 +759,12 @@ class _MealPlanPreviewScreenState extends State<MealPlanPreviewScreen>
     final slots = day.ogunler.entries.toList();
     final isRegenerating = _regeneratingDay == dayIndex;
 
-    return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-      itemCount: slots.length + 1, // +1 for regenerate button at end
-      itemBuilder: (context, index) {
-        // Son eleman: yenile butonu
-        if (index == slots.length) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Center(
-              child: TextButton.icon(
-                onPressed: isRegenerating
-                    ? null
-                    : () => _showRegenerateSheet(dayIndex),
-                icon: isRegenerating
-                    ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.refresh_rounded, size: 18),
-                label: Text(
-                  isRegenerating
-                      ? l10n.loading
-                      : l10n.mealPlanRegenerate,
-                ),
-                style: TextButton.styleFrom(
-                  foregroundColor: AppColors.primary,
-                ),
-              ),
-            ),
-          );
-        }
-
+    return Stack(
+      children: [
+        ListView.builder(
+          padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+          itemCount: slots.length,
+          itemBuilder: (context, index) {
         final slot = slots[index];
         final recipes = slot.value;
         final slotName = _slotLabel(slot.key, l10n);
@@ -909,6 +954,35 @@ class _MealPlanPreviewScreenState extends State<MealPlanPreviewScreen>
           ),
         );
       },
+        ),
+        // Lottie loading overlay
+        if (isRegenerating)
+          Positioned.fill(
+            child: Container(
+              color: Colors.white.withValues(alpha: 0.85),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset(
+                      'assets/animations/lottie/loading.json',
+                      width: 120,
+                      height: 120,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.loading,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 

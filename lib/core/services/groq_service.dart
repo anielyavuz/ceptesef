@@ -420,6 +420,164 @@ Yukarıdaki cache tariflerini tekrarlama, yeni ve farklı tarifler ekle.
     return 'kış';
   }
 
+  /// Belirli bir günün öğünlerini yeniden üretir (Gemini regenerateDay ile aynı format).
+  /// Rate limit (429) hatası alırsa GroqApiException fırlatır → caller fallback yapabilir.
+  Future<MealDay> regenerateDay(
+    UserPreferences preferences,
+    MealDay currentDay,
+    List<String> otherRecipeNames, {
+    String? customInstruction,
+  }) async {
+    await _ensureInitialized();
+
+    final systemPrompt =
+        await rootBundle.loadString('assets/gemini/system_prompt.md');
+
+    final userInput = _buildMealPlanInput(preferences);
+
+    final prompt = '''
+$userInput
+
+SADECE şu günü yeniden oluştur: ${currentDay.gunAdi} (${currentDay.gun})
+Öğün planı slotları: ${currentDay.ogunler.keys.join(', ')}
+
+Bu tarifler zaten planda var, TEKRARLAMA:
+${otherRecipeNames.join(', ')}
+${customInstruction != null ? '\nKULLANICI İSTEĞİ: $customInstruction\nBu isteği dikkate alarak tarif öner.\n' : ''}
+ÖNEMLİ: Her tarif için malzemeler listesi ve yapılış adımları ZORUNLU.
+Her tarif tam JSON formatında olmalı — şu alanların HEPSİ dolu olmalı:
+- "malzemeler": ["miktar birim malzeme", ...] — EN AZ 3 malzeme
+- "yapilis": ["Adım 1.", "Adım 2.", ...] — EN AZ 2 adım
+- "kalori": sayı (kişi başı)
+- "hazirlanma_suresi_dk", "pisirme_suresi_dk", "toplam_sure_dk": sayı
+- "kisi_sayisi": ${preferences.kisiSayisi}
+Yanıtını SADECE tek bir gün objesi olarak dön:
+{"gunler": [<tek gün objesi>]}
+''';
+
+    final messages = <Map<String, String>>[
+      {'role': 'system', 'content': systemPrompt},
+      {'role': 'user', 'content': prompt},
+    ];
+
+    final response = await http.post(
+      Uri.parse(_baseUrl),
+      headers: {
+        'Authorization': 'Bearer $_apiKey',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'model': _model,
+        'messages': messages,
+        'temperature': _temperature,
+        'max_tokens': 4096,
+        'response_format': {'type': 'json_object'},
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      RemoteLoggerService.error('groq_regenerate_day_error',
+        error: 'HTTP ${response.statusCode}',
+      );
+      throw GroqApiException(
+        'Groq API hatası: ${response.statusCode}',
+        statusCode: response.statusCode,
+      );
+    }
+
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    final choices = data['choices'] as List<dynamic>?;
+    if (choices == null || choices.isEmpty) {
+      throw Exception('Groq boş yanıt döndü');
+    }
+
+    final reply = choices[0]['message']['content'] as String? ?? '';
+    final map = GeminiService.safeJsonDecode(reply);
+    final gunler = map['gunler'] as List<dynamic>?;
+    if (gunler == null || gunler.isEmpty) {
+      throw Exception('Groq geçerli bir gün verisi döndürmedi');
+    }
+
+    return MealDay.fromMap(gunler.first as Map<String, dynamic>);
+  }
+
+  /// Tek bir tarif önerir (Gemini suggestRecipe ile aynı format).
+  /// Rate limit (429) hatası alırsa GroqApiException fırlatır → caller fallback yapabilir.
+  Future<Recipe> suggestRecipe({
+    required String userRequest,
+    required UserPreferences preferences,
+  }) async {
+    await _ensureInitialized();
+
+    final alerjenler = preferences.alerjenler
+        .map((a) => a.startsWith('custom:') ? a.replaceFirst('custom:', '') : a)
+        .toList();
+    final sevmedikleri = preferences.sevmedikleri
+        .map((s) => s.startsWith('custom:') ? s.replaceFirst('custom:', '') : s)
+        .toList();
+
+    final prompt = '''
+Kullanıcı şunu istiyor: "$userRequest"
+
+Tercihler:
+- Favori mutfaklar: ${preferences.mutfaklar.isNotEmpty ? preferences.mutfaklar.join(', ') : 'belirtilmemiş'}
+- Alerjiler (KULLANMA): ${alerjenler.isNotEmpty ? alerjenler.join(', ') : 'yok'}
+- Diyetler: ${preferences.diyetler.isNotEmpty ? preferences.diyetler.join(', ') : 'yok'}
+- Sevmedikleri: ${sevmedikleri.isNotEmpty ? sevmedikleri.join(', ') : 'yok'}
+- Kişi sayısı: ${preferences.kisiSayisi}
+
+SADECE 1 tarif öner. Tam tarif formatında dön.
+Tarif ${preferences.kisiSayisi} kişiyi doyuracak yeterlilikte olmalı.
+''';
+
+    final systemInstruction = 'Sen bir mutfak asistanısın. Kullanıcının isteğine göre TEK bir tarif öneriyorsun. '
+        'Yanıtını SADECE JSON olarak ver. Format: '
+        '{"id":"slug","yemek_adi":"Ad","ogun_tipi":"ana_yemek","mutfaklar":["turk"],'
+        '"alerjenler":[],"diyetler":[],"zorluk":"orta","kalori":350,'
+        '"malzemeler":["1 adet soğan"],"yapilis":["Doğrayın."],'
+        '"hazirlanma_suresi_dk":10,"pisirme_suresi_dk":20,"toplam_sure_dk":30,"kisi_sayisi":${preferences.kisiSayisi}}';
+
+    final messages = <Map<String, String>>[
+      {'role': 'system', 'content': systemInstruction},
+      {'role': 'user', 'content': prompt},
+    ];
+
+    final response = await http.post(
+      Uri.parse(_baseUrl),
+      headers: {
+        'Authorization': 'Bearer $_apiKey',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'model': _model,
+        'messages': messages,
+        'temperature': _temperature,
+        'max_tokens': 2048,
+        'response_format': {'type': 'json_object'},
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      RemoteLoggerService.error('groq_suggest_recipe_error',
+        error: 'HTTP ${response.statusCode}',
+      );
+      throw GroqApiException(
+        'Groq API hatası: ${response.statusCode}',
+        statusCode: response.statusCode,
+      );
+    }
+
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    final choices = data['choices'] as List<dynamic>?;
+    if (choices == null || choices.isEmpty) {
+      throw Exception('Groq boş yanıt döndü');
+    }
+
+    final reply = choices[0]['message']['content'] as String? ?? '';
+    final map = GeminiService.safeJsonDecode(reply);
+    return Recipe.fromMap(map);
+  }
+
   /// Konuşma geçmişini sıfırlar
   void reset() {
     _history.clear();

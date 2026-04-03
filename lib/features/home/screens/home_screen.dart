@@ -1846,9 +1846,7 @@ class HomeScreenState extends State<HomeScreen> {
 
     final showEditButton =
         _mealPlan != null &&
-        !_isPlanExpired &&
-        !_isNextWeekDate(_selectedDateStr) &&
-        _getMealDayForDate(_selectedDateStr) != null;
+        !_isPlanExpired;
 
     // Seçili güne scroll et
     WidgetsBinding.instance.addPostFrameCallback((_) {
