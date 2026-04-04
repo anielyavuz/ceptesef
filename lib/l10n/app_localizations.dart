@@ -2563,6 +2563,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Price data displayed on this screen is sourced from marketfiyati.org.tr, a platform developed by TÜBİTAK BİLGEM under the coordination of the Republic of Turkey Ministry of Industry and Technology.\n\nData is based on information provided by A101, BİM, CarrefourSA, Hakmar, Migros, Tarım Kredi Cooperatives, and ŞOK supermarkets.\n\nCepte Şef does not guarantee the accuracy, timeliness, or completeness of price data. Prices shown are for informational purposes only. Actual store prices may vary based on location, stock availability, and promotions.\n\nCepte Şef cannot be held responsible for any damages arising from the use of this data.'**
   String get priceComparisonDisclaimer;
+
+  /// Çoklu tarif tarama ilerleme mesajı
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning recipe ({current}/{total})...'**
+  String homeScanProgress(Object current, Object total);
+
+  /// Çoklu tarif tarama başarı mesajı
+  ///
+  /// In en, this message translates to:
+  /// **'{count} recipes scanned successfully'**
+  String homeScanMultiSuccess(Object count);
+
+  /// Çoklu tarif tarama kısmi başarı mesajı
+  ///
+  /// In en, this message translates to:
+  /// **'{success}/{total} recipes scanned ({failed} failed)'**
+  String homeScanMultiPartial(Object success, Object total, Object failed);
+
+  /// No description provided for @manualPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Your Own Plan'**
+  String get manualPlanTitle;
+
+  /// No description provided for @manualPlanSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your meal names and let AI fill in the details'**
+  String get manualPlanSubtitle;
+
+  /// No description provided for @manualPlanMealHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Lentil Soup'**
+  String get manualPlanMealHint;
+
+  /// No description provided for @manualPlanComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Plan'**
+  String get manualPlanComplete;
+
+  /// No description provided for @manualPlanEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter at least one meal name'**
+  String get manualPlanEmpty;
+
+  /// No description provided for @manualPlanEnriching.
+  ///
+  /// In en, this message translates to:
+  /// **'Enriching your recipes...'**
+  String get manualPlanEnriching;
+
+  /// No description provided for @daySelectionManualOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Write Your Own Plan'**
+  String get daySelectionManualOption;
+
+  /// No description provided for @daySelectionAIOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate with AI'**
+  String get daySelectionAIOption;
 }
 
 class _AppLocalizationsDelegate

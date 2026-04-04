@@ -1342,4 +1342,43 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get priceComparisonDisclaimer =>
       'Bu ekranda gösterilen fiyat verileri, T.C. Sanayi ve Teknoloji Bakanlığı koordinasyonunda TÜBİTAK BİLGEM tarafından geliştirilen marketfiyati.org.tr platformundan alınmaktadır.\n\nVeriler; A101, BİM, CarrefourSA, Hakmar, Migros, Tarım Kredi Kooperatifleri ve ŞOK marketleri tarafından sağlanan bilgilere dayanmaktadır.\n\nCepte Şef, fiyat verilerinin doğruluğu, güncelliği veya eksiksizliği konusunda herhangi bir garanti vermemekte olup, gösterilen fiyatlar yalnızca bilgilendirme amaçlıdır. Gerçek mağaza fiyatları konum, stok durumu ve kampanyalara bağlı olarak farklılık gösterebilir.\n\nCepte Şef bu verilerin kullanımından doğabilecek herhangi bir zarardan sorumlu tutulamaz.';
+
+  @override
+  String homeScanProgress(Object current, Object total) {
+    return 'Tarif taranıyor ($current/$total)...';
+  }
+
+  @override
+  String homeScanMultiSuccess(Object count) {
+    return '$count tarif başarıyla tarandı';
+  }
+
+  @override
+  String homeScanMultiPartial(Object success, Object total, Object failed) {
+    return '$success/$total tarif tarandı ($failed başarısız)';
+  }
+
+  @override
+  String get manualPlanTitle => 'Kendi Planını Oluştur';
+
+  @override
+  String get manualPlanSubtitle => 'Yemek adlarını yaz, detayları AI tamamlasın';
+
+  @override
+  String get manualPlanMealHint => 'ör. Mercimek Çorbası';
+
+  @override
+  String get manualPlanComplete => 'Planı Tamamla';
+
+  @override
+  String get manualPlanEmpty => 'En az bir yemek adı girin';
+
+  @override
+  String get manualPlanEnriching => 'Tarifleriniz zenginleştiriliyor...';
+
+  @override
+  String get daySelectionManualOption => 'Kendi Planını Yaz';
+
+  @override
+  String get daySelectionAIOption => 'AI ile Oluştur';
 }

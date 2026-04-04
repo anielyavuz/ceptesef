@@ -481,6 +481,74 @@ Yukarıdaki cache tariflerini tekrarlama, yeni ve farklı tarifler ekle.
     return const JsonEncoder.withIndent('  ').convert(input);
   }
 
+  /// Kullanıcının yazdığı yemek adlarını zenginleştirir.
+  /// Her yemek adı için detaylı tarif bilgisi (malzemeler, yapılış, kalori vb.) üretir.
+  /// Sonuç, normal plan formatında MealPlan olarak döner.
+  Future<MealPlan> enrichManualPlan(
+    UserPreferences preferences,
+    Map<String, Map<String, List<String>>> manualEntries, {
+    DateTime? startDate,
+  }) async {
+    await _ensureInitialized();
+
+    final systemPrompt =
+        await rootBundle.loadString('assets/gemini/system_prompt.md');
+
+    final userInput = _buildPreferencesJson(preferences,
+        startDate: startDate, overrideDayCount: manualEntries.length);
+
+    // Manuel girişleri prompt'a çevir
+    final buffer = StringBuffer();
+    buffer.writeln('KULLANICI KENDİ YEMEK PLANINI YAZDI. Her yemek adı için detaylı tarif bilgisi üret.');
+    buffer.writeln('Yemek adlarını DEĞİŞTİRME, sadece tarif detaylarını ekle.');
+    buffer.writeln();
+
+    for (final entry in manualEntries.entries) {
+      final dateStr = entry.key;
+      buffer.writeln('📅 $dateStr:');
+      for (final slotEntry in entry.value.entries) {
+        final slotName = slotEntry.key;
+        final mealNames = slotEntry.value;
+        buffer.writeln('  $slotName: ${mealNames.join(', ')}');
+      }
+    }
+
+    buffer.writeln();
+    buffer.writeln('Her yemek için şu bilgileri MUTLAKA üret:');
+    buffer.writeln('- malzemeler (en az 3 malzeme, miktar + birim + malzeme adı)');
+    buffer.writeln('- yapilis (en az 2 adım)');
+    buffer.writeln('- kalori (kişi başı)');
+    buffer.writeln('- zorluk (kolay/orta/zor)');
+    buffer.writeln('- hazirlanma_suresi_dk, pisirme_suresi_dk, toplam_sure_dk');
+    buffer.writeln('- mutfaklar, alerjenler, diyetler, ogun_tipi');
+    buffer.writeln('- kisi_sayisi: ${preferences.kisiSayisi}');
+    buffer.writeln();
+    buffer.writeln('Kullanıcının alerjenleri: ${preferences.alerjenler.isNotEmpty ? preferences.alerjenler.join(', ') : 'yok'}');
+    buffer.writeln('Kullanıcının diyetleri: ${preferences.diyetler.isNotEmpty ? preferences.diyetler.join(', ') : 'yok'}');
+    buffer.writeln();
+    buffer.writeln('ÖNEMLİ: Kullanıcının yazdığı yemek adlarını birebir koru. Standart JSON formatında döndür.');
+
+    final mealPlanModel = GenerativeModel(
+      model: _config!.modelName,
+      apiKey: _config!.geminiApiKey,
+      systemInstruction: Content.system(systemPrompt),
+      generationConfig: GenerationConfig(
+        responseMimeType: 'application/json',
+      ),
+    );
+
+    final response = await mealPlanModel.generateContent([
+      Content.text('$userInput\n\n${buffer.toString()}'),
+    ]);
+
+    final jsonStr = response.text ?? '';
+    if (jsonStr.isEmpty) {
+      throw Exception('Gemini boş yanıt döndü');
+    }
+
+    return MealPlan.fromGeminiResponse(jsonStr);
+  }
+
   /// Görselden veya screenshot'tan tarif çıkarır.
   ///
   /// İki senaryoyu destekler:

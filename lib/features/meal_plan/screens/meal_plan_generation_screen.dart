@@ -22,6 +22,7 @@ class MealPlanGenerationScreen extends StatefulWidget {
   final bool returnToHome;
   final List<int>? selectedDayIndices; // Seçili gün indeksleri (null = tüm hafta)
   final MealPlan? existingPlan; // Mevcut plan (kısmi güncelleme için)
+  final Map<String, Map<String, List<String>>>? manualEntries; // Manuel plan girişleri (enrich modu)
 
   const MealPlanGenerationScreen({
     super.key,
@@ -31,6 +32,7 @@ class MealPlanGenerationScreen extends StatefulWidget {
     this.returnToHome = false,
     this.selectedDayIndices,
     this.existingPlan,
+    this.manualEntries,
   });
 
   @override
@@ -48,7 +50,10 @@ class _MealPlanGenerationScreenState extends State<MealPlanGenerationScreen> {
     super.initState();
     WakelockPlus.enable();
     RemoteLoggerService.setScreen('meal_plan_generation');
-    RemoteLoggerService.info('meal_plan_generation_started',
+    RemoteLoggerService.info(
+        widget.manualEntries != null
+            ? 'manual_plan_enrichment_started'
+            : 'meal_plan_generation_started',
         screen: 'meal_plan_generation');
     _generate();
   }
@@ -72,53 +77,70 @@ class _MealPlanGenerationScreenState extends State<MealPlanGenerationScreen> {
       final geminiService = context.read<GeminiService>();
       final cacheService = context.read<RecipeCacheService>();
 
-      // 1. Cache'den uygun tarifleri çek
-      final cachedRecipes =
-          await cacheService.getMatchingRecipes(widget.preferences);
-
-      RemoteLoggerService.info(
-        'cache_recipes_loaded',
-        screen: 'meal_plan_generation',
-        extra: {'cached_count': cachedRecipes.length},
-      );
-
-      // 2. Önce Groq dene, rate limit veya hata alırsa Gemini'ye fallback
       MealPlan generatedPlan;
-      String usedProvider = 'groq';
+      String usedProvider;
 
-      try {
-        final groq = context.read<GroqService>();
-        generatedPlan = await groq.generateMealPlan(
+      if (widget.manualEntries != null) {
+        // Manuel plan modu — kullanıcının yazdığı yemek adlarını zenginleştir
+        usedProvider = 'gemini_enrich';
+        RemoteLoggerService.info('manual_plan_enrich_started',
+            screen: 'meal_plan_generation',
+            extra: {'entries_count': widget.manualEntries!.length});
+
+        generatedPlan = await geminiService.enrichManualPlan(
           widget.preferences,
-          cachedRecipes: cachedRecipes,
+          widget.manualEntries!,
           startDate: widget.startDate,
-          selectedDayCount: widget.selectedDayIndices?.length,
         );
-        RemoteLoggerService.info('meal_plan_provider_used',
-            screen: 'meal_plan_generation', extra: {'provider': 'groq'});
-      } on GroqApiException catch (e) {
-        debugPrint('⚠️ Groq hata (${e.statusCode}), Gemini fallback...');
-        RemoteLoggerService.warning(
-            'groq_meal_plan_fallback_${e.statusCode}',
-            screen: 'meal_plan_generation');
-        generatedPlan = await geminiService.generateMealPlan(
-          widget.preferences,
-          cachedRecipes: cachedRecipes,
-          startDate: widget.startDate,
-          selectedDayCount: widget.selectedDayIndices?.length,
+      } else {
+        // Normal AI üretim modu
+        // 1. Cache'den uygun tarifleri çek
+        final cachedRecipes =
+            await cacheService.getMatchingRecipes(widget.preferences);
+
+        RemoteLoggerService.info(
+          'cache_recipes_loaded',
+          screen: 'meal_plan_generation',
+          extra: {'cached_count': cachedRecipes.length},
         );
-        usedProvider = 'gemini';
-      } catch (e) {
-        debugPrint('⚠️ Groq genel hata, Gemini fallback: $e');
-        RemoteLoggerService.warning('groq_meal_plan_fallback_error',
-            screen: 'meal_plan_generation');
-        generatedPlan = await geminiService.generateMealPlan(
-          widget.preferences,
-          cachedRecipes: cachedRecipes,
-          startDate: widget.startDate,
-          selectedDayCount: widget.selectedDayIndices?.length,
-        );
-        usedProvider = 'gemini';
+
+        // 2. Önce Groq dene, rate limit veya hata alırsa Gemini'ye fallback
+        usedProvider = 'groq';
+
+        try {
+          final groq = context.read<GroqService>();
+          generatedPlan = await groq.generateMealPlan(
+            widget.preferences,
+            cachedRecipes: cachedRecipes,
+            startDate: widget.startDate,
+            selectedDayCount: widget.selectedDayIndices?.length,
+          );
+          RemoteLoggerService.info('meal_plan_provider_used',
+              screen: 'meal_plan_generation', extra: {'provider': 'groq'});
+        } on GroqApiException catch (e) {
+          debugPrint('⚠️ Groq hata (${e.statusCode}), Gemini fallback...');
+          RemoteLoggerService.warning(
+              'groq_meal_plan_fallback_${e.statusCode}',
+              screen: 'meal_plan_generation');
+          generatedPlan = await geminiService.generateMealPlan(
+            widget.preferences,
+            cachedRecipes: cachedRecipes,
+            startDate: widget.startDate,
+            selectedDayCount: widget.selectedDayIndices?.length,
+          );
+          usedProvider = 'gemini';
+        } catch (e) {
+          debugPrint('⚠️ Groq genel hata, Gemini fallback: $e');
+          RemoteLoggerService.warning('groq_meal_plan_fallback_error',
+              screen: 'meal_plan_generation');
+          generatedPlan = await geminiService.generateMealPlan(
+            widget.preferences,
+            cachedRecipes: cachedRecipes,
+            startDate: widget.startDate,
+            selectedDayCount: widget.selectedDayIndices?.length,
+          );
+          usedProvider = 'gemini';
+        }
       }
       debugPrint('🤖 Meal plan provider: $usedProvider');
 
@@ -294,7 +316,9 @@ class _MealPlanGenerationScreenState extends State<MealPlanGenerationScreen> {
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    l10n.mealPlanGeneratingTitle,
+                    widget.manualEntries != null
+                        ? l10n.manualPlanEnriching
+                        : l10n.mealPlanGeneratingTitle,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.w800,
                           color: AppColors.charcoal,
