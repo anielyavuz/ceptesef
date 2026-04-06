@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/models/meal_plan.dart';
 import '../../../core/models/user_preferences.dart';
@@ -8,11 +9,13 @@ class DaySelectionResult {
   final List<int> selectedIndices;
   final DateTime startDate;
   final UserPreferences? updatedPreferences;
+  final bool isManual;
 
   const DaySelectionResult({
     required this.selectedIndices,
     required this.startDate,
     this.updatedPreferences,
+    this.isManual = false,
   });
 }
 
@@ -234,7 +237,7 @@ class _DaySelectionSheetState extends State<DaySelectionSheet> {
     );
   }
 
-  void _confirm() {
+  void _confirm({bool manual = false}) {
     if (_selected.isEmpty) return;
 
     final sortedIndices = _selected.toList()..sort();
@@ -258,6 +261,7 @@ class _DaySelectionSheetState extends State<DaySelectionSheet> {
       selectedIndices: sortedIndices,
       startDate: firstSelectedDate,
       updatedPreferences: updated,
+      isManual: manual,
     ));
   }
 
@@ -565,12 +569,19 @@ class _DaySelectionSheetState extends State<DaySelectionSheet> {
 
             const SizedBox(height: 20),
 
-            // Onay butonu
+            // AI ile oluştur butonu
             SizedBox(
               width: double.infinity,
               height: 50,
-              child: ElevatedButton(
-                onPressed: _selected.isNotEmpty ? _confirm : null,
+              child: ElevatedButton.icon(
+                onPressed: _selected.isNotEmpty ? () => _confirm() : null,
+                icon: const Icon(Icons.auto_awesome_rounded, size: 18),
+                label: Text(
+                  _selected.isEmpty
+                      ? 'Gün seçin'
+                      : '${_selected.length} gün — ${AppLocalizations.of(context).daySelectionAIOption}',
+                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
@@ -579,11 +590,40 @@ class _DaySelectionSheetState extends State<DaySelectionSheet> {
                     borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-                child: Text(
-                  _selected.isEmpty
-                      ? 'Gün seçin'
-                      : '${_selected.length} gün için plan oluştur',
-                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+              ),
+            ),
+            const SizedBox(height: 10),
+            // Kendi planını yaz butonu
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: OutlinedButton.icon(
+                onPressed: _selected.isNotEmpty
+                    ? () => _confirm(manual: true)
+                    : null,
+                icon: Icon(Icons.edit_note_rounded, size: 20,
+                    color: _selected.isNotEmpty
+                        ? AppColors.primary
+                        : AppColors.charcoal.withValues(alpha: 0.3)),
+                label: Text(
+                  AppLocalizations.of(context).daySelectionManualOption,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: _selected.isNotEmpty
+                        ? AppColors.primary
+                        : AppColors.charcoal.withValues(alpha: 0.3),
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: _selected.isNotEmpty
+                        ? AppColors.primary
+                        : AppColors.charcoal.withValues(alpha: 0.1),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
               ),
             ),

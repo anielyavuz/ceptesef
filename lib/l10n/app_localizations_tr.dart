@@ -1342,4 +1342,116 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get priceComparisonDisclaimer =>
       'Bu ekranda gösterilen fiyat verileri, T.C. Sanayi ve Teknoloji Bakanlığı koordinasyonunda TÜBİTAK BİLGEM tarafından geliştirilen marketfiyati.org.tr platformundan alınmaktadır.\n\nVeriler; A101, BİM, CarrefourSA, Hakmar, Migros, Tarım Kredi Kooperatifleri ve ŞOK marketleri tarafından sağlanan bilgilere dayanmaktadır.\n\nCepte Şef, fiyat verilerinin doğruluğu, güncelliği veya eksiksizliği konusunda herhangi bir garanti vermemekte olup, gösterilen fiyatlar yalnızca bilgilendirme amaçlıdır. Gerçek mağaza fiyatları konum, stok durumu ve kampanyalara bağlı olarak farklılık gösterebilir.\n\nCepte Şef bu verilerin kullanımından doğabilecek herhangi bir zarardan sorumlu tutulamaz.';
+
+  @override
+  String homeScanProgress(Object current, Object total) {
+    return 'Tarif taranıyor ($current/$total)...';
+  }
+
+  @override
+  String homeScanMultiSuccess(Object count) {
+    return '$count tarif başarıyla tarandı';
+  }
+
+  @override
+  String homeScanMultiPartial(Object success, Object total, Object failed) {
+    return '$success/$total tarif tarandı ($failed başarısız)';
+  }
+
+  @override
+  String get manualPlanTitle => 'Kendi Planını Oluştur';
+
+  @override
+  String get manualPlanSubtitle =>
+      'Yemek adlarını yaz, detayları AI tamamlasın';
+
+  @override
+  String get manualPlanMealHint => 'ör. Mercimek Çorbası';
+
+  @override
+  String get manualPlanComplete => 'Planı Tamamla';
+
+  @override
+  String get manualPlanEmpty => 'En az bir yemek adı girin';
+
+  @override
+  String get manualPlanEnriching => 'Tarifleriniz zenginleştiriliyor...';
+
+  @override
+  String get daySelectionManualOption => 'Kendi Planını Yaz';
+
+  @override
+  String get daySelectionAIOption => 'AI ile Oluştur';
+
+  @override
+  String get familyPlan => 'Aile Planı';
+
+  @override
+  String get familyPlanSubtitle =>
+      'Ailenizle yemek planı, alışveriş ve tarifleri paylaşın';
+
+  @override
+  String get familyPlanCreate => 'Aile Planı Oluştur';
+
+  @override
+  String get familyPlanJoin => 'Aile Planına Katıl';
+
+  @override
+  String get familyPlanName => 'Plan Adı';
+
+  @override
+  String get familyPlanNameHint => 'ör. Yavuz Ailesi';
+
+  @override
+  String get familyPlanCode => 'Davet Kodu';
+
+  @override
+  String get familyPlanCodeHint => '6 haneli kodu girin';
+
+  @override
+  String get familyPlanCreated => 'Aile planı oluşturuldu!';
+
+  @override
+  String get familyPlanJoined => 'Aile planına katıldınız!';
+
+  @override
+  String get familyPlanInvalidCode => 'Geçersiz veya süresi dolmuş kod';
+
+  @override
+  String get familyPlanMembers => 'Üyeler';
+
+  @override
+  String get familyPlanOwner => 'Yönetici';
+
+  @override
+  String get familyPlanLeave => 'Plandan Ayrıl';
+
+  @override
+  String get familyPlanLeaveConfirm =>
+      'Aile planından ayrılmak istediğinize emin misiniz?';
+
+  @override
+  String get familyPlanLeft => 'Aile planından ayrıldınız';
+
+  @override
+  String get familyPlanInviteCode => 'Davet Kodu';
+
+  @override
+  String get familyPlanInviteCodeExpiry => 'Kod 24 saat geçerli';
+
+  @override
+  String get familyPlanRefreshCode => 'Yeni Kod Oluştur';
+
+  @override
+  String get familyPlanShareCode => 'Kodu Paylaş';
+
+  @override
+  String get familyPlanDeleteConfirm =>
+      'Aile planını silmek istediğinize emin misiniz? Tüm üyeler ayrılacak.';
+
+  @override
+  String get familyPlanNoMembers => 'Henüz başka üye yok';
+
+  @override
+  String get familyPlanCopied => 'Davet kodu kopyalandı';
 }

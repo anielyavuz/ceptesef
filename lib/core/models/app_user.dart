@@ -7,11 +7,15 @@ class AppUser {
   final String displayName;
   final DateTime createdAt;
 
+  /// Kullanıcının bağlı olduğu aile planı (household) ID'si
+  final String? householdId;
+
   const AppUser({
     required this.uid,
     required this.email,
     required this.displayName,
     required this.createdAt,
+    this.householdId,
   });
 
   /// Firestore dokümanından AppUser oluşturur
@@ -21,6 +25,7 @@ class AppUser {
       email: map['email'] as String? ?? '',
       displayName: map['displayName'] as String? ?? '',
       createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      householdId: map['householdId'] as String?,
     );
   }
 
@@ -30,6 +35,7 @@ class AppUser {
       'email': email,
       'displayName': displayName,
       'createdAt': FieldValue.serverTimestamp(),
+      if (householdId != null) 'householdId': householdId,
     };
   }
 }

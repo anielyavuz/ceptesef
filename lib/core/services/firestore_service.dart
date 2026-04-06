@@ -11,6 +11,48 @@ import '../models/user_preferences.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore;
 
+  // ─── Effective UID Cache (Aile Planı) ──────────────────
+  String? _effectiveUid;
+  String? _effectiveUidFor;
+  DateTime? _effectiveUidCacheTime;
+
+  /// Etkin UID'yi döner: Kullanıcı bir aile planındaysa owner UID,
+  /// değilse kendi UID'si. Sonuç 5 dakika cache'lenir.
+  Future<String> getEffectiveUid(String uid) async {
+    if (_effectiveUidFor == uid && _isCacheValid(_effectiveUidCacheTime)) {
+      return _effectiveUid!;
+    }
+
+    final userDoc = await _firestore
+        .collection(FirestorePaths.usersCollection)
+        .doc(uid)
+        .get();
+    final householdId = userDoc.data()?['householdId'] as String?;
+
+    String result = uid;
+    if (householdId != null) {
+      final householdDoc = await _firestore
+          .collection(FirestorePaths.householdsCollection)
+          .doc(householdId)
+          .get();
+      if (householdDoc.exists) {
+        result = householdDoc.data()?['ownerUid'] as String? ?? uid;
+      }
+    }
+
+    _effectiveUid = result;
+    _effectiveUidFor = uid;
+    _effectiveUidCacheTime = DateTime.now();
+    return result;
+  }
+
+  /// Effective UID cache'ini temizle (household değiştiğinde çağır)
+  void invalidateEffectiveUidCache() {
+    _effectiveUid = null;
+    _effectiveUidFor = null;
+    _effectiveUidCacheTime = null;
+  }
+
   // ─── In-Memory Cache ───────────────────────────────────
   MealPlan? _cachedMealPlan;
   String? _cachedMealPlanUid;

@@ -1337,4 +1337,116 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get priceComparisonDisclaimer =>
       'Price data displayed on this screen is sourced from marketfiyati.org.tr, a platform developed by TÜBİTAK BİLGEM under the coordination of the Republic of Turkey Ministry of Industry and Technology.\n\nData is based on information provided by A101, BİM, CarrefourSA, Hakmar, Migros, Tarım Kredi Cooperatives, and ŞOK supermarkets.\n\nCepte Şef does not guarantee the accuracy, timeliness, or completeness of price data. Prices shown are for informational purposes only. Actual store prices may vary based on location, stock availability, and promotions.\n\nCepte Şef cannot be held responsible for any damages arising from the use of this data.';
+
+  @override
+  String homeScanProgress(Object current, Object total) {
+    return 'Scanning recipe ($current/$total)...';
+  }
+
+  @override
+  String homeScanMultiSuccess(Object count) {
+    return '$count recipes scanned successfully';
+  }
+
+  @override
+  String homeScanMultiPartial(Object success, Object total, Object failed) {
+    return '$success/$total recipes scanned ($failed failed)';
+  }
+
+  @override
+  String get manualPlanTitle => 'Create Your Own Plan';
+
+  @override
+  String get manualPlanSubtitle =>
+      'Write your meal names and let AI fill in the details';
+
+  @override
+  String get manualPlanMealHint => 'e.g., Lentil Soup';
+
+  @override
+  String get manualPlanComplete => 'Complete Plan';
+
+  @override
+  String get manualPlanEmpty => 'Enter at least one meal name';
+
+  @override
+  String get manualPlanEnriching => 'Enriching your recipes...';
+
+  @override
+  String get daySelectionManualOption => 'Write Your Own Plan';
+
+  @override
+  String get daySelectionAIOption => 'Generate with AI';
+
+  @override
+  String get familyPlan => 'Family Plan';
+
+  @override
+  String get familyPlanSubtitle =>
+      'Share meal plans, shopping lists and recipes with your family';
+
+  @override
+  String get familyPlanCreate => 'Create Family Plan';
+
+  @override
+  String get familyPlanJoin => 'Join Family Plan';
+
+  @override
+  String get familyPlanName => 'Plan Name';
+
+  @override
+  String get familyPlanNameHint => 'e.g. Smith Family';
+
+  @override
+  String get familyPlanCode => 'Invite Code';
+
+  @override
+  String get familyPlanCodeHint => 'Enter 6-digit code';
+
+  @override
+  String get familyPlanCreated => 'Family plan created!';
+
+  @override
+  String get familyPlanJoined => 'Joined family plan!';
+
+  @override
+  String get familyPlanInvalidCode => 'Invalid or expired code';
+
+  @override
+  String get familyPlanMembers => 'Members';
+
+  @override
+  String get familyPlanOwner => 'Admin';
+
+  @override
+  String get familyPlanLeave => 'Leave Plan';
+
+  @override
+  String get familyPlanLeaveConfirm =>
+      'Are you sure you want to leave this family plan?';
+
+  @override
+  String get familyPlanLeft => 'Left the family plan';
+
+  @override
+  String get familyPlanInviteCode => 'Invite Code';
+
+  @override
+  String get familyPlanInviteCodeExpiry => 'Code valid for 24 hours';
+
+  @override
+  String get familyPlanRefreshCode => 'Generate New Code';
+
+  @override
+  String get familyPlanShareCode => 'Share Code';
+
+  @override
+  String get familyPlanDeleteConfirm =>
+      'Are you sure you want to delete this family plan? All members will be removed.';
+
+  @override
+  String get familyPlanNoMembers => 'No other members yet';
+
+  @override
+  String get familyPlanCopied => 'Invite code copied';
 }

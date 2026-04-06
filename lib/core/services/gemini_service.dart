@@ -481,6 +481,86 @@ Yukarıdaki cache tariflerini tekrarlama, yeni ve farklı tarifler ekle.
     return const JsonEncoder.withIndent('  ').convert(input);
   }
 
+  /// Kullanıcının yazdığı yemek adlarını zenginleştirir.
+  /// Her yemek adı için detaylı tarif bilgisi (malzemeler, yapılış, kalori vb.) üretir.
+  /// Sonuç, normal plan formatında MealPlan olarak döner.
+  Future<MealPlan> enrichManualPlan(
+    UserPreferences preferences,
+    Map<String, Map<String, List<String>>> manualEntries, {
+    DateTime? startDate,
+  }) async {
+    await _ensureInitialized();
+
+    final systemPrompt =
+        await rootBundle.loadString('assets/gemini/system_prompt.md');
+
+    final userInput = _buildPreferencesJson(preferences,
+        startDate: startDate, overrideDayCount: manualEntries.length);
+
+    // Manuel girişleri prompt'a çevir
+    final buffer = StringBuffer();
+    buffer.writeln('KULLANICI KENDİ YEMEK PLANINI YAZDI.');
+    buffer.writeln('KRİTİK KURAL: Kullanıcı bir öğüne birden fazla yemek yazmış olabilir (virgülle veya boşlukla ayrılmış).');
+    buffer.writeln('Her yemek AYRI BİR TARİF olarak üretilmeli. Örnek:');
+    buffer.writeln('  Kullanıcı yazdı: "Kuzu külbastı pilav yoğurt"');
+    buffer.writeln('  → 3 ayrı tarif üret: "Kuzu Külbastı", "Pilav", "Yoğurt"');
+    buffer.writeln('Yemekleri birleştirme, her biri ayrı JSON objesi olmalı.');
+    buffer.writeln();
+    buffer.writeln('BASIT MALZEME KURALI: Domates, peynir, zeytin, ekmek, çay, yoğurt gibi');
+    buffer.writeln('hazırlık gerektirmeyen basit malzemelerde yapilis ve malzemeler boş dizi olmalı.');
+    buffer.writeln('Sadece yemek_adi, kalori, toplam_sure_dk (0-5), zorluk: "kolay" ver.');
+    buffer.writeln('Pişirme/hazırlama gerektiren tarifler (menemen, pilav, külbastı vb.) için tam tarif üret.');
+    buffer.writeln();
+
+    for (final entry in manualEntries.entries) {
+      final dateStr = entry.key;
+      buffer.writeln('$dateStr:');
+      for (final slotEntry in entry.value.entries) {
+        final slotName = slotEntry.key;
+        final mealNames = slotEntry.value;
+        buffer.writeln('  $slotName: ${mealNames.join(', ')}');
+      }
+    }
+
+    buffer.writeln();
+    buffer.writeln('Her tarif için şu bilgileri MUTLAKA üret:');
+    buffer.writeln('- yemek_adi: Kısa ve net (ör. "Kuzu Külbastı", "Pilav", "Yoğurt" — birleştirme!)');
+    buffer.writeln('- malzemeler: GERÇEK tarif malzemeleri yaz, EN AZ 5 malzeme. Miktar + birim + malzeme adı.');
+    buffer.writeln('  Örnek Kuzu Külbastı: ["500 gr kuzu pirzola", "2 yemek kaşığı zeytinyağı", "1 adet soğan", "2 diş sarımsak", "1 çay kaşığı karabiber", "1 çay kaşığı pul biber", "1 çay kaşığı kekik", "tuz"]');
+    buffer.writeln('  Sadece "et, yağ, tuz" gibi 3 malzeme KABUL EDİLMEZ.');
+    buffer.writeln('- yapilis: Detaylı pişirme adımları, EN AZ 4 adım.');
+    buffer.writeln('  "Eti yıkayın. Keserek servis yapın." gibi 2 adım KABUL EDİLMEZ.');
+    buffer.writeln('  Marinasyon, pişirme süresi, ısı derecesi gibi detaylar olmalı.');
+    buffer.writeln('- kalori (kişi başı), zorluk, süre bilgileri');
+    buffer.writeln('- mutfaklar, alerjenler, diyetler, ogun_tipi');
+    buffer.writeln('- kisi_sayisi: ${preferences.kisiSayisi}');
+    buffer.writeln();
+    buffer.writeln('Kullanıcının alerjenleri: ${preferences.alerjenler.isNotEmpty ? preferences.alerjenler.join(', ') : 'yok'}');
+    buffer.writeln('Kullanıcının diyetleri: ${preferences.diyetler.isNotEmpty ? preferences.diyetler.join(', ') : 'yok'}');
+    buffer.writeln();
+    buffer.writeln('Standart JSON formatında döndür.');
+
+    final mealPlanModel = GenerativeModel(
+      model: _config!.modelName,
+      apiKey: _config!.geminiApiKey,
+      systemInstruction: Content.system(systemPrompt),
+      generationConfig: GenerationConfig(
+        responseMimeType: 'application/json',
+      ),
+    );
+
+    final response = await mealPlanModel.generateContent([
+      Content.text('$userInput\n\n${buffer.toString()}'),
+    ]);
+
+    final jsonStr = response.text ?? '';
+    if (jsonStr.isEmpty) {
+      throw Exception('Gemini boş yanıt döndü');
+    }
+
+    return MealPlan.fromGeminiResponse(jsonStr);
+  }
+
   /// Görselden veya screenshot'tan tarif çıkarır.
   ///
   /// İki senaryoyu destekler:

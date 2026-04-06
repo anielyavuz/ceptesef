@@ -490,6 +490,13 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
       details: {'source': source == ImageSource.camera ? 'camera' : 'gallery'},
     );
 
+    // Galeri: çoklu görsel seçimi
+    if (source == ImageSource.gallery) {
+      await _pickAndScanMultiImage();
+      return;
+    }
+
+    // Kamera: tekli görsel akışı (mevcut davranış)
     try {
       final picker = ImagePicker();
       final picked = await picker.pickImage(
@@ -500,6 +507,345 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
       );
       if (picked == null) return;
 
+      if (!mounted) return;
+
+      // Lottie loading göster
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => PopScope(
+          canPop: false,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+              margin: const EdgeInsets.symmetric(horizontal: 48),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: Lottie.asset(
+                      'assets/animations/lottie/loading.json',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    l10n.homeScanAnalyzing,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.charcoal,
+                          fontWeight: FontWeight.w600,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final imageBytes = await picked.readAsBytes();
+      final mimeType = picked.mimeType ?? 'image/jpeg';
+
+      if (!mounted) return;
+      final gemini = context.read<GeminiService>();
+      final (extractedRecipe, imageRegion) =
+          await gemini.recipeFromImage(imageBytes, mimeType);
+
+      // Görsel varsa kırp ve base64'e çevir
+      var recipe = extractedRecipe;
+      if (imageRegion != null) {
+        try {
+          final croppedBase64 =
+              await ImageCropUtil.cropAndEncode(imageBytes, imageRegion);
+          if (croppedBase64 != null) {
+            recipe = recipe.copyWith(imageBase64: croppedBase64);
+          }
+        } catch (e) {
+          RemoteLoggerService.error('image_crop_failed',
+              error: e, screen: 'saved_recipes');
+        }
+      }
+
+      // Loading kapat
+      if (mounted) Navigator.pop(context);
+
+      // Kaydedilenler arşivine ekle
+      if (!mounted) return;
+      final firestore = context.read<FirestoreService>();
+      await firestore.saveRecipeToArchive(user.uid, recipe);
+
+      RemoteLoggerService.userAction(
+        'scan_recipe_saved',
+        screen: 'saved_recipes',
+        details: {
+          'recipe': recipe.yemekAdi,
+          'has_image': recipe.imageBase64 != null,
+        },
+      );
+
+      if (!mounted) return;
+
+      // Listeyi yenile
+      await _load();
+
+      if (!mounted) return;
+
+      // Başarı snackbar + tarif detayına git
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.homeScanSuccessDesc(recipe.yemekAdi)),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          duration: const Duration(seconds: 2),
+          backgroundColor: AppColors.primary,
+        ),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => RecipeDetailScreen(recipe: recipe),
+        ),
+      );
+    } catch (e) {
+      // Loading varsa kapat
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      RemoteLoggerService.error('scan_recipe_failed',
+          error: e, screen: 'saved_recipes');
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.homeScanError)),
+        );
+      }
+    }
+  }
+
+  /// Galeriden çoklu görsel seçip sırayla tarif tarayan yardımcı metod.
+  Future<void> _pickAndScanMultiImage() async {
+    final l10n = AppLocalizations.of(context);
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    try {
+      final picker = ImagePicker();
+      final pickedFiles = await picker.pickMultiImage(
+        limit: 10,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+      if (pickedFiles.isEmpty) return;
+
+      // Tek görsel seçildiyse mevcut tekli akışı kullan
+      if (pickedFiles.length == 1) {
+        if (!mounted) return;
+        _pickAndScanSingleFile(pickedFiles.first);
+        return;
+      }
+
+      if (!mounted) return;
+
+      final total = pickedFiles.length;
+      int successCount = 0;
+      int failCount = 0;
+
+      // İlerleme durumunu takip eden ValueNotifier
+      final progressNotifier = ValueNotifier<String>(
+        l10n.homeScanProgress(1, total),
+      );
+
+      // İlerleme dialog'unu göster
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => PopScope(
+          canPop: false,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+              margin: const EdgeInsets.symmetric(horizontal: 48),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: Lottie.asset(
+                      'assets/animations/lottie/loading.json',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ValueListenableBuilder<String>(
+                    valueListenable: progressNotifier,
+                    builder: (_, value, __) => Text(
+                      value,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.charcoal,
+                            fontWeight: FontWeight.w600,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final gemini = context.read<GeminiService>();
+      final firestore = context.read<FirestoreService>();
+
+      // Görselleri sırayla işle (API rate limit'e dikkat)
+      for (int i = 0; i < pickedFiles.length; i++) {
+        if (!mounted) break;
+        progressNotifier.value = l10n.homeScanProgress(i + 1, total);
+
+        try {
+          final file = pickedFiles[i];
+          final imageBytes = await file.readAsBytes();
+          final mimeType = file.mimeType ?? 'image/jpeg';
+
+          final (extractedRecipe, imageRegion) =
+              await gemini.recipeFromImage(imageBytes, mimeType);
+
+          // Görsel varsa kırp ve base64'e çevir
+          var recipe = extractedRecipe;
+          if (imageRegion != null) {
+            try {
+              final croppedBase64 =
+                  await ImageCropUtil.cropAndEncode(imageBytes, imageRegion);
+              if (croppedBase64 != null) {
+                recipe = recipe.copyWith(imageBase64: croppedBase64);
+              }
+            } catch (e) {
+              RemoteLoggerService.error('image_crop_failed',
+                  error: e, screen: 'saved_recipes');
+            }
+          }
+
+          await firestore.saveRecipeToArchive(user.uid, recipe);
+
+          RemoteLoggerService.userAction(
+            'scan_recipe_saved',
+            screen: 'saved_recipes',
+            details: {
+              'recipe': recipe.yemekAdi,
+              'has_image': recipe.imageBase64 != null,
+              'batch_index': i + 1,
+              'batch_total': total,
+            },
+          );
+
+          successCount++;
+        } catch (e) {
+          failCount++;
+          RemoteLoggerService.error('scan_recipe_failed',
+              error: e,
+              screen: 'saved_recipes');
+        }
+      }
+
+      // Loading kapat
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      progressNotifier.dispose();
+
+      if (!mounted) return;
+
+      // Listeyi yenile
+      await _load();
+
+      if (!mounted) return;
+
+      // Sonuç mesajını göster
+      final String resultMessage;
+      if (failCount == 0) {
+        resultMessage = l10n.homeScanMultiSuccess(successCount);
+      } else {
+        resultMessage =
+            l10n.homeScanMultiPartial(successCount, total, failCount);
+      }
+
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(resultMessage),
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          duration: const Duration(seconds: 3),
+          backgroundColor:
+              failCount == 0 ? AppColors.primary : AppColors.accent,
+        ),
+      );
+
+      RemoteLoggerService.userAction(
+        'scan_recipe_multi_completed',
+        screen: 'saved_recipes',
+        details: {
+          'total': total,
+          'success': successCount,
+          'failed': failCount,
+        },
+      );
+    } catch (e) {
+      // Loading varsa kapat
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      RemoteLoggerService.error('scan_recipe_multi_failed',
+          error: e, screen: 'saved_recipes');
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.homeScanError)),
+        );
+      }
+    }
+  }
+
+  /// Tekli dosya tarama (galeriden tek görsel seçildiğinde kullanılır).
+  Future<void> _pickAndScanSingleFile(XFile picked) async {
+    final l10n = AppLocalizations.of(context);
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    try {
       if (!mounted) return;
 
       // Lottie loading göster

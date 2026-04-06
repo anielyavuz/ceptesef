@@ -18,6 +18,7 @@ import '../../../core/utils/image_crop_util.dart';
 import '../../../core/services/taste_profile_service.dart';
 import '../../inbox/screens/inbox_screen.dart';
 import '../../meal_plan/screens/meal_plan_generation_screen.dart';
+import '../../meal_plan/screens/manual_meal_plan_screen.dart';
 import 'regenerate_loading_screen.dart';
 import '../../meal_plan/screens/recipe_detail_screen.dart';
 import '../../meal_plan/widgets/recipe_suggestion_sheet.dart';
@@ -276,6 +277,13 @@ class HomeScreenState extends State<HomeScreen> {
       details: {'source': source == ImageSource.camera ? 'camera' : 'gallery'},
     );
 
+    // Galeri: çoklu görsel seçimi
+    if (source == ImageSource.gallery) {
+      await _pickAndScanMultiImage();
+      return;
+    }
+
+    // Kamera: tekli görsel akışı (mevcut davranış)
     try {
       final picker = ImagePicker();
       final picked = await picker.pickImage(
@@ -286,6 +294,319 @@ class HomeScreenState extends State<HomeScreen> {
       );
       if (picked == null) return;
 
+      if (!mounted) return;
+
+      // Lottie loading göster
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => PopScope(
+          canPop: false,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+              margin: const EdgeInsets.symmetric(horizontal: 48),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: Lottie.asset(
+                      'assets/animations/lottie/loading.json',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    l10n.homeScanAnalyzing,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.charcoal,
+                          fontWeight: FontWeight.w600,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final imageBytes = await picked.readAsBytes();
+      final mimeType = picked.mimeType ?? 'image/jpeg';
+
+      if (!mounted) return;
+      final gemini = context.read<GeminiService>();
+      final (extractedRecipe, imageRegion) =
+          await gemini.recipeFromImage(imageBytes, mimeType);
+
+      // Görsel varsa kırp ve base64'e çevir
+      var recipe = extractedRecipe;
+      if (imageRegion != null) {
+        try {
+          final croppedBase64 =
+              await ImageCropUtil.cropAndEncode(imageBytes, imageRegion);
+          if (croppedBase64 != null) {
+            recipe = recipe.copyWith(imageBase64: croppedBase64);
+          }
+        } catch (e) {
+          RemoteLoggerService.error('image_crop_failed',
+              error: e, screen: 'home');
+        }
+      }
+
+      // Loading kapat
+      if (mounted) Navigator.pop(context);
+
+      // Kaydedilenler arşivine ekle
+      if (!mounted) return;
+      final firestore = context.read<FirestoreService>();
+      await firestore.saveRecipeToArchive(user.uid, recipe);
+
+      RemoteLoggerService.userAction(
+        'scan_recipe_saved',
+        screen: 'home',
+        details: {
+          'recipe': recipe.yemekAdi,
+          'has_image': recipe.imageBase64 != null,
+        },
+      );
+
+      if (!mounted) return;
+
+      // Başarı popup'ı göster
+      await _showScanSuccessDialog(recipe);
+    } catch (e) {
+      // Loading varsa kapat
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      RemoteLoggerService.error('scan_recipe_failed',
+          error: e, screen: 'home');
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.homeScanError)),
+        );
+      }
+    }
+  }
+
+  /// Galeriden çoklu görsel seçip sırayla tarif tarayan yardımcı metod.
+  Future<void> _pickAndScanMultiImage() async {
+    final l10n = AppLocalizations.of(context);
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    try {
+      final picker = ImagePicker();
+      final pickedFiles = await picker.pickMultiImage(
+        limit: 10,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+      if (pickedFiles.isEmpty) return;
+
+      // Tek görsel seçildiyse mevcut tekli akışı kullan
+      if (pickedFiles.length == 1) {
+        if (!mounted) return;
+        _pickAndScanSingleFile(pickedFiles.first);
+        return;
+      }
+
+      if (!mounted) return;
+
+      final total = pickedFiles.length;
+      int successCount = 0;
+      int failCount = 0;
+
+      // İlerleme durumunu takip eden ValueNotifier
+      final progressNotifier = ValueNotifier<String>(
+        l10n.homeScanProgress(1, total),
+      );
+
+      // İlerleme dialog'unu göster
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => PopScope(
+          canPop: false,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+              margin: const EdgeInsets.symmetric(horizontal: 48),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    height: 120,
+                    child: Lottie.asset(
+                      'assets/animations/lottie/loading.json',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ValueListenableBuilder<String>(
+                    valueListenable: progressNotifier,
+                    builder: (_, value, __) => Text(
+                      value,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.charcoal,
+                            fontWeight: FontWeight.w600,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final gemini = context.read<GeminiService>();
+      final firestore = context.read<FirestoreService>();
+
+      // Görselleri sırayla işle (API rate limit'e dikkat)
+      for (int i = 0; i < pickedFiles.length; i++) {
+        if (!mounted) break;
+        progressNotifier.value = l10n.homeScanProgress(i + 1, total);
+
+        try {
+          final file = pickedFiles[i];
+          final imageBytes = await file.readAsBytes();
+          final mimeType = file.mimeType ?? 'image/jpeg';
+
+          final (extractedRecipe, imageRegion) =
+              await gemini.recipeFromImage(imageBytes, mimeType);
+
+          // Görsel varsa kırp ve base64'e çevir
+          var recipe = extractedRecipe;
+          if (imageRegion != null) {
+            try {
+              final croppedBase64 =
+                  await ImageCropUtil.cropAndEncode(imageBytes, imageRegion);
+              if (croppedBase64 != null) {
+                recipe = recipe.copyWith(imageBase64: croppedBase64);
+              }
+            } catch (e) {
+              RemoteLoggerService.error('image_crop_failed',
+                  error: e, screen: 'home');
+            }
+          }
+
+          await firestore.saveRecipeToArchive(user.uid, recipe);
+
+          RemoteLoggerService.userAction(
+            'scan_recipe_saved',
+            screen: 'home',
+            details: {
+              'recipe': recipe.yemekAdi,
+              'has_image': recipe.imageBase64 != null,
+              'batch_index': i + 1,
+              'batch_total': total,
+            },
+          );
+
+          successCount++;
+        } catch (e) {
+          failCount++;
+          RemoteLoggerService.error('scan_recipe_failed',
+              error: e,
+              screen: 'home');
+        }
+      }
+
+      // Loading kapat
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      progressNotifier.dispose();
+
+      if (!mounted) return;
+
+      // Sonuç mesajını göster
+      final String resultMessage;
+      if (failCount == 0) {
+        resultMessage = l10n.homeScanMultiSuccess(successCount);
+      } else {
+        resultMessage =
+            l10n.homeScanMultiPartial(successCount, total, failCount);
+      }
+
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(resultMessage),
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          duration: const Duration(seconds: 3),
+          backgroundColor:
+              failCount == 0 ? AppColors.primary : AppColors.accent,
+        ),
+      );
+
+      RemoteLoggerService.userAction(
+        'scan_recipe_multi_completed',
+        screen: 'home',
+        details: {
+          'total': total,
+          'success': successCount,
+          'failed': failCount,
+        },
+      );
+    } catch (e) {
+      // Loading varsa kapat
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      RemoteLoggerService.error('scan_recipe_multi_failed',
+          error: e, screen: 'home');
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.homeScanError)),
+        );
+      }
+    }
+  }
+
+  /// Tekli dosya tarama (galeriden tek görsel seçildiğinde kullanılır).
+  Future<void> _pickAndScanSingleFile(XFile picked) async {
+    final l10n = AppLocalizations.of(context);
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    try {
       if (!mounted) return;
 
       // Lottie loading göster
@@ -1073,7 +1394,7 @@ class HomeScreenState extends State<HomeScreen> {
     final isNextWeek = _isNextWeekDate(_selectedDateStr);
     final mealDay = _getMealDayForDate(_selectedDateStr);
 
-    if (mealDay == null) {
+    if (mealDay == null || mealDay.ogunler.isEmpty) {
       // Bu gün için plan yok
       return [
         if (plan.daysRemaining <= 2 && plan.daysRemaining > 0 && !isNextWeek)
@@ -1126,7 +1447,7 @@ class HomeScreenState extends State<HomeScreen> {
                         l10n,
                         isLast: index == slots.length - 1,
                         isDaily: false,
-                        readOnly: isNextWeek,
+                        readOnly: false,
                       );
                     });
                   }(),
@@ -1170,25 +1491,35 @@ class HomeScreenState extends State<HomeScreen> {
     }
 
     RemoteLoggerService.userAction('next_week_plan_tapped',
-        screen: 'home',
-        details: {
-          'startDate': selection.startDate.toIso8601String(),
-          'selectedDays': selection.selectedIndices.length,
-        });
+        screen: 'home');
 
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => MealPlanGenerationScreen(
-          uid: user.uid,
-          preferences: effectivePrefs,
-          startDate: selection.startDate,
-          returnToHome: true,
-          selectedDayIndices: selection.selectedIndices,
-          existingPlan: activePlan,
+    if (selection.isManual) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ManualMealPlanScreen(
+            uid: user.uid,
+            preferences: effectivePrefs,
+            selectedDayIndices: selection.selectedIndices,
+            startDate: selection.startDate,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MealPlanGenerationScreen(
+            uid: user.uid,
+            preferences: effectivePrefs,
+            startDate: selection.startDate,
+            returnToHome: true,
+            selectedDayIndices: selection.selectedIndices,
+            existingPlan: activePlan,
+          ),
+        ),
+      );
+    }
     if (mounted) {
       await _loadMealPlan();
       await _loadNextWeekPlan();
@@ -1369,24 +1700,35 @@ class HomeScreenState extends State<HomeScreen> {
     }
 
     RemoteLoggerService.userAction('new_week_plan_tapped',
-        screen: 'home', details: {
-      'startDate': selection.startDate.toIso8601String(),
-      'selectedDays': selection.selectedIndices.length,
-    });
+        screen: 'home');
 
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => MealPlanGenerationScreen(
-          uid: user.uid,
-          preferences: effectivePrefs,
-          startDate: selection.startDate,
-          returnToHome: true,
-          selectedDayIndices: selection.selectedIndices,
-          existingPlan: activePlan,
+    if (selection.isManual) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ManualMealPlanScreen(
+            uid: user.uid,
+            preferences: effectivePrefs,
+            selectedDayIndices: selection.selectedIndices,
+            startDate: selection.startDate,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MealPlanGenerationScreen(
+            uid: user.uid,
+            preferences: effectivePrefs,
+            startDate: selection.startDate,
+            returnToHome: true,
+            selectedDayIndices: selection.selectedIndices,
+            existingPlan: activePlan,
+          ),
+        ),
+      );
+    }
     // Geri döndüğünde planı yenile
     if (mounted) await _loadMealPlan();
   }
