@@ -2582,53 +2582,191 @@ abstract class AppLocalizations {
   /// **'{success}/{total} recipes scanned ({failed} failed)'**
   String homeScanMultiPartial(Object success, Object total, Object failed);
 
-  /// No description provided for @manualPlanTitle.
+  /// Manuel plan ekranı başlığı
   ///
   /// In en, this message translates to:
   /// **'Create Your Own Plan'**
   String get manualPlanTitle;
 
-  /// No description provided for @manualPlanSubtitle.
+  /// Manuel plan açıklama metni
   ///
   /// In en, this message translates to:
   /// **'Write your meal names and let AI fill in the details'**
   String get manualPlanSubtitle;
 
-  /// No description provided for @manualPlanMealHint.
+  /// Yemek adı placeholder
   ///
   /// In en, this message translates to:
   /// **'e.g., Lentil Soup'**
   String get manualPlanMealHint;
 
-  /// No description provided for @manualPlanComplete.
+  /// Planı tamamla butonu
   ///
   /// In en, this message translates to:
   /// **'Complete Plan'**
   String get manualPlanComplete;
 
-  /// No description provided for @manualPlanEmpty.
+  /// Boş plan uyarısı
   ///
   /// In en, this message translates to:
   /// **'Enter at least one meal name'**
   String get manualPlanEmpty;
 
-  /// No description provided for @manualPlanEnriching.
+  /// Manuel plan zenginleştirme yükleniyor
   ///
   /// In en, this message translates to:
   /// **'Enriching your recipes...'**
   String get manualPlanEnriching;
 
-  /// No description provided for @daySelectionManualOption.
+  /// Gün seçim sheet'inde manuel plan seçeneği
   ///
   /// In en, this message translates to:
   /// **'Write Your Own Plan'**
   String get daySelectionManualOption;
 
-  /// No description provided for @daySelectionAIOption.
+  /// Gün seçim sheet'inde AI plan seçeneği
   ///
   /// In en, this message translates to:
   /// **'Generate with AI'**
   String get daySelectionAIOption;
+
+  /// No description provided for @familyPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Plan'**
+  String get familyPlan;
+
+  /// No description provided for @familyPlanSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share meal plans, shopping lists and recipes with your family'**
+  String get familyPlanSubtitle;
+
+  /// No description provided for @familyPlanCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Family Plan'**
+  String get familyPlanCreate;
+
+  /// No description provided for @familyPlanJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Family Plan'**
+  String get familyPlanJoin;
+
+  /// No description provided for @familyPlanName.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan Name'**
+  String get familyPlanName;
+
+  /// No description provided for @familyPlanNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Smith Family'**
+  String get familyPlanNameHint;
+
+  /// No description provided for @familyPlanCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Code'**
+  String get familyPlanCode;
+
+  /// No description provided for @familyPlanCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 6-digit code'**
+  String get familyPlanCodeHint;
+
+  /// No description provided for @familyPlanCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Family plan created!'**
+  String get familyPlanCreated;
+
+  /// No description provided for @familyPlanJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined family plan!'**
+  String get familyPlanJoined;
+
+  /// No description provided for @familyPlanInvalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid or expired code'**
+  String get familyPlanInvalidCode;
+
+  /// No description provided for @familyPlanMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get familyPlanMembers;
+
+  /// No description provided for @familyPlanOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get familyPlanOwner;
+
+  /// No description provided for @familyPlanLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Plan'**
+  String get familyPlanLeave;
+
+  /// No description provided for @familyPlanLeaveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to leave this family plan?'**
+  String get familyPlanLeaveConfirm;
+
+  /// No description provided for @familyPlanLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Left the family plan'**
+  String get familyPlanLeft;
+
+  /// No description provided for @familyPlanInviteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Code'**
+  String get familyPlanInviteCode;
+
+  /// No description provided for @familyPlanInviteCodeExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Code valid for 24 hours'**
+  String get familyPlanInviteCodeExpiry;
+
+  /// No description provided for @familyPlanRefreshCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate New Code'**
+  String get familyPlanRefreshCode;
+
+  /// No description provided for @familyPlanShareCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Code'**
+  String get familyPlanShareCode;
+
+  /// No description provided for @familyPlanDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this family plan? All members will be removed.'**
+  String get familyPlanDeleteConfirm;
+
+  /// No description provided for @familyPlanNoMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'No other members yet'**
+  String get familyPlanNoMembers;
+
+  /// No description provided for @familyPlanCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code copied'**
+  String get familyPlanCopied;
 }
 
 class _AppLocalizationsDelegate

@@ -33,6 +33,7 @@ class _ManualMealPlanScreenState extends State<ManualMealPlanScreen>
   /// Her gün ve öğün slotu için TextEditingController haritası.
   /// Anahtar: "günIndex_slotAdı"
   final Map<String, TextEditingController> _controllers = {};
+  late int _kisiSayisi;
 
   static const _gunAdlari = [
     'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe',
@@ -45,6 +46,7 @@ class _ManualMealPlanScreenState extends State<ManualMealPlanScreen>
   @override
   void initState() {
     super.initState();
+    _kisiSayisi = widget.preferences.kisiSayisi;
     RemoteLoggerService.setScreen('manual_meal_plan');
     RemoteLoggerService.info('screen_opened', screen: 'manual_meal_plan');
 
@@ -101,6 +103,60 @@ class _ManualMealPlanScreenState extends State<ManualMealPlanScreen>
       default:
         return Icons.restaurant_rounded;
     }
+  }
+
+  void _showKisiSayisiPicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40, height: 4,
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: AppColors.border,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            Text('Kişi Sayısı',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700, color: AppColors.charcoal)),
+            const SizedBox(height: 12),
+            for (final sayi in [1, 2, 4, 5])
+              ListTile(
+                leading: Icon(
+                  _kisiSayisi == sayi
+                      ? Icons.radio_button_checked_rounded
+                      : Icons.radio_button_off_rounded,
+                  color: _kisiSayisi == sayi
+                      ? AppColors.primary
+                      : AppColors.charcoal.withValues(alpha: 0.3),
+                  size: 20,
+                ),
+                title: Text(sayi >= 5 ? '5+ kişi' : '$sayi kişi',
+                    style: TextStyle(
+                      fontWeight: _kisiSayisi == sayi ? FontWeight.w700 : FontWeight.w500,
+                      color: AppColors.charcoal,
+                    )),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+                onTap: () {
+                  setState(() => _kisiSayisi = sayi);
+                  Navigator.pop(ctx);
+                },
+              ),
+          ],
+        ),
+      ),
+    );
   }
 
   /// Girilen tüm yemek adlarını toplar.
@@ -165,13 +221,18 @@ class _ManualMealPlanScreenState extends State<ManualMealPlanScreen>
       'days_filled': entries.length,
     });
 
+    // Kişi sayısı değiştiyse preferences'ı güncelle
+    final effectivePrefs = _kisiSayisi != widget.preferences.kisiSayisi
+        ? widget.preferences.copyWith(kisiSayisi: _kisiSayisi)
+        : widget.preferences;
+
     // MealPlanGenerationScreen'e manualEntries ile git
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (_) => MealPlanGenerationScreen(
           uid: widget.uid,
-          preferences: widget.preferences,
+          preferences: effectivePrefs,
           startDate: widget.startDate,
           returnToHome: true,
           selectedDayIndices: widget.selectedDayIndices,
@@ -245,16 +306,34 @@ class _ManualMealPlanScreenState extends State<ManualMealPlanScreen>
       ),
       body: Column(
         children: [
-          // Açıklama
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
-            child: Text(
-              l10n.manualPlanSubtitle,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.charcoal.withValues(alpha: 0.6),
-                    height: 1.4,
+          // Kişi sayısı (düzenlenebilir)
+          GestureDetector(
+            onTap: _showKisiSayisiPicker,
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.people_rounded, size: 18, color: AppColors.primary),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '$_kisiSayisi kişilik — öğünler bu kişi sayısına göre orantılanacak',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.charcoal.withValues(alpha: 0.7),
+                            height: 1.3,
+                          ),
+                    ),
                   ),
-              textAlign: TextAlign.center,
+                  Icon(Icons.edit_rounded, size: 14,
+                      color: AppColors.charcoal.withValues(alpha: 0.3)),
+                ],
+              ),
             ),
           ),
           // Tab içerikleri
@@ -296,17 +375,43 @@ class _ManualMealPlanScreenState extends State<ManualMealPlanScreen>
     );
   }
 
+  /// Öğün sıralama önceliği (kahvaltı → öğle → akşam → ara öğün)
+  static const _slotOrder = ['kahvalti', 'ogle', 'aksam', 'ara_ogun', 'ara_ogun_1', 'ara_ogun_2', 'ana_ogun_1', 'ana_ogun_2'];
+
   /// Bir gün için öğün slotlarını listeler
   Widget _buildDayContent(int dayIdx, String dayName, AppLocalizations l10n) {
+    final sortedSlots = List<String>.from(widget.preferences.secilenOgunler)
+      ..sort((a, b) {
+        final ai = _slotOrder.indexOf(a);
+        final bi = _slotOrder.indexOf(b);
+        return (ai == -1 ? 99 : ai).compareTo(bi == -1 ? 99 : bi);
+      });
     return ListView.builder(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
-      itemCount: widget.preferences.secilenOgunler.length,
+      itemCount: sortedSlots.length,
       itemBuilder: (context, slotIndex) {
-        final slot = widget.preferences.secilenOgunler[slotIndex];
+        final slot = sortedSlots[slotIndex];
         final key = '${dayIdx}_$slot';
         return _buildSlotCard(slot, key, l10n);
       },
     );
+  }
+
+  String _slotHint(String slot) {
+    switch (slot) {
+      case 'kahvalti':
+        return 'ör. Menemen, Peynirli Omlet';
+      case 'ogle':
+        return 'ör. Tavuk Sote, Pilav';
+      case 'aksam':
+        return 'ör. Karnıyarık, Mercimek Çorbası';
+      case 'ara_ogun':
+      case 'ara_ogun_1':
+      case 'ara_ogun_2':
+        return 'ör. Meyve Tabağı, Yoğurt';
+      default:
+        return 'ör. Yemek adı yazın';
+    }
   }
 
   /// Tek bir öğün slotu kartı
@@ -345,7 +450,7 @@ class _ManualMealPlanScreenState extends State<ManualMealPlanScreen>
           TextField(
             controller: _controllers[controllerKey],
             decoration: InputDecoration(
-              hintText: l10n.manualPlanMealHint,
+              hintText: _slotHint(slot),
               hintStyle: TextStyle(
                 color: AppColors.charcoal.withValues(alpha: 0.3),
                 fontSize: 14,

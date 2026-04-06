@@ -420,6 +420,96 @@ Yukarıdaki cache tariflerini tekrarlama, yeni ve farklı tarifler ekle.
     return 'kış';
   }
 
+  /// Kullanıcının yazdığı yemek adlarından detaylı tarif üretir (Gemini enrichManualPlan ile aynı format).
+  Future<MealPlan> enrichManualPlan(
+    UserPreferences preferences,
+    Map<String, Map<String, List<String>>> manualEntries, {
+    DateTime? startDate,
+  }) async {
+    await _ensureInitialized();
+
+    final systemPrompt =
+        await rootBundle.loadString('assets/gemini/system_prompt.md');
+
+    final userInput = _buildMealPlanInput(preferences,
+        startDate: startDate, overrideDayCount: manualEntries.length);
+
+    final buffer = StringBuffer();
+    buffer.writeln('KULLANICI KENDİ YEMEK PLANINI YAZDI.');
+    buffer.writeln('KRİTİK KURAL: Kullanıcı bir öğüne birden fazla yemek yazmış olabilir (virgülle veya boşlukla ayrılmış).');
+    buffer.writeln('Her yemek AYRI BİR TARİF olarak üretilmeli. Örnek:');
+    buffer.writeln('  Kullanıcı yazdı: "Kuzu külbastı pilav yoğurt"');
+    buffer.writeln('  → 3 ayrı tarif üret: "Kuzu Külbastı", "Pilav", "Yoğurt"');
+    buffer.writeln('Yemekleri birleştirme, her biri ayrı JSON objesi olmalı.');
+    buffer.writeln();
+    buffer.writeln('BASIT MALZEME KURALI: Domates, peynir, zeytin, ekmek, çay, yoğurt gibi');
+    buffer.writeln('hazırlık gerektirmeyen basit malzemelerde yapilis ve malzemeler boş dizi olmalı.');
+    buffer.writeln('Sadece yemek_adi, kalori, toplam_sure_dk (0-5), zorluk: "kolay" ver.');
+    buffer.writeln('Pişirme/hazırlama gerektiren tarifler (menemen, pilav, külbastı vb.) için tam tarif üret.');
+    buffer.writeln();
+
+    for (final entry in manualEntries.entries) {
+      final dateStr = entry.key;
+      buffer.writeln('$dateStr:');
+      for (final slotEntry in entry.value.entries) {
+        final slotName = slotEntry.key;
+        final mealNames = slotEntry.value;
+        buffer.writeln('  $slotName: ${mealNames.join(', ')}');
+      }
+    }
+
+    buffer.writeln();
+    buffer.writeln('Her tarif için şu bilgileri MUTLAKA üret:');
+    buffer.writeln('- yemek_adi: Kısa ve net — birleştirme!');
+    buffer.writeln('- malzemeler: GERÇEK tarif malzemeleri, EN AZ 5 malzeme. Miktar + birim + malzeme adı.');
+    buffer.writeln('  Sadece "et, yağ, tuz" gibi 3 malzeme KABUL EDİLMEZ.');
+    buffer.writeln('- yapilis: Detaylı pişirme adımları, EN AZ 4 adım.');
+    buffer.writeln('  Marinasyon, pişirme süresi, ısı derecesi gibi detaylar olmalı.');
+    buffer.writeln('- kalori, zorluk, süre bilgileri');
+    buffer.writeln('- mutfaklar, alerjenler, diyetler, ogun_tipi');
+    buffer.writeln('- kisi_sayisi: ${preferences.kisiSayisi}');
+    buffer.writeln('Standart JSON formatında döndür.');
+
+    final messages = <Map<String, String>>[
+      {'role': 'system', 'content': systemPrompt},
+      {'role': 'user', 'content': '$userInput\n\n${buffer.toString()}'},
+    ];
+
+    final response = await http.post(
+      Uri.parse(_baseUrl),
+      headers: {
+        'Authorization': 'Bearer $_apiKey',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'model': _model,
+        'messages': messages,
+        'temperature': _temperature,
+        'max_tokens': 8192,
+        'response_format': {'type': 'json_object'},
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      RemoteLoggerService.error('groq_enrich_manual_error',
+        error: 'HTTP ${response.statusCode}',
+      );
+      throw GroqApiException(
+        'Groq API hatası: ${response.statusCode}',
+        statusCode: response.statusCode,
+      );
+    }
+
+    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    final choices = data['choices'] as List<dynamic>?;
+    if (choices == null || choices.isEmpty) {
+      throw Exception('Groq boş yanıt döndü');
+    }
+
+    final reply = choices[0]['message']['content'] as String? ?? '';
+    return MealPlan.fromGeminiResponse(reply);
+  }
+
   /// Konuşma geçmişini sıfırlar
   void reset() {
     _history.clear();

@@ -81,17 +81,30 @@ class _MealPlanGenerationScreenState extends State<MealPlanGenerationScreen> {
       String usedProvider;
 
       if (widget.manualEntries != null) {
-        // Manuel plan modu — kullanıcının yazdığı yemek adlarını zenginleştir
-        usedProvider = 'gemini_enrich';
+        // Manuel plan modu — önce Groq, hata alırsa Gemini fallback
         RemoteLoggerService.info('manual_plan_enrich_started',
             screen: 'meal_plan_generation',
             extra: {'entries_count': widget.manualEntries!.length});
 
-        generatedPlan = await geminiService.enrichManualPlan(
-          widget.preferences,
-          widget.manualEntries!,
-          startDate: widget.startDate,
-        );
+        try {
+          final groq = context.read<GroqService>();
+          generatedPlan = await groq.enrichManualPlan(
+            widget.preferences,
+            widget.manualEntries!,
+            startDate: widget.startDate,
+          );
+          usedProvider = 'groq_enrich';
+        } catch (e) {
+          debugPrint('⚠️ Groq enrich hata, Gemini fallback: $e');
+          RemoteLoggerService.warning('groq_enrich_fallback',
+              screen: 'meal_plan_generation');
+          generatedPlan = await geminiService.enrichManualPlan(
+            widget.preferences,
+            widget.manualEntries!,
+            startDate: widget.startDate,
+          );
+          usedProvider = 'gemini_enrich';
+        }
       } else {
         // Normal AI üretim modu
         // 1. Cache'den uygun tarifleri çek

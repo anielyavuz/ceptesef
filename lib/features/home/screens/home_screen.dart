@@ -18,6 +18,7 @@ import '../../../core/utils/image_crop_util.dart';
 import '../../../core/services/taste_profile_service.dart';
 import '../../inbox/screens/inbox_screen.dart';
 import '../../meal_plan/screens/meal_plan_generation_screen.dart';
+import '../../meal_plan/screens/manual_meal_plan_screen.dart';
 import 'regenerate_loading_screen.dart';
 import '../../meal_plan/screens/recipe_detail_screen.dart';
 import '../../meal_plan/widgets/recipe_suggestion_sheet.dart';
@@ -538,8 +539,7 @@ class HomeScreenState extends State<HomeScreen> {
           failCount++;
           RemoteLoggerService.error('scan_recipe_failed',
               error: e,
-              screen: 'home',
-              details: {'batch_index': i + 1, 'batch_total': total});
+              screen: 'home');
         }
       }
 
@@ -1394,7 +1394,7 @@ class HomeScreenState extends State<HomeScreen> {
     final isNextWeek = _isNextWeekDate(_selectedDateStr);
     final mealDay = _getMealDayForDate(_selectedDateStr);
 
-    if (mealDay == null) {
+    if (mealDay == null || mealDay.ogunler.isEmpty) {
       // Bu gün için plan yok
       return [
         if (plan.daysRemaining <= 2 && plan.daysRemaining > 0 && !isNextWeek)
@@ -1447,7 +1447,7 @@ class HomeScreenState extends State<HomeScreen> {
                         l10n,
                         isLast: index == slots.length - 1,
                         isDaily: false,
-                        readOnly: isNextWeek,
+                        readOnly: false,
                       );
                     });
                   }(),
@@ -1491,25 +1491,35 @@ class HomeScreenState extends State<HomeScreen> {
     }
 
     RemoteLoggerService.userAction('next_week_plan_tapped',
-        screen: 'home',
-        details: {
-          'startDate': selection.startDate.toIso8601String(),
-          'selectedDays': selection.selectedIndices.length,
-        });
+        screen: 'home');
 
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => MealPlanGenerationScreen(
-          uid: user.uid,
-          preferences: effectivePrefs,
-          startDate: selection.startDate,
-          returnToHome: true,
-          selectedDayIndices: selection.selectedIndices,
-          existingPlan: activePlan,
+    if (selection.isManual) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ManualMealPlanScreen(
+            uid: user.uid,
+            preferences: effectivePrefs,
+            selectedDayIndices: selection.selectedIndices,
+            startDate: selection.startDate,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MealPlanGenerationScreen(
+            uid: user.uid,
+            preferences: effectivePrefs,
+            startDate: selection.startDate,
+            returnToHome: true,
+            selectedDayIndices: selection.selectedIndices,
+            existingPlan: activePlan,
+          ),
+        ),
+      );
+    }
     if (mounted) {
       await _loadMealPlan();
       await _loadNextWeekPlan();
@@ -1690,24 +1700,35 @@ class HomeScreenState extends State<HomeScreen> {
     }
 
     RemoteLoggerService.userAction('new_week_plan_tapped',
-        screen: 'home', details: {
-      'startDate': selection.startDate.toIso8601String(),
-      'selectedDays': selection.selectedIndices.length,
-    });
+        screen: 'home');
 
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => MealPlanGenerationScreen(
-          uid: user.uid,
-          preferences: effectivePrefs,
-          startDate: selection.startDate,
-          returnToHome: true,
-          selectedDayIndices: selection.selectedIndices,
-          existingPlan: activePlan,
+    if (selection.isManual) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ManualMealPlanScreen(
+            uid: user.uid,
+            preferences: effectivePrefs,
+            selectedDayIndices: selection.selectedIndices,
+            startDate: selection.startDate,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MealPlanGenerationScreen(
+            uid: user.uid,
+            preferences: effectivePrefs,
+            startDate: selection.startDate,
+            returnToHome: true,
+            selectedDayIndices: selection.selectedIndices,
+            existingPlan: activePlan,
+          ),
+        ),
+      );
+    }
     // Geri döndüğünde planı yenile
     if (mounted) await _loadMealPlan();
   }

@@ -1228,5 +1228,29 @@
   "@daySelectionManualOption": { "description": "Gün seçim sheet'inde manuel plan seçeneği" },
 
   "daySelectionAIOption": "Generate with AI",
-  "@daySelectionAIOption": { "description": "Gün seçim sheet'inde AI plan seçeneği" }
+  "@daySelectionAIOption": { "description": "Gün seçim sheet'inde AI plan seçeneği" },
+
+  "familyPlan": "Family Plan",
+  "familyPlanSubtitle": "Share meal plans, shopping lists and recipes with your family",
+  "familyPlanCreate": "Create Family Plan",
+  "familyPlanJoin": "Join Family Plan",
+  "familyPlanName": "Plan Name",
+  "familyPlanNameHint": "e.g. Smith Family",
+  "familyPlanCode": "Invite Code",
+  "familyPlanCodeHint": "Enter 6-digit code",
+  "familyPlanCreated": "Family plan created!",
+  "familyPlanJoined": "Joined family plan!",
+  "familyPlanInvalidCode": "Invalid or expired code",
+  "familyPlanMembers": "Members",
+  "familyPlanOwner": "Admin",
+  "familyPlanLeave": "Leave Plan",
+  "familyPlanLeaveConfirm": "Are you sure you want to leave this family plan?",
+  "familyPlanLeft": "Left the family plan",
+  "familyPlanInviteCode": "Invite Code",
+  "familyPlanInviteCodeExpiry": "Code valid for 24 hours",
+  "familyPlanRefreshCode": "Generate New Code",
+  "familyPlanShareCode": "Share Code",
+  "familyPlanDeleteConfirm": "Are you sure you want to delete this family plan? All members will be removed.",
+  "familyPlanNoMembers": "No other members yet",
+  "familyPlanCopied": "Invite code copied"
 }

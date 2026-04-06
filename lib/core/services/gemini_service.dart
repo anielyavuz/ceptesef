@@ -499,13 +499,22 @@ Yukarıdaki cache tariflerini tekrarlama, yeni ve farklı tarifler ekle.
 
     // Manuel girişleri prompt'a çevir
     final buffer = StringBuffer();
-    buffer.writeln('KULLANICI KENDİ YEMEK PLANINI YAZDI. Her yemek adı için detaylı tarif bilgisi üret.');
-    buffer.writeln('Yemek adlarını DEĞİŞTİRME, sadece tarif detaylarını ekle.');
+    buffer.writeln('KULLANICI KENDİ YEMEK PLANINI YAZDI.');
+    buffer.writeln('KRİTİK KURAL: Kullanıcı bir öğüne birden fazla yemek yazmış olabilir (virgülle veya boşlukla ayrılmış).');
+    buffer.writeln('Her yemek AYRI BİR TARİF olarak üretilmeli. Örnek:');
+    buffer.writeln('  Kullanıcı yazdı: "Kuzu külbastı pilav yoğurt"');
+    buffer.writeln('  → 3 ayrı tarif üret: "Kuzu Külbastı", "Pilav", "Yoğurt"');
+    buffer.writeln('Yemekleri birleştirme, her biri ayrı JSON objesi olmalı.');
+    buffer.writeln();
+    buffer.writeln('BASIT MALZEME KURALI: Domates, peynir, zeytin, ekmek, çay, yoğurt gibi');
+    buffer.writeln('hazırlık gerektirmeyen basit malzemelerde yapilis ve malzemeler boş dizi olmalı.');
+    buffer.writeln('Sadece yemek_adi, kalori, toplam_sure_dk (0-5), zorluk: "kolay" ver.');
+    buffer.writeln('Pişirme/hazırlama gerektiren tarifler (menemen, pilav, külbastı vb.) için tam tarif üret.');
     buffer.writeln();
 
     for (final entry in manualEntries.entries) {
       final dateStr = entry.key;
-      buffer.writeln('📅 $dateStr:');
+      buffer.writeln('$dateStr:');
       for (final slotEntry in entry.value.entries) {
         final slotName = slotEntry.key;
         final mealNames = slotEntry.value;
@@ -514,19 +523,22 @@ Yukarıdaki cache tariflerini tekrarlama, yeni ve farklı tarifler ekle.
     }
 
     buffer.writeln();
-    buffer.writeln('Her yemek için şu bilgileri MUTLAKA üret:');
-    buffer.writeln('- malzemeler (en az 3 malzeme, miktar + birim + malzeme adı)');
-    buffer.writeln('- yapilis (en az 2 adım)');
-    buffer.writeln('- kalori (kişi başı)');
-    buffer.writeln('- zorluk (kolay/orta/zor)');
-    buffer.writeln('- hazirlanma_suresi_dk, pisirme_suresi_dk, toplam_sure_dk');
+    buffer.writeln('Her tarif için şu bilgileri MUTLAKA üret:');
+    buffer.writeln('- yemek_adi: Kısa ve net (ör. "Kuzu Külbastı", "Pilav", "Yoğurt" — birleştirme!)');
+    buffer.writeln('- malzemeler: GERÇEK tarif malzemeleri yaz, EN AZ 5 malzeme. Miktar + birim + malzeme adı.');
+    buffer.writeln('  Örnek Kuzu Külbastı: ["500 gr kuzu pirzola", "2 yemek kaşığı zeytinyağı", "1 adet soğan", "2 diş sarımsak", "1 çay kaşığı karabiber", "1 çay kaşığı pul biber", "1 çay kaşığı kekik", "tuz"]');
+    buffer.writeln('  Sadece "et, yağ, tuz" gibi 3 malzeme KABUL EDİLMEZ.');
+    buffer.writeln('- yapilis: Detaylı pişirme adımları, EN AZ 4 adım.');
+    buffer.writeln('  "Eti yıkayın. Keserek servis yapın." gibi 2 adım KABUL EDİLMEZ.');
+    buffer.writeln('  Marinasyon, pişirme süresi, ısı derecesi gibi detaylar olmalı.');
+    buffer.writeln('- kalori (kişi başı), zorluk, süre bilgileri');
     buffer.writeln('- mutfaklar, alerjenler, diyetler, ogun_tipi');
     buffer.writeln('- kisi_sayisi: ${preferences.kisiSayisi}');
     buffer.writeln();
     buffer.writeln('Kullanıcının alerjenleri: ${preferences.alerjenler.isNotEmpty ? preferences.alerjenler.join(', ') : 'yok'}');
     buffer.writeln('Kullanıcının diyetleri: ${preferences.diyetler.isNotEmpty ? preferences.diyetler.join(', ') : 'yok'}');
     buffer.writeln();
-    buffer.writeln('ÖNEMLİ: Kullanıcının yazdığı yemek adlarını birebir koru. Standart JSON formatında döndür.');
+    buffer.writeln('Standart JSON formatında döndür.');
 
     final mealPlanModel = GenerativeModel(
       model: _config!.modelName,

@@ -773,8 +773,7 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
           failCount++;
           RemoteLoggerService.error('scan_recipe_failed',
               error: e,
-              screen: 'saved_recipes',
-              details: {'batch_index': i + 1, 'batch_total': total});
+              screen: 'saved_recipes');
         }
       }
 

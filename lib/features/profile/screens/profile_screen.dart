@@ -14,6 +14,7 @@ import '../widgets/preferences_section.dart';
 import '../widgets/my_ratings_section.dart';
 import '../../home/screens/home_screen.dart';
 import '../../inbox/screens/inbox_screen.dart';
+import 'family_plan_screen.dart';
 
 /// Profil ekranı — Hesap bilgileri, tercihler, çıkış ve hesap silme.
 class ProfileScreen extends StatefulWidget {
@@ -370,6 +371,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               MaterialPageRoute(
                                   builder: (_) =>
                                       const InboxScreen()),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Aile Planı
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.04),
+                              blurRadius: 12,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: _buildTile(
+                          icon: Icons.family_restroom_rounded,
+                          label: l10n.familyPlan,
+                          iconColor: AppColors.primary,
+                          onTap: () {
+                            RemoteLoggerService.userAction(
+                                'family_plan_opened',
+                                screen: 'profile');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      const FamilyPlanScreen()),
                             );
                           },
                         ),

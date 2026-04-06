@@ -9,11 +9,13 @@ class DaySelectionResult {
   final List<int> selectedIndices;
   final DateTime startDate;
   final UserPreferences? updatedPreferences;
+  final bool isManual;
 
   const DaySelectionResult({
     required this.selectedIndices,
     required this.startDate,
     this.updatedPreferences,
+    this.isManual = false,
   });
 }
 

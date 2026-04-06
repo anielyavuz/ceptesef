@@ -41,4 +41,7 @@ class FirestorePaths {
 
   /// Tarif etiketleri alt koleksiyonu (users/{uid}/recipe_tags)
   static const String recipeTagsSubcollection = 'recipe_tags';
+
+  /// Aile planı (household) koleksiyonu
+  static const String householdsCollection = 'households';
 }
