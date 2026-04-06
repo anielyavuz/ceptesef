@@ -23,7 +23,8 @@ class _FamilyPlanScreenState extends State<FamilyPlanScreen> {
   bool _loading = true;
   Household? _household;
   List<AppUser> _members = [];
-  late final HouseholdService _householdService;
+  final HouseholdService _householdService = HouseholdService();
+  bool _initialized = false;
 
   @override
   void initState() {
@@ -35,8 +36,10 @@ class _FamilyPlanScreenState extends State<FamilyPlanScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _householdService = HouseholdService();
-    _loadHousehold();
+    if (!_initialized) {
+      _initialized = true;
+      _loadHousehold();
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -268,9 +271,12 @@ class _FamilyPlanScreenState extends State<FamilyPlanScreen> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
+    final firestoreService = context.read<FirestoreService>();
+
     try {
       setState(() => _loading = true);
       await _householdService.leaveHousehold(user.uid);
+      firestoreService.invalidateEffectiveUidCache();
       RemoteLoggerService.userAction('family_plan_left',
           screen: 'family_plan');
       if (mounted) {
