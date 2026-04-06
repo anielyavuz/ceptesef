@@ -135,18 +135,14 @@ class _FamilyPlanScreenState extends State<FamilyPlanScreen> {
 
     try {
       setState(() => _loading = true);
-      final household = await _householdService.createHousehold(user.uid, name);
+      await _householdService.createHousehold(user.uid, name);
       RemoteLoggerService.userAction('family_plan_created',
           screen: 'family_plan');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n.familyPlanCreated)),
         );
-        setState(() {
-          _household = household;
-          _loading = false;
-        });
-        _loadHousehold(); // uyeleri de yukle
+        await _loadHousehold();
       }
     } catch (e) {
       RemoteLoggerService.error('family_plan_create_error', error: e);
@@ -217,7 +213,7 @@ class _FamilyPlanScreenState extends State<FamilyPlanScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n.familyPlanJoined)),
         );
-        _loadHousehold();
+        await _loadHousehold();
       }
     } catch (e) {
       RemoteLoggerService.error('family_plan_join_error', error: e);
